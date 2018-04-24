@@ -1,0 +1,38 @@
+{
+  "name": "js-scroll-effect-module",
+  "version": "0.1.0",
+  "description": "Add effect according to scroll.",
+  "keywords": [
+    "scroll",
+    "scroll effect",
+    "scroll effect animation",
+    "css",
+    "animation",
+    "keyframe",
+    "transition",
+    "plugin"
+  ],
+  "author": "yama-dev",
+  "license": "MIT",
+  "main": "./dist/js-scroll-effect-module.js",
+  "scripts": {
+    "start": "npm install && npm run develop",
+    "develop": "npm-run-all -p build:webpack server",
+    "server": "browser-sync start --server ./ --directory ./sample --files **/*.css **/*.js **/*.html",
+    "build:webpack": "webpack --progress --colors --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yama-dev/js-scroll-effect-module"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.6.1",
+    "browser-sync": "^2.23.6",
+    "npm-run-all": "^4.1.2",
+    "webpack": "^4.6.0",
+    "webpack-cli": "^2.0.14"
+  }
+}
