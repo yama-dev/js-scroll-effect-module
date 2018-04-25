@@ -25,6 +25,10 @@
     "type": "git",
     "url": "https://github.com/yama-dev/js-scroll-effect-module"
   },
+  "bugs": {
+    "url" : "https://github.com/yama-dev/js-scroll-effect-module/issues",
+    "email" : "tatsuya.yamamoto69@gmail.com"
+  },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
