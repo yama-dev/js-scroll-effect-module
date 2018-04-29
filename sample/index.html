@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no">
+  <title>js-scroll-effect-module | yama-dev</title>
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js" charset="UTF-8"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+  <link rel="stylesheet" href="./scroll-effect-module.css">
+  <script src="../dist/js-scroll-effect-module.js"></script>
+  <script src="/ga.js"></script>
+</head>
+<body>
+<div class="container-fluid">
+
+  <div class="row mt10">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+      <h2>js-scroll-effect-module v0.1.0</h2>
+
+      <hr>
+
+      <h3></h3>
+      <div id="brightcovePlayer1">
+        <script>
+          var ScrollEffectModule = new SCROLL_EFFECT_MODULE({
+            elem               : '.effect_item',
+            displayRatio       : 0.8,
+            displayReverse     : true,
+            firstElem          : '.effect_item--first',
+            firstElemDelayTime : 300,
+            firstDelayTime     : 500,
+            loadDelayTime      : 0
+          });
+        </script>
+        <pre class="prettyprint lang-html">
+        <code>
+        &lt;script&gt;
+          var ScrollEffectModule = new SCROLL_EFFECT_MODULE({
+            elem               : &#039;.effect_item&#039;,
+            displayRatio       : 0.8,
+            displayReverse     : true,
+            firstElem          : &#039;.effect_item--first&#039;,
+            firstElemDelayTime : 300,
+            firstDelayTime     : 500,
+            loadDelayTime      : 0
+          });
+        &lt;/script&gt;</code>
+        </pre>
+      </div>
+
+      <hr>
+
+    </div>
+    <div class="col-md-1"></div>
+  </div>
+
+  <div class="row mt10 scroll-effect-module">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+      <div class="effect_item effect_item--first-none effect__fadein-basic">
+        <h1>h1. Bootstrap heading <small>Secondary text</small></h1>
+      </div>
+      <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+      <div class="effect_item effect__fadein-zoomin">
+        <h2>h2. Bootstrap heading <small>Secondary text</small></h2>
+      </div>
+      <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+      <div class="effect_item effect__fadein-top">
+        <h1>h1. Bootstrap heading <small>Secondary text</small></h1>
+      </div>
+      <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+      <div class="effect_item effect__fadein-bottom">
+        <h2>h2. Bootstrap heading <small>Secondary text</small></h2>
+      </div>
+      <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+      <div class="effect_item effect__fadein-left">
+        <h1>h1. Bootstrap heading <small>Secondary text</small></h1>
+      </div>
+      <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+      <div class="effect_item effect__fadein-right">
+        <h2>h2. Bootstrap heading <small>Secondary text</small></h2>
+      </div>
+      <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+      <div class="effect_item effect__spinin">
+        <h1>h1. Bootstrap heading <small>Secondary text</small></h1>
+      </div>
+      <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    </div>
+    <div class="col-md-1"></div>
+  </div>
+
+</div>
+
+<a href="https://github.com/yama-dev/js-scroll-effect-module" target="_blank"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
+
+</body>
+</html>
