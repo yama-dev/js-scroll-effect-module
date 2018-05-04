@@ -10,7 +10,7 @@ Grant of class in accordance with the scroll.
 
 ## Installation,Download
 
-- npm -> [https://www.npmjs.com/package/js-scroll-effect-module](https://www.npmjs.com/package/js-scroll-effect-module)
+- npm -> []()
 
 - Standalone(CDN) -> []()
 
@@ -95,14 +95,6 @@ Run npm script 'develop'
 
 ``` bash
 $ npm run develop
-```
-
-### at Production
-
-Run npm script 'production'
-
-``` bash
-$ npm run production
 ```
 
 <br>
