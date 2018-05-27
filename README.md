@@ -4,13 +4,20 @@
 
 ## Feature
 
-Grant of class in accordance with the scroll.  
+Add effect according to scroll.  
+
+<br>
+
+## Demo
+
+- Document [https://yama-dev.github.io/js-scroll-effect-module/](https://yama-dev.github.io/js-scroll-effect-module/)
+- SamplePage[https://yama-dev.github.io/js-scroll-effect-module/sample/](https://yama-dev.github.io/js-scroll-effect-module/sample/)
 
 <br>
 
 ## Installation,Download
 
-- npm -> []()
+- npm -> [https://www.npmjs.com/package/js-scroll-effect-module](https://www.npmjs.com/package/js-scroll-effect-module)
 
 - Standalone(CDN) -> []()
 
