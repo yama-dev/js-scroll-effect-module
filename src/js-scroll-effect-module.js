@@ -1,18 +1,10 @@
 /*!
- * @license
- *
  * JS SCROLL EFFECT MODULE (JavaScript Library)
  *   js-scroll-effect-module
- *
  * versoin 0.1.0
  * Repository https://github.com/yama-dev/js-scroll-effect-module
  * Copyright yama-dev
  * Licensed under the MIT license.
- * Release 2018-04-24
- *
- * Instance
- *   new SCROLL_EFFECT_MODULE({ options });
- *
  */
 
 Element.prototype.hasClass = function(className){

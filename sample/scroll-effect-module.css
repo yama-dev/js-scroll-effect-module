@@ -3,7 +3,6 @@
  * https://github.com/yama-dev/js-scroll-effect-module
  * Copyright yama-dev
  * Licensed under the MIT license.
- * Date: 2018-04-24
  */
 /*!
  * Setings
@@ -20,32 +19,28 @@
 /*!
  * Set Effects
  * -> effect__fadein-basic
- * -> effect__fadein-zoomin
  * -> effect__fadein-top
  * -> effect__fadein-bottom
  * -> effect__fadein-left
  * -> effect__fadein-right
+ * -> effect__fadein-zoomin
  * -> effect__spinin
  */
-.scroll-effect-module .effect__fadein-basic {
+.effect__fadein-basic {
   opacity: 0;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
   -webkit-transition: opacity 1s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
   transition: opacity 1s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
 }
 
-.scroll-effect-module .effect__fadein-basic.is-active {
+.effect__fadein-basic.is-active {
   opacity: 1;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
   -webkit-transition: opacity 1s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
   transition: opacity 1s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
 }
 
-.scroll-effect-module .effect__fadein-zoomin {
+.effect__fadein-zoomin {
   opacity: 0;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
   -webkit-transform: scale(0.99);
-      -ms-transform: scale(0.99);
           transform: scale(0.99);
   -webkit-transform-style: preserve-3d;
           transform-style: preserve-3d;
@@ -55,11 +50,9 @@
   transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
 }
 
-.scroll-effect-module .effect__fadein-zoomin.is-active {
+.effect__fadein-zoomin.is-active {
   opacity: 1;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
   -webkit-transform: scale(1);
-      -ms-transform: scale(1);
           transform: scale(1);
   -webkit-transform-style: preserve-3d;
           transform-style: preserve-3d;
@@ -69,12 +62,10 @@
   transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
 }
 
-.scroll-effect-module .effect__fadein-top {
+.effect__fadein-top {
   opacity: 0;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-  -webkit-transform: translate(0, -30%);
-      -ms-transform: translate(0, -30%);
-          transform: translate(0, -30%);
+  -webkit-transform: translate(0, -30px);
+          transform: translate(0, -30px);
   -webkit-transform-style: preserve-3d;
           transform-style: preserve-3d;
   -webkit-backface-visibility: hidden;
@@ -83,11 +74,9 @@
   transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
 }
 
-.scroll-effect-module .effect__fadein-top.is-active {
+.effect__fadein-top.is-active {
   opacity: 1;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
   -webkit-transform: translate(0, 0);
-      -ms-transform: translate(0, 0);
           transform: translate(0, 0);
   -webkit-transform-style: preserve-3d;
           transform-style: preserve-3d;
@@ -97,12 +86,10 @@
   transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
 }
 
-.scroll-effect-module .effect__fadein-bottom {
+.effect__fadein-bottom {
   opacity: 0;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-  -webkit-transform: translate(0, 30%);
-      -ms-transform: translate(0, 30%);
-          transform: translate(0, 30%);
+  -webkit-transform: translate(0, 30px);
+          transform: translate(0, 30px);
   -webkit-transform-style: preserve-3d;
           transform-style: preserve-3d;
   -webkit-backface-visibility: hidden;
@@ -111,11 +98,9 @@
   transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
 }
 
-.scroll-effect-module .effect__fadein-bottom.is-active {
+.effect__fadein-bottom.is-active {
   opacity: 1;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
   -webkit-transform: translate(0, 0);
-      -ms-transform: translate(0, 0);
           transform: translate(0, 0);
   -webkit-transform-style: preserve-3d;
           transform-style: preserve-3d;
@@ -125,11 +110,9 @@
   transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
 }
 
-.scroll-effect-module .effect__fadein-left {
+.effect__fadein-left {
   opacity: 0;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
   -webkit-transform: translate(-80%, 0);
-      -ms-transform: translate(-80%, 0);
           transform: translate(-80%, 0);
   -webkit-transform-style: preserve-3d;
           transform-style: preserve-3d;
@@ -139,11 +122,9 @@
   transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
 }
 
-.scroll-effect-module .effect__fadein-left.is-active {
+.effect__fadein-left.is-active {
   opacity: 1;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
   -webkit-transform: translate(0, 0);
-      -ms-transform: translate(0, 0);
           transform: translate(0, 0);
   -webkit-transform-style: preserve-3d;
           transform-style: preserve-3d;
@@ -153,11 +134,9 @@
   transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
 }
 
-.scroll-effect-module .effect__fadein-right {
+.effect__fadein-right {
   opacity: 0;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
   -webkit-transform: translate(80%, 0);
-      -ms-transform: translate(80%, 0);
           transform: translate(80%, 0);
   -webkit-transform-style: preserve-3d;
           transform-style: preserve-3d;
@@ -167,11 +146,9 @@
   transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
 }
 
-.scroll-effect-module .effect__fadein-right.is-active {
+.effect__fadein-right.is-active {
   opacity: 1;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
   -webkit-transform: translate(0, 0);
-      -ms-transform: translate(0, 0);
           transform: translate(0, 0);
   -webkit-transform-style: preserve-3d;
           transform-style: preserve-3d;
@@ -181,9 +158,8 @@
   transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
 }
 
-.scroll-effect-module .effect__spinin {
+.effect__spinin {
   opacity: 0;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
   -webkit-transform: translate(0, 0) rotate3d(1, 0, 1, -720deg);
           transform: translate(0, 0) rotate3d(1, 0, 1, -720deg);
   -webkit-transform-style: preserve-3d;
@@ -194,9 +170,8 @@
   transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
 }
 
-.scroll-effect-module .effect__spinin.is-active {
+.effect__spinin.is-active {
   opacity: 1;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
   -webkit-transform: translate(0, 0) rotate3d(1, 0, 1, 0);
           transform: translate(0, 0) rotate3d(1, 0, 1, 0);
   -webkit-transform-style: preserve-3d;
