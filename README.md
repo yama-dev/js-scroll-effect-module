@@ -10,8 +10,8 @@ Add effect according to scroll.
 
 ## Demo
 
-- Document [https://yama-dev.github.io/js-scroll-effect-module/](https://yama-dev.github.io/js-scroll-effect-module/)
-- SamplePage[https://yama-dev.github.io/js-scroll-effect-module/sample/](https://yama-dev.github.io/js-scroll-effect-module/sample/)
+- Document -> [https://yama-dev.github.io/js-scroll-effect-module/](https://yama-dev.github.io/js-scroll-effect-module/)
+- SamplePage -> [https://yama-dev.github.io/js-scroll-effect-module/sample/](https://yama-dev.github.io/js-scroll-effect-module/sample/)
 
 <br>
 
@@ -34,7 +34,7 @@ Add effect according to scroll.
 npm install --save-dev js-scroll-effect-module
 ```
 
-``` javascript.
+``` javascript
 // import.
 import SCROLL_EFFECT_MODULE from 'js-scroll-effect-module';
 ```
@@ -42,10 +42,9 @@ import SCROLL_EFFECT_MODULE from 'js-scroll-effect-module';
 ### Basic Standalone Usage
 
 ``` html
+<link rel="stylesheet" href="./scroll-effect-module.css">
 <script src="./js-scroll-effect-module"></script>
-<script>
-var ScrollEffectModule = new SCROLL_EFFECT_MODULE({ elem : '.effect_item' });
-</script>
+<script> new SCROLL_EFFECT_MODULE({ elem : '.effect_item' }); </script>
 ```
 
 <br>

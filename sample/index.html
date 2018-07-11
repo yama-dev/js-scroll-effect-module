@@ -4,27 +4,47 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, user-scalable=no">
   <title>js-scroll-effect-module | yama-dev</title>
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
-  <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://code.jquery.com/jquery-3.1.1.min.js" charset="UTF-8"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
   <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
   <link rel="stylesheet" href="./scroll-effect-module.css">
   <script src="../dist/js-scroll-effect-module.js"></script>
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </head>
 <body>
 <div class="container-fluid" style="overflow:hidden;">
 
-  <div class="row mt10">
+  <div class="row mt-3">
     <div class="col-md-1"></div>
     <div class="col-md-10">
-      <h2>js-scroll-effect-module v0.1.1</h2>
+      <h2 class="mb-3">SCROLL EFFECT MODULE v0.1.2</h2>
 
-      <hr>
+      <p>Add effect at scroll.</p>
 
-      <h3></h3>
-      <div id="brightcovePlayer1">
+      <span class="p-sns"><a class="github-button" href="https://github.com/yama-dev" data-show-count="true" aria-label="Follow @yama-dev on GitHub">Follow @yama-dev</a></span>
+      <span class="p-sns"><a class="github-button" href="https://github.com/yama-dev/js-scroll-effect-module/archive/master.zip" data-icon="octicon-cloud-download" aria-label="Download yama-dev/js-scroll-effect-module on GitHub">Download</a></span>
+      <span class="p-sns"><a class="github-button" href="https://github.com/yama-dev/js-scroll-effect-module" data-icon="octicon-star" data-show-count="true" aria-label="Star yama-dev/js-scroll-effect-module on GitHub">Star</a></span>
+      <span class="p-sns"><a class="github-button" href="https://github.com/yama-dev/js-scroll-effect-module/fork" data-icon="octicon-repo-forked" data-show-count="true" aria-label="Fork yama-dev/js-scroll-effect-module on GitHub">Fork</a></span>
+      <span class="p-sns"><a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="SCROLL EFFECT MODULE v0.1.2 Add effect at scroll." data-show-count="false">Tweet</a></span>
+      <style>.p-sns > span{ display: inline-block; }</style>
+
+      <hr class="mt-4 mb-4">
+
+      <h3>Basic Use</h3>
+      <div>
+        <pre class="prettyprint lang-html">
+        <code>
+        &lt;link rel=&quot;stylesheet&quot; href=&quot;./scroll-effect-module.css&quot;&gt;
+        &lt;div class=&quot;effect_item effect__fadein-basic&quot;&gt;
+
+        &lt;script&gt; new SCROLL_EFFECT_MODULE({ elem: &#039;.effect_item&#039; }); &lt;/script&gt;</code>
+        </pre>
+      </div>
+
+      <hr class="mt-4 mb-4">
+
+      <h3>Custom Use</h3>
+      <div>
         <script>
           var ScrollEffectModule = new SCROLL_EFFECT_MODULE({
             elem               : '.effect_item',
@@ -33,11 +53,27 @@
             firstElem          : '.effect_item--first',
             firstElemDelayTime : 300,
             firstDelayTime     : 500,
-            loadDelayTime      : 0
+            loadDelayTime      : 0,
+            addClassNameActive : 'is-active',
+            on: {
+              In: function(item, pos){
+                console.log('In')
+                console.log(item);
+                console.log(pos);
+              },
+              Out: function(item, pos){
+                console.log('Out')
+                console.log(item);
+                console.log(pos);
+              }
+            }
           });
         </script>
         <pre class="prettyprint lang-html">
         <code>
+        &lt;link rel=&quot;stylesheet&quot; href=&quot;./scroll-effect-module.css&quot;&gt;
+        &lt;div class=&quot;effect_item effect__fadein-basic&quot;&gt;
+
         &lt;script&gt;
           var ScrollEffectModule = new SCROLL_EFFECT_MODULE({
             elem               : &#039;.effect_item&#039;,
@@ -46,13 +82,31 @@
             firstElem          : &#039;.effect_item--first&#039;,
             firstElemDelayTime : 300,
             firstDelayTime     : 500,
-            loadDelayTime      : 0
+            loadDelayTime      : 0,
+            addClassNameActive : &#039;is-active&#039;,
+            on: {
+              In: function(item, pos){
+                console.log(&#039;In&#039;)
+                console.log(item);
+                console.log(pos);
+              },
+              Out: function(item, pos){
+                console.log(&#039;Out&#039;)
+                console.log(item);
+                console.log(pos);
+              }
+            }
           });
         &lt;/script&gt;</code>
         </pre>
+
+        <p><button class="btn btn btn-secondary" onclick="ScrollEffectModule.UpdateDom()">要素の情報更新 - ScrollEffectModule.UpdateDom()</button></p>
+        <p><button class="btn btn btn-secondary" onclick="ScrollEffectModule.Refresh()">リフレッシュ - ScrollEffectModule.Refresh()</button></p>
+        <p><button class="btn btn btn-secondary" onclick="ScrollEffectModule.RemoveAll()">非アクティブ化 - ScrollEffectModule.RemoveAll()</button></p>
+
       </div>
 
-      <hr>
+      <hr class="mt-4 mb-4">
 
     </div>
     <div class="col-md-1"></div>
@@ -61,48 +115,50 @@
   <div class="row mt10">
     <div class="col-md-1"></div>
     <div class="col-md-10">
-      <div class="effect_item effect_item--first-none effect__fadein-basic">
+      <h3>DEMO</h3>
+      <br><br><br><br><br><br><br><br><br><br><br><br>
+      <div class="effect_item effect_item--first-none effect__fadein-basic text-center">
         <h2>EffectType : fadein basic</h2>
         <p>EffectClassname : .effect__fadein-basic</p>
       </div>
-      <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-      <div class="effect_item effect__fadein-top">
+      <br><br><br><br><br><br><br><br><br><br><br><br>
+      <div class="effect_item effect__fadein-top text-center">
         <h2>EffectType : fadein top</h2>
         <p>EffectClassname : .effect__fadein-top</p>
       </div>
-      <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-      <div class="effect_item effect__fadein-bottom">
+      <br><br><br><br><br><br><br><br><br><br><br><br>
+      <div class="effect_item effect__fadein-bottom text-center">
         <h2>EffectType : fadein bottom</h2>
         <p>EffectClassname : .effect__fadein-bottom</p>
       </div>
-      <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-      <div class="effect_item effect__fadein-left">
+      <br><br><br><br><br><br><br><br><br><br><br><br>
+      <div class="effect_item effect__fadein-left text-center">
         <h2>EffectType : fadein left</h2>
         <p>EffectClassname : .effect__fadein-left</p>
       </div>
-      <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-      <div class="effect_item effect__fadein-right">
+      <br><br><br><br><br><br><br><br><br><br><br><br>
+      <div class="effect_item effect__fadein-right text-center">
         <h2>EffectType : fadein right</h2>
         <p>EffectClassname : .effect__fadein-right</p>
       </div>
-      <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-      <div class="effect_item effect__fadein-zoomin">
+      <br><br><br><br><br><br><br><br><br><br><br><br>
+      <div class="effect_item effect__fadein-zoomin text-center">
         <h2>EffectType : fadein zoomin</h2>
         <p>EffectClassname : .effect__fadein-zoomin</p>
       </div>
-      <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-      <div class="effect_item effect__spinin">
+      <br><br><br><br><br><br><br><br><br><br><br><br>
+      <div class="effect_item effect__spinin text-center">
         <h2>EffectType : spinin</h2>
         <p>EffectClassname : .effect__spinin</p>
       </div>
-      <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+      <br><br><br><br><br><br><br><br><br><br><br><br>
     </div>
     <div class="col-md-1"></div>
   </div>
 
 </div>
 
-<a href="https://github.com/yama-dev/js-scroll-effect-module" target="_blank"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
+<a href="https://github.com/yama-dev/js-scroll-effect-module" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
 
 </body>
 </html>
