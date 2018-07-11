@@ -51,8 +51,16 @@ class SCROLL_EFFECT_MODULE {
       firstElemDelayTime : options.firstElemDelayTime||0,
       firstDelayTime     : options.firstDelayTime||300,
       loadDelayTime      : options.loadDelayTime||0,
-      addClassNameLoaded : options.addClassNameLoaded||'is-loaded',
-      addClassNameActive : options.addClassNameActive||'is-active',
+      addClassNameActive : options.addClassNameActive||'is-active'
+    }
+
+    // Set callback functions.
+    if(!options.on){
+      options.on = {}
+    }
+    this.on = {
+      In    : options.on.In||'',
+      Out   : options.on.Out||''
     }
 
     // Store element information.
@@ -130,7 +138,17 @@ class SCROLL_EFFECT_MODULE {
     this.CacheElementSize();
     this.SetDom();
     for(let _i = 0;_i < this.ElemList.length; _i++){
-      this.ElemList[_i].removeClass(this.Config.addClassNameActive);
+      this.$elemItem[_i].removeClass(this.Config.addClassNameActive);
+    }
+    this.ActionAddClass();
+  }
+
+  RemoveAll(){
+    this.CacheElement();
+    this.CacheElementSize();
+    this.SetDom();
+    for(let _i = 0;_i < this.ElemList.length; _i++){
+      this.$elemItem[_i].removeClass(this.Config.addClassNameActive);
     }
   }
 
@@ -208,12 +226,18 @@ class SCROLL_EFFECT_MODULE {
     for(let _i = 0;_i < this.ElemListFix.length; _i++){
       if(this.$elemItem[this.ElemListFix[_i]].hasClass(this.Config.addClassNameActive)){}else{
         this.$elemItem[this.ElemListFix[_i]].addClass(this.Config.addClassNameActive);
+
+          // Callback function.
+        if(this.on.In && typeof(this.on.In) === 'function') this.on.In(this.$elemItem[this.ElemListFix[_i]], this.ElemListFix[_i]);
       }
     }
     if(this.Config.displayReverse){
       for(let _i = 0;_i < this.ElemListNoneFix.length; _i++){
         if(this.$elemItem[this.ElemListNoneFix[_i]].hasClass(this.Config.addClassNameActive)){
           this.$elemItem[this.ElemListNoneFix[_i]].removeClass(this.Config.addClassNameActive);
+
+          // Callback function.
+          if(this.on.Out && typeof(this.on.Out) === 'function') this.on.Out(this.$elemItem[this.ElemListNoneFix[_i]], this.ElemListNoneFix[_i]);
         }
       }
     }
