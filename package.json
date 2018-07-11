@@ -1,6 +1,6 @@
 {
   "name": "js-scroll-effect-module",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Add effect according to scroll.",
   "keywords": [
     "scroll",
@@ -26,8 +26,8 @@
     "url": "https://github.com/yama-dev/js-scroll-effect-module"
   },
   "bugs": {
-    "url" : "https://github.com/yama-dev/js-scroll-effect-module/issues",
-    "email" : "tatsuya.yamamoto69@gmail.com"
+    "url": "https://github.com/yama-dev/js-scroll-effect-module/issues",
+    "email": "tatsuya.yamamoto69@gmail.com"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
