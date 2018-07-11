@@ -1,7 +1,7 @@
 {
   "name": "js-scroll-effect-module",
   "version": "0.1.2",
-  "description": "Add effect according to scroll.",
+  "description": "Add effect at scroll.",
   "keywords": [
     "scroll",
     "scroll effect",
