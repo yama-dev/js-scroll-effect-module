@@ -19,7 +19,7 @@ Add effect according to scroll.
 
 - npm -> [https://www.npmjs.com/package/js-scroll-effect-module](https://www.npmjs.com/package/js-scroll-effect-module)
 
-- Standalone(CDN) -> [https://cdn.rawgit.com/yama-dev/js-scroll-effect-module/b3a41387/dist/js-scroll-effect-module.js](https://cdn.rawgit.com/yama-dev/js-scroll-effect-module/b3a41387/dist/js-scroll-effect-module.js)
+- Standalone(CDN) -> [https://cdn.rawgit.com/yama-dev/js-scroll-effect-module/52d50356/dist/js-scroll-effect-module.js](https://cdn.rawgit.com/yama-dev/js-scroll-effect-module/52d50356/dist/js-scroll-effect-module.js)
 
 - Zip -> [yama-dev/js-scroll-effect-module](https://github.com/yama-dev/js-scroll-effect-module/releases/latest)
 
