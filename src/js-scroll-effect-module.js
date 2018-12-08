@@ -1,7 +1,7 @@
 /*!
  * JS SCROLL EFFECT MODULE (JavaScript Library)
  *   js-scroll-effect-module
- * versoin 0.1.2
+ * versoin 0.1.3
  * Repository https://github.com/yama-dev/js-scroll-effect-module
  * Copyright yama-dev
  * Licensed under the MIT license.
