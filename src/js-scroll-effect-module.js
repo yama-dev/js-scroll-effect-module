@@ -28,11 +28,8 @@ Element.prototype.removeClass = function(className){
   }
   return this;
 }
-Element.prototype.toggleClass = function(className){
-  this.hasClass(className) ? this.removeClass(className) : this.addClass(className);
-}
 
-class SCROLL_EFFECT_MODULE {
+export default class SCROLL_EFFECT_MODULE {
 
   constructor(options){
 
@@ -244,7 +241,3 @@ class SCROLL_EFFECT_MODULE {
   }
 
 }
-
-export default SCROLL_EFFECT_MODULE;
-
-window.SCROLL_EFFECT_MODULE = SCROLL_EFFECT_MODULE;
