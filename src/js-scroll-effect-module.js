@@ -1,7 +1,7 @@
 /*!
  * JS SCROLL EFFECT MODULE (JavaScript Library)
  *   js-scroll-effect-module
- * versoin 0.1.3
+ * versoin 0.1.4
  * Repository https://github.com/yama-dev/js-scroll-effect-module
  * Copyright yama-dev
  * Licensed under the MIT license.
@@ -28,16 +28,13 @@ Element.prototype.removeClass = function(className){
   }
   return this;
 }
-Element.prototype.toggleClass = function(className){
-  this.hasClass(className) ? this.removeClass(className) : this.addClass(className);
-}
 
-class SCROLL_EFFECT_MODULE {
+export default class SCROLL_EFFECT_MODULE {
 
   constructor(options){
 
     // Set Version.
-    this.Version = '0.1.2';
+    this.Version = '0.1.4';
 
     // Use for discrimination by URL.
     this.CurrentUrl = location.href;
@@ -244,7 +241,3 @@ class SCROLL_EFFECT_MODULE {
   }
 
 }
-
-export default SCROLL_EFFECT_MODULE;
-
-window.SCROLL_EFFECT_MODULE = SCROLL_EFFECT_MODULE;

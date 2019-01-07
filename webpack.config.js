@@ -6,6 +6,8 @@ const config = {
   output: {
     path: `${__dirname}/dist`,
     filename: 'js-scroll-effect-module.js',
+    library: 'SCROLL_EFFECT_MODULE',
+    libraryExport: 'default',
     libraryTarget: 'umd'
   },
   module: {
