@@ -11,7 +11,7 @@ Add effect according to scroll.
 ## Demo
 
 - Document -> [https://yama-dev.github.io/js-scroll-effect-module/](https://yama-dev.github.io/js-scroll-effect-module/)
-- SamplePage -> [https://yama-dev.github.io/js-scroll-effect-module/sample/](https://yama-dev.github.io/js-scroll-effect-module/sample/)
+- ExamplePage -> [https://yama-dev.github.io/js-scroll-effect-module/examples/](https://yama-dev.github.io/js-scroll-effect-module/examples/)
 
 <br>
 
@@ -19,7 +19,7 @@ Add effect according to scroll.
 
 - npm -> [https://www.npmjs.com/package/js-scroll-effect-module](https://www.npmjs.com/package/js-scroll-effect-module)
 
-- Standalone(CDN) -> [https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module@v0.1.4/dist/js-scroll-effect-module.js](https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module@v0.1.4/dist/js-scroll-effect-module.js)
+- Standalone(CDN) -> [https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module@v0.2.0/dist/js-scroll-effect-module.js](https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module@v0.2.0/dist/js-scroll-effect-module.js)
 
 - Zip -> [yama-dev/js-scroll-effect-module](https://github.com/yama-dev/js-scroll-effect-module/releases/latest)
 
@@ -39,12 +39,49 @@ npm install --save-dev js-scroll-effect-module
 import SCROLL_EFFECT_MODULE from 'js-scroll-effect-module';
 ```
 
-### Basic Standalone Usage
+### Basic Use
 
 ``` html
 <link rel="stylesheet" href="./scroll-effect-module.css">
-<script src="./js-scroll-effect-module"></script>
-<script> new SCROLL_EFFECT_MODULE({ elem : '.effect_item' }); </script>
+<script src="./js-scroll-effect-module.js"></script>
+
+<div class="js-scroll js-scroll__fadein-basic"></div>
+
+<script> new SCROLL_EFFECT_MODULE({ elem : '.js-scroll' }); </script>
+```
+
+### Advanced Use
+
+``` html
+<link rel="stylesheet" href="./scroll-effect-module.css">
+<script src="./js-scroll-effect-module.js"></script>
+
+<div class="js-scroll js-scroll__fadein-basic"></div>
+
+<script>
+var ScrollEffectModule = new SCROLL_EFFECT_MODULE({
+  elem               : '.js-scroll',
+  displayRatio       : 0.8,
+  displayReverse     : true,
+  firstElem          : '.js-scroll--first',
+  firstElemDelayTime : 300,
+  firstDelayTime     : 500,
+  loadDelayTime      : 0,
+  addClassNameActive : 'is-active',
+  on: {
+    In: function(item, pos){
+      console.log('In')
+      console.log(item);
+      console.log(pos);
+    },
+    Out: function(item, pos){
+      console.log('Out')
+      console.log(item);
+      console.log(pos);
+    }
+  }
+});
+</script>
 ```
 
 <br>
@@ -69,7 +106,7 @@ import SCROLL_EFFECT_MODULE from 'js-scroll-effect-module';
 
 ## Dependencies
 
-none
+[@yama-dev/js-dom](https://github.com/yama-dev/js-dom)
 
 <br><br><br>
 
