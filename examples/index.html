@@ -24,7 +24,7 @@
 <body style="overflow-x:hidden;">
 <div class="container mt-4">
 
-  <h2 class="mb-3">SCROLL EFFECT MODULE v0.1.4</h2>
+  <h2 class="mb-3">SCROLL EFFECT MODULE v0.2.0</h2>
 
   <p>Add effect at scroll.</p>
 
@@ -32,7 +32,7 @@
   <span class="p-sns"><a class="github-button" href="https://github.com/yama-dev/js-scroll-effect-module/archive/master.zip" data-icon="octicon-cloud-download" aria-label="Download yama-dev/js-scroll-effect-module on GitHub">Download</a></span>
   <span class="p-sns"><a class="github-button" href="https://github.com/yama-dev/js-scroll-effect-module" data-icon="octicon-star" data-show-count="true" aria-label="Star yama-dev/js-scroll-effect-module on GitHub">Star</a></span>
   <span class="p-sns"><a class="github-button" href="https://github.com/yama-dev/js-scroll-effect-module/fork" data-icon="octicon-repo-forked" data-show-count="true" aria-label="Fork yama-dev/js-scroll-effect-module on GitHub">Fork</a></span>
-  <span class="p-sns"><a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="SCROLL EFFECT MODULE v0.1.4 Add effect at scroll." data-show-count="false">Tweet</a></span>
+  <span class="p-sns"><a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="SCROLL EFFECT MODULE v0.2.0 Add effect at scroll." data-show-count="false">Tweet</a></span>
   <style>.p-sns > span{ display: inline-block; }</style>
 
   <hr class="mt-4 mb-4">
@@ -42,9 +42,9 @@
     <pre class="prettyprint lang-html">
         <code>
         &lt;link rel=&quot;stylesheet&quot; href=&quot;./scroll-effect-module.css&quot;&gt;
-        &lt;div class=&quot;effect_item effect__fadein-basic&quot;&gt;
+        &lt;div class=&quot;js-scroll js-scroll__fadein-basic&quot;&gt;
 
-        &lt;script&gt; new SCROLL_EFFECT_MODULE({ elem: &#039;.effect_item&#039; }); &lt;/script&gt;</code>
+        &lt;script&gt; new SCROLL_EFFECT_MODULE({ elem: &#039;.js-scroll&#039; }); &lt;/script&gt;</code>
     </pre>
   </div>
 
@@ -52,41 +52,17 @@
 
   <div class="p-use">
     <h3>Custom Use</h3>
-    <script>
-      var ScrollEffectModule = new SCROLL_EFFECT_MODULE({
-        elem               : '.effect_item',
-        displayRatio       : 0.8,
-        displayReverse     : true,
-        firstElem          : '.effect_item--first',
-        firstElemDelayTime : 300,
-        firstDelayTime     : 500,
-        loadDelayTime      : 0,
-        addClassNameActive : null,
-        on: {
-          In: function(item, pos){
-            console.log('In')
-            console.log(item);
-            console.log(pos);
-          },
-          Out: function(item, pos){
-            console.log('Out')
-            console.log(item);
-            console.log(pos);
-          }
-        }
-      });
-    </script>
     <pre class="prettyprint lang-html">
       <code>
       &lt;link rel=&quot;stylesheet&quot; href=&quot;./scroll-effect-module.css&quot;&gt;
-      &lt;div class=&quot;effect_item effect__fadein-basic&quot;&gt;
+      &lt;div class=&quot;js-scroll js-scroll__fadein-basic&quot;&gt;
 
       &lt;script&gt;
         var ScrollEffectModule = new SCROLL_EFFECT_MODULE({
-          elem               : &#039;.effect_item&#039;,
+          elem               : &#039;.js-scroll&#039;,
           displayRatio       : 0.8,
           displayReverse     : true,
-          firstElem          : &#039;.effect_item--first&#039;,
+          firstElem          : &#039;.js-scroll--first&#039;,
           firstElemDelayTime : 300,
           firstDelayTime     : 500,
           loadDelayTime      : 0,
@@ -107,9 +83,34 @@
       &lt;/script&gt;</code>
     </pre>
 
-    <p><button class="btn btn btn-secondary" onclick="ScrollEffectModule.UpdateDom()">要素の情報更新 - ScrollEffectModule.UpdateDom()</button></p>
+    <script>
+      var ScrollEffectModule = new SCROLL_EFFECT_MODULE({
+        elem               : '.js-scroll',
+        displayRatio       : 0.8,
+        displayReverse     : true,
+        firstElem          : '.js-scroll--first',
+        firstElemDelayTime : 300,
+        firstDelayTime     : 500,
+        loadDelayTime      : 0,
+        addClassNameActive : null,
+        on: {
+          In: function(item, pos){
+            console.log('In')
+            console.log(item);
+            console.log(pos);
+          },
+          Out: function(item, pos){
+            console.log('Out')
+            console.log(item);
+            console.log(pos);
+          }
+        }
+      });
+    </script>
+
+    <p><button class="btn btn btn-secondary" onclick="ScrollEffectModule.Update()">要素の情報更新 - ScrollEffectModule.Update()</button></p>
     <p><button class="btn btn btn-secondary" onclick="ScrollEffectModule.Refresh()">リフレッシュ - ScrollEffectModule.Refresh()</button></p>
-    <p><button class="btn btn btn-secondary" onclick="ScrollEffectModule.RemoveAll()">非アクティブ化 - ScrollEffectModule.RemoveAll()</button></p>
+    <p><button class="btn btn btn-secondary" onclick="ScrollEffectModule.Clear()">非アクティブ化 - ScrollEffectModule.Clear()</button></p>
 
   </div>
 
@@ -118,39 +119,39 @@
   <div class="p-demo">
     <h3>DEMO</h3>
     <br><br><br><br><br><br><br><br><br><br><br><br>
-    <div class="effect_item effect_item--first-none effect__fadein-basic text-center">
+    <div class="js-scroll js-scroll--first-none js-scroll__fadein-basic text-center">
       <h2>EffectType : fadein basic</h2>
-      <p>EffectClassname : .effect__fadein-basic</p>
+      <p>EffectClassname : .js-scroll__fadein-basic</p>
     </div>
     <br><br><br><br><br><br><br><br><br><br><br><br>
-    <div class="effect_item effect__fadein-top text-center">
+    <div class="js-scroll js-scroll__fadein-top text-center">
       <h2>EffectType : fadein top</h2>
-      <p>EffectClassname : .effect__fadein-top</p>
+      <p>EffectClassname : .js-scroll__fadein-top</p>
     </div>
     <br><br><br><br><br><br><br><br><br><br><br><br>
-    <div class="effect_item effect__fadein-bottom text-center">
+    <div class="js-scroll js-scroll__fadein-bottom text-center">
       <h2>EffectType : fadein bottom</h2>
-      <p>EffectClassname : .effect__fadein-bottom</p>
+      <p>EffectClassname : .js-scroll__fadein-bottom</p>
     </div>
     <br><br><br><br><br><br><br><br><br><br><br><br>
-    <div class="effect_item effect__fadein-left text-center">
+    <div class="js-scroll js-scroll__fadein-left text-center">
       <h2>EffectType : fadein left</h2>
-      <p>EffectClassname : .effect__fadein-left</p>
+      <p>EffectClassname : .js-scroll__fadein-left</p>
     </div>
     <br><br><br><br><br><br><br><br><br><br><br><br>
-    <div class="effect_item effect__fadein-right text-center">
+    <div class="js-scroll js-scroll__fadein-right text-center">
       <h2>EffectType : fadein right</h2>
-      <p>EffectClassname : .effect__fadein-right</p>
+      <p>EffectClassname : .js-scroll__fadein-right</p>
     </div>
     <br><br><br><br><br><br><br><br><br><br><br><br>
-    <div class="effect_item effect__fadein-zoomin text-center">
+    <div class="js-scroll js-scroll__fadein-zoomin text-center">
       <h2>EffectType : fadein zoomin</h2>
-      <p>EffectClassname : .effect__fadein-zoomin</p>
+      <p>EffectClassname : .js-scroll__fadein-zoomin</p>
     </div>
     <br><br><br><br><br><br><br><br><br><br><br><br>
-    <div class="effect_item effect__spinin text-center">
+    <div class="js-scroll js-scroll__spinin text-center">
       <h2>EffectType : spinin</h2>
-      <p>EffectClassname : .effect__spinin</p>
+      <p>EffectClassname : .js-scroll__spinin</p>
     </div>
     <br><br><br><br><br><br><br><br><br><br><br><br>
   </div>

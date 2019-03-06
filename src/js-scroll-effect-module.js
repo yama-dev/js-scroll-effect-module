@@ -1,40 +1,21 @@
 /*!
  * JS SCROLL EFFECT MODULE (JavaScript Library)
  *   js-scroll-effect-module
- * versoin 0.1.4
+ * versoin 0.2.0
  * Repository https://github.com/yama-dev/js-scroll-effect-module
  * Copyright yama-dev
  * Licensed under the MIT license.
  */
 
-Element.prototype.hasClass = function(className){
-  let classArray = this.className.split(' ');
-  return classArray.indexOf(className) >= 0;
-}
-Element.prototype.addClass = function(className){
-  if(!this.hasClass(className)){
-    let classArray = this.className.split(' ');
-    classArray.push(className);
-    this.className = classArray.join(' ');
-  }
-  return this;
-}
-Element.prototype.removeClass = function(className){
-  let classArray = this.className.split(' ');
-  let index = classArray.indexOf(className);
-  if(index >= 0){
-    classArray.splice(index, 1);
-    this.className = classArray.join(' ');
-  }
-  return this;
-}
+import JS_DOM from '@yama-dev/js-dom';
+const dom = new JS_DOM();
 
 export default class SCROLL_EFFECT_MODULE {
 
   constructor(options){
 
     // Set Version.
-    this.Version = '0.1.4';
+    this.Version = '0.2.0';
 
     // Use for discrimination by URL.
     this.CurrentUrl = location.href;
@@ -61,129 +42,100 @@ export default class SCROLL_EFFECT_MODULE {
     }
 
     // Store element information.
-    this.ElemList        = new Array();
-    this.ElemListFix     = new Array();
-    this.ElemListNoneFix = new Array();
+    this.PosList        = [];
+    this.PosListFix     = [];
+    this.PosListNoneFix = [];
 
-    // DebugMode
-    if(this.CurrentUrl.search(/localhost/) !== -1 || this.CurrentUrl.search(/192.168/) !== -1){
-      this.DebugMode();
-    } else { }
-
-    document.addEventListener('DOMContentLoaded', (event) => {
-      this.CacheElement();
+    document.addEventListener('DOMContentLoaded', () => {
+      this.CacheDom();
       this.BindEvent();
     });
   }
 
-  DebugMode(){
-    console.log(this);
-  }
-
   BindEvent(){
-    let _that = this;
-    window.addEventListener('load', (event) => {
+    window.addEventListener('load', () => {
       // Load Delay
       setTimeout(() => {
         setTimeout(() => {
-          this.UpdateDom();
-          this.JudgmentScrollEffect('load');
+          this.Update();
+          this.StoreElementStateAtPosList('load');
         }, this.Config.firstDelayTime);
-      },_that.Config.loadDelayTime);
+      }, this.Config.loadDelayTime);
     });
 
     // for Resize-Event
-    window.addEventListener('resize', (event) => {
-      this.UpdateDom();
+    window.addEventListener('resize', () => {
+      this.Update();
     });
 
     // for Scroll-Event
-    window.addEventListener('scroll', (event) => {
-      _that.JudgmentScrollEffect('scroll');
+    window.addEventListener('scroll', () => {
+      this.StoreElementStateAtPosList('scroll');
     });
   }
 
-  CacheElement(){
-    this.$elemItem      = document.querySelectorAll(this.Config.elem) ? document.querySelectorAll(this.Config.elem) : document.createElement('div');
-    this.$elemFirstItem = document.querySelectorAll(this.Config.firstElem) ? document.querySelectorAll(this.Config.firstElem) : document.createElement('div');
+  CacheDom(){
+    this.$elemItem      = dom.selectDom(this.Config.elem);
+    this.$elemItemFirst = dom.selectDom(this.Config.firstElem);
   }
 
-  CacheElementSize(){
+  CacheDomSize(){
     this.NumWindowHeight = window.innerHeight;
   }
 
   SetDom(){
-    let _that = this;
-    this.ElemList = [];
+    this.PosList = [];
     this.NumScrolltop = window.pageYOffset;
-    let elemItemAll = Array.prototype.slice.call( this.$elemItem );
-    if(elemItemAll){
-      elemItemAll.forEach( (elem,i) => {
-        _that.ElemList.push( elem.getBoundingClientRect().top + this.NumScrolltop);
+    let _elem = dom.selectDom(this.$elemItem);
+    if(_elem){
+      _elem.map((el, i)=>{
+        this.PosList.push( el.getBoundingClientRect().top + this.NumScrolltop);
       });
     }
   }
 
-  UpdateDom(){
-    this.CacheElement();
-    this.CacheElementSize();
+  Update(){
+    this.CacheDom();
+    this.CacheDomSize();
     this.SetDom();
   }
 
   Refresh(){
-    this.CacheElement();
-    this.CacheElementSize();
-    this.SetDom();
-    for(let _i = 0;_i < this.ElemList.length; _i++){
-      this.$elemItem[_i].removeClass(this.Config.addClassNameActive);
-    }
+    this.Update();
+    this.Clear();
     this.ActionAddClass();
   }
 
-  RemoveAll(){
-    this.CacheElement();
-    this.CacheElementSize();
-    this.SetDom();
-    for(let _i = 0;_i < this.ElemList.length; _i++){
-      this.$elemItem[_i].removeClass(this.Config.addClassNameActive);
-    }
+  Clear(){
+    this.PosList.map((el, i)=>{
+      dom.removeClass(this.$elemItem[i], this.Config.addClassNameActive);
+    });
   }
 
-  JudgmentScrollEffect(method){
-    let _that = this;
-    let loopCount = 0;
+  StoreElementStateAtPosList(method){
 
     // Array initialization
-    _that.ElemListFix = [];
-    _that.ElemListNoneFix = [];
+    this.PosListFix = [];
+    this.PosListNoneFix = [];
 
     // Scroll top cache
-    _that.NumScrolltop = window.pageYOffset;
+    this.NumScrolltop = window.pageYOffset;
 
-    // Determination of each element
-    // -> for First-Load
-    // -> for Scroll
-    if(method == 'load'){
-      for(let _i = 0;_i < _that.ElemList.length; _i++){
-        if( _that.NumScrolltop + ( _that.NumWindowHeight * _that.Config.displayRatio ) > _that.ElemList[_i] ){
-          // 「active」Set of lists
-          _that.ElemListFix.push(_i);
-          loopCount++;
-        }
+    // Store element state at PosList.
+    this.PosList.map((el, i)=>{
+      if( this.NumScrolltop + ( this.NumWindowHeight * this.Config.displayRatio ) > el ){
+        // 「active」Set of lists
+        this.PosListFix.push(i);
+      } else {
+        // 「none active」Set of lists
+        this.PosListNoneFix.push(i);
       }
-      _that.ActionAddClassFirst();
-    } else if(method == 'scroll'){
-      for(let _i = 0;_i < _that.ElemList.length; _i++){
-        if( _that.NumScrolltop + ( _that.NumWindowHeight * _that.Config.displayRatio ) > _that.ElemList[_i] ){
-          // 「active」Set of lists
-          _that.ElemListFix.push(_i);
-          loopCount++;
-        } else {
-          // 「none active」Set of lists
-          _that.ElemListNoneFix.push(_i);
-        }
-      }
-      _that.ActionAddClass();
+    });
+
+    if(method === 'load'){
+      this.ActionAddClassFirst();
+    } else if(method === 'scroll'){
+      this.ActionAddClass();
     }
   }
 
@@ -193,50 +145,51 @@ export default class SCROLL_EFFECT_MODULE {
     let countFunc = () => {
       // for Initial display
       setTimeout(() => {
-        this.$elemFirstItem[loopCount].addClass(this.Config.addClassNameActive);
+        dom.addClass(this.$elemItemFirst[loopCount], this.Config.addClassNameActive);
         loopCount++;
-        if(loopCount < this.$elemFirstItem.length){
+        if(loopCount < this.$elemItemFirst.length){
           countFunc();
         }
       },this.Config.firstElemDelayTime);
 
       // After the initial display is completed
-      if(this.$elemFirstItem.length == loopCount){
+      if(this.$elemItemFirst.length == loopCount){
         setTimeout(() => {
-          this.JudgmentScrollEffect('scroll');
+          this.StoreElementStateAtPosList('scroll');
         },this.Config.firstElemDelayTime);
       }
     }
 
     // When there is an initial display element.
-    if(this.$elemFirstItem.length){
+    if(this.$elemItemFirst){
       countFunc();
     } else {
       setTimeout(() => {
-        this.JudgmentScrollEffect('scroll');
+        this.StoreElementStateAtPosList('scroll');
       },this.Config.firstElemDelayTime);
     }
 
   }
 
   ActionAddClass(){
-    for(let _i = 0;_i < this.ElemListFix.length; _i++){
-      if(this.$elemItem[this.ElemListFix[_i]].hasClass(this.Config.addClassNameActive)){}else{
-        this.$elemItem[this.ElemListFix[_i]].addClass(this.Config.addClassNameActive);
+    this.PosListFix.map((el, i)=>{
+      if(!dom.hasClass(this.$elemItem[el], this.Config.addClassNameActive)){
+        dom.addClass(this.$elemItem[el], this.Config.addClassNameActive);
 
           // Callback function.
-        if(this.on.In && typeof(this.on.In) === 'function') this.on.In(this.$elemItem[this.ElemListFix[_i]], this.ElemListFix[_i]);
+        if(this.on.In && typeof(this.on.In) === 'function') this.on.In(this.$elemItem[el], el);
       }
-    }
+    });
+
     if(this.Config.displayReverse){
-      for(let _i = 0;_i < this.ElemListNoneFix.length; _i++){
-        if(this.$elemItem[this.ElemListNoneFix[_i]].hasClass(this.Config.addClassNameActive)){
-          this.$elemItem[this.ElemListNoneFix[_i]].removeClass(this.Config.addClassNameActive);
+      this.PosListNoneFix.map((el, i)=>{
+        if(dom.hasClass(this.$elemItem[el], this.Config.addClassNameActive)){
+          dom.removeClass(this.$elemItem[el], this.Config.addClassNameActive);
 
           // Callback function.
-          if(this.on.Out && typeof(this.on.Out) === 'function') this.on.Out(this.$elemItem[this.ElemListNoneFix[_i]], this.ElemListNoneFix[_i]);
+          if(this.on.Out && typeof(this.on.Out) === 'function') this.on.Out(this.$elemItem[el], el);
         }
-      }
+      });
     }
   }
 
