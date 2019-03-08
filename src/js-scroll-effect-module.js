@@ -1,7 +1,7 @@
 /*!
  * JS SCROLL EFFECT MODULE (JavaScript Library)
  *   js-scroll-effect-module
- * versoin 0.2.0
+ * versoin 0.3.0
  * Repository https://github.com/yama-dev/js-scroll-effect-module
  * Copyright yama-dev
  * Licensed under the MIT license.
@@ -29,16 +29,22 @@ export default class SCROLL_EFFECT_MODULE {
       firstElemDelayTime : options.firstElemDelayTime||0,
       firstDelayTime     : options.firstDelayTime||300,
       loadDelayTime      : options.loadDelayTime||0,
-      addClassNameActive : options.addClassNameActive||'is-active'
+      addClassNameActive : options.addClassNameActive||'is-active',
+      acceleration       : options.acceleration||false,
     }
+
+    this.NumScrolltopPre = window.pageYOffset;
+    this.NumScrolltop    = this.NumScrolltopPre;
+    this.NumAcceleration = 0;
 
     // Set callback functions.
     if(!options.on){
       options.on = {}
     }
     this.on = {
-      In    : options.on.In||'',
-      Out   : options.on.Out||''
+      In           : options.on.In||'',
+      Out          : options.on.Out||'',
+      Acceleration : options.on.Acceleration||''
     }
 
     // Store element information.
@@ -132,11 +138,50 @@ export default class SCROLL_EFFECT_MODULE {
       }
     });
 
+    if(this.Config.acceleration){
+      if(Math.abs(this.NumAcceleration) <= Math.abs(this.NumScrolltop - this.NumScrolltopPre)){
+        this.NumAcceleration = this.NumScrolltop - this.NumScrolltopPre;
+
+        if(this.NumAcceleration >= 100) this.NumAcceleration = 100;
+        if(this.NumAcceleration <= -100) this.NumAcceleration = -100;
+
+        clearInterval(this.Interval);
+        this.CheckAcceleration();
+      }
+
+      // Callback function.
+      if(this.on.Acceleration && typeof(this.on.Acceleration) === 'function') this.on.Acceleration(this.NumAcceleration);
+    }
+
     if(method === 'load'){
       this.ActionAddClassFirst();
     } else if(method === 'scroll'){
       this.ActionAddClass();
     }
+
+    this.NumScrolltopPre = this.NumScrolltop;
+  }
+
+  // For Config.acceleration == true.
+  CheckAcceleration(){
+    this.Interval = setInterval(()=>{
+
+      let _racio = Math.pow(1.02, Math.abs(this.NumAcceleration)) - 0.6;
+      if(this.NumAcceleration > 0){
+        this.NumAcceleration = this.NumAcceleration - _racio;
+      } else if(this.NumAcceleration < 0){
+        this.NumAcceleration = this.NumAcceleration + _racio;
+      }
+      this.NumAcceleration = Math.ceil(this.NumAcceleration * 100) / 100;
+
+      if(this.NumAcceleration > -0.8 && this.NumAcceleration < 0.8){
+        this.NumAcceleration = 0;
+        clearInterval(this.Interval);
+      }
+
+      // Callback function.
+      if(this.on.Acceleration && typeof(this.on.Acceleration) === 'function') this.on.Acceleration(this.NumAcceleration);
+    },10);
   }
 
   ActionAddClassFirst(){
@@ -177,7 +222,7 @@ export default class SCROLL_EFFECT_MODULE {
         dom.addClass(this.$elemItem[el], this.Config.addClassNameActive);
 
           // Callback function.
-        if(this.on.In && typeof(this.on.In) === 'function') this.on.In(this.$elemItem[el], el);
+        if(this.on.In && typeof(this.on.In) === 'function') this.on.In(this.$elemItem[el], el, this.NumScrolltop);
       }
     });
 
@@ -187,7 +232,7 @@ export default class SCROLL_EFFECT_MODULE {
           dom.removeClass(this.$elemItem[el], this.Config.addClassNameActive);
 
           // Callback function.
-          if(this.on.Out && typeof(this.on.Out) === 'function') this.on.Out(this.$elemItem[el], el);
+          if(this.on.Out && typeof(this.on.Out) === 'function') this.on.Out(this.$elemItem[el], el, this.NumScrolltop);
         }
       });
     }
