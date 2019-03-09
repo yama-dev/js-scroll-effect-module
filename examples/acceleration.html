@@ -35,22 +35,8 @@
 
       &lt;script&gt;
         var ScrollEffectModule = new SCROLL_EFFECT_MODULE({
-          elem               : &#039;.js-scroll&#039;,
-          displayRatio       : 0.8,
-          displayReverse     : true,
-          firstElem          : &#039;.js-scroll--first&#039;,
-          firstElemDelayTime : 300,
-          firstDelayTime     : 500,
-          loadDelayTime      : 0,
-          addClassNameActive : null,
           acceleration       : true,
           on: {
-            In: function(item, pos, top){
-              console.log(&#039;In&#039;, item, pos ,top);
-            },
-            Out: function(item, pos, top){
-              console.log(&#039;Out&#039;, item, pos ,top);
-            },
             Acceleration: function(num){
               console.log(&#039;Acceleration&#039;, num);
               document.querySelector(&#039;.dev .t2&#039;).innerHTML = num;
@@ -63,22 +49,8 @@
 
     <script>
       var ScrollEffectModule = new SCROLL_EFFECT_MODULE({
-        elem               : '.js-scroll',
-        displayRatio       : 0.8,
-        displayReverse     : true,
-        firstElem          : '.js-scroll--first',
-        firstElemDelayTime : 300,
-        firstDelayTime     : 500,
-        loadDelayTime      : 0,
-        addClassNameActive : null,
         acceleration       : true,
         on: {
-          In: function(item, pos, top){
-            console.log('In', item, pos ,top);
-          },
-          Out: function(item, pos, top){
-            console.log('Out', item, pos ,top);
-          },
           Acceleration: function(num){
             console.log('Acceleration', num);
             document.querySelector('.dev .t2').innerHTML = num;
@@ -88,52 +60,11 @@
       });
     </script>
 
-    <p><button class="btn btn btn-secondary" onclick="ScrollEffectModule.Update()">要素の情報更新 - ScrollEffectModule.Update()</button></p>
-    <p><button class="btn btn btn-secondary" onclick="ScrollEffectModule.Refresh()">リフレッシュ - ScrollEffectModule.Refresh()</button></p>
-    <p><button class="btn btn btn-secondary" onclick="ScrollEffectModule.Clear()">非アクティブ化 - ScrollEffectModule.Clear()</button></p>
-
   </div>
 
   <hr class="mt-4 mb-4">
 
-  <div class="p-demo">
-    <br><br><br><br><br><br><br><br><br><br><br><br>
-    <div class="js-scroll js-scroll--first-none js-scroll__fadein-basic text-center">
-      <h2>EffectType : fadein basic</h2>
-      <p>EffectClassname : .js-scroll__fadein-basic</p>
-    </div>
-    <br><br><br><br><br><br><br><br><br><br><br><br>
-    <div class="js-scroll js-scroll__fadein-top text-center">
-      <h2>EffectType : fadein top</h2>
-      <p>EffectClassname : .js-scroll__fadein-top</p>
-    </div>
-    <br><br><br><br><br><br><br><br><br><br><br><br>
-    <div class="js-scroll js-scroll__fadein-bottom text-center">
-      <h2>EffectType : fadein bottom</h2>
-      <p>EffectClassname : .js-scroll__fadein-bottom</p>
-    </div>
-    <br><br><br><br><br><br><br><br><br><br><br><br>
-    <div class="js-scroll js-scroll__fadein-left text-center">
-      <h2>EffectType : fadein left</h2>
-      <p>EffectClassname : .js-scroll__fadein-left</p>
-    </div>
-    <br><br><br><br><br><br><br><br><br><br><br><br>
-    <div class="js-scroll js-scroll__fadein-right text-center">
-      <h2>EffectType : fadein right</h2>
-      <p>EffectClassname : .js-scroll__fadein-right</p>
-    </div>
-    <br><br><br><br><br><br><br><br><br><br><br><br>
-    <div class="js-scroll js-scroll__fadein-zoomin text-center">
-      <h2>EffectType : fadein zoomin</h2>
-      <p>EffectClassname : .js-scroll__fadein-zoomin</p>
-    </div>
-    <br><br><br><br><br><br><br><br><br><br><br><br>
-    <div class="js-scroll js-scroll__spinin text-center">
-      <h2>EffectType : spinin</h2>
-      <p>EffectClassname : .js-scroll__spinin</p>
-    </div>
-    <br><br><br><br><br><br><br><br><br><br><br><br>
-  </div>
+  <div class="p-demo" style="height: 10000px;"></div>
 
 </div>
 
