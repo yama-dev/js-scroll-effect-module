@@ -1,5 +1,11 @@
 # SCROLL EFFECT MODULE
 
+[![](https://img.shields.io/github/repo-size/yama-dev/js-scroll-effect-module.svg)](https://github.com/yama-dev/js-scroll-effect-module/releases/latest)
+[![](https://img.shields.io/github/release/yama-dev/js-scroll-effect-module.svg)](https://github.com/yama-dev/js-scroll-effect-module/releases/latest)
+[![](https://img.shields.io/david/yama-dev/js-scroll-effect-module.svg)](https://github.com/yama-dev/js-scroll-effect-module/releases/latest)
+[![](https://img.shields.io/david/dev/yama-dev/js-scroll-effect-module.svg)](https://github.com/yama-dev/js-scroll-effect-module/releases/latest)
+[![GitHub](https://img.shields.io/github/license/yama-dev/js-scroll-effect-module.svg)](https://github.com/yama-dev/js-scroll-effect-module/blob/master/LICENSE)
+
 <br>
 
 ## Feature
@@ -57,31 +63,52 @@ import SCROLL_EFFECT_MODULE from 'js-scroll-effect-module';
 <link rel="stylesheet" href="./scroll-effect-module.css">
 <script src="./js-scroll-effect-module.js"></script>
 
-<div class="js-scroll js-scroll__fadein-basic"></div>
+<div class="js-scroll"></div>
 
 <script>
-var ScrollEffectModule = new SCROLL_EFFECT_MODULE({
-  elem               : '.js-scroll',
-  displayRatio       : 0.8,
-  displayReverse     : true,
-  firstElem          : '.js-scroll--first',
-  firstElemDelayTime : 300,
-  firstDelayTime     : 500,
-  loadDelayTime      : 0,
-  addClassNameActive : 'is-active',
-  on: {
-    In: function(item, pos){
-      console.log('In')
-      console.log(item);
-      console.log(pos);
-    },
-    Out: function(item, pos){
-      console.log('Out')
-      console.log(item);
-      console.log(pos);
+  var ScrollEffectModule = new SCROLL_EFFECT_MODULE({
+    elem               : '.js-scroll',
+    firstElem          : '.js-scroll--first',
+
+    displayRatio       : 0.8, // 判定する比率を指定（ウィンドウ高さを1として指定）
+    displayReverse     : true, // スクロールを戻した時にクラスを削除するかどうか
+
+    firstDelay         : 0, // 初回動作までの遅延時間（ms）
+    firstDelaySteps    : 100,  // 初回出現要素を指定した場合のステップ遅延時間（ms）
+
+    addClassNameActive : 'is-active', // null を設定するとクラスが付与されなくなる。
+
+    on: {
+      Scroll: function(top){
+        console.log('Scroll', top);
+      },
+      Change: function(item, pos){
+        console.log('Change', item, pos);
+      },
+      In: function(item, pos){
+        console.log('In', item, pos);
+      },
+      Out: function(item, pos){
+        console.log('Out', item, pos);
+      }
     }
-  }
-});
+  });
+</script>
+```
+
+### Advanced Use (Acceleration)
+
+``` html
+<script src="./js-scroll-effect-module.js"></script>
+<script>
+  var ScrollEffectModule = new SCROLL_EFFECT_MODULE({
+    acceleration       : true,
+    on: {
+      Acceleration: function(num){
+        console.log('Acceleration', num);
+      }
+    }
+  });
 </script>
 ```
 
