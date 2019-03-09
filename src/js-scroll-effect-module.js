@@ -1,73 +1,69 @@
-/*!
- * JS SCROLL EFFECT MODULE (JavaScript Library)
- *   js-scroll-effect-module
- * versoin 0.3.0
- * Repository https://github.com/yama-dev/js-scroll-effect-module
- * Copyright yama-dev
- * Licensed under the MIT license.
- */
 
 import JS_DOM from '@yama-dev/js-dom';
 const dom = new JS_DOM();
 
 export default class SCROLL_EFFECT_MODULE {
 
-  constructor(options){
+  constructor(options={}){
 
     // Set Version.
-    this.Version = '0.2.0';
+    this.Version = process.env.VERSION;
 
-    // Use for discrimination by URL.
-    this.CurrentUrl = location.href;
+    // Set State.
+    this.State = {
+      NumScrolltopPre: window.pageYOffset,
+      NumScrolltop   : window.pageYOffset,
+      NumAcceleration: 0,
+      PosList        : [],
+      PosListFixPre  : [],
+      PosListFix     : [],
+      PosListNoneFix : []
+    };
 
-    // Set config, options.
-    this.Config = {
-      elem               : options.elem,
-      displayRatio       : options.displayRatio||0.7,
-      displayReverse     : options.displayReverse||false,
-      firstElem          : options.firstElem||null,
-      firstElemDelayTime : options.firstElemDelayTime||0,
-      firstDelayTime     : options.firstDelayTime||300,
-      loadDelayTime      : options.loadDelayTime||0,
-      addClassNameActive : options.addClassNameActive||'is-active',
-      acceleration       : options.acceleration||false,
-    }
+    // config, options.
+    let configDefault = {
+      elem               : null,
+      firstElem          : null,
 
-    this.NumScrolltopPre = window.pageYOffset;
-    this.NumScrolltop    = this.NumScrolltopPre;
-    this.NumAcceleration = 0;
+      displayRatio       : 0.8,
+      displayReverse     : false,
 
-    // Set callback functions.
-    if(!options.on){
-      options.on = {}
-    }
-    this.on = {
-      In           : options.on.In||'',
-      Out          : options.on.Out||'',
-      Acceleration : options.on.Acceleration||''
-    }
+      firstDelay         : 10,
+      firstDelaySteps    : 100,
 
-    // Store element information.
-    this.PosList        = [];
-    this.PosListFix     = [];
-    this.PosListNoneFix = [];
+      addClassNameActive : 'is-active',
 
-    document.addEventListener('DOMContentLoaded', () => {
+      acceleration       : false,
+
+      on: {
+        Scroll       : null,
+        Change       : null,
+        In           : null,
+        Out          : null,
+        Acceleration : null
+      }
+    };
+    // Merge Config Settings.
+    this.Config = Object.assign(configDefault, options);
+
+    // SetPlayer
+    if(document.readyState == 'complete'){
       this.CacheDom();
       this.BindEvent();
-    });
+    } else {
+      document.addEventListener('DOMContentLoaded', () => {
+        this.CacheDom();
+        this.BindEvent();
+      });
+    }
   }
 
   BindEvent(){
-    window.addEventListener('load', () => {
-      // Load Delay
-      setTimeout(() => {
-        setTimeout(() => {
-          this.Update();
-          this.StoreElementStateAtPosList('load');
-        }, this.Config.firstDelayTime);
-      }, this.Config.loadDelayTime);
-    });
+
+    setTimeout(() => {
+      this.Update();
+      this.StoreElementStateAtPosList('load');
+    }, this.Config.firstDelay);
 
     // for Resize-Event
     window.addEventListener('resize', () => {
@@ -90,12 +86,12 @@ export default class SCROLL_EFFECT_MODULE {
   }
 
   SetDom(){
-    this.PosList = [];
-    this.NumScrolltop = window.pageYOffset;
+    this.State.PosList = [];
+    this.State.NumScrolltop = window.pageYOffset;
     let _elem = dom.selectDom(this.$elemItem);
     if(_elem){
-      _elem.map((el, i)=>{
-        this.PosList.push( el.getBoundingClientRect().top + this.NumScrolltop);
+      _elem.map((el)=>{
+        this.State.PosList.push( el.getBoundingClientRect().top + this.State.NumScrolltop);
       });
     }
   }
@@ -109,11 +105,11 @@ export default class SCROLL_EFFECT_MODULE {
   Refresh(){
     this.Update();
     this.Clear();
-    this.ActionAddClass();
+    this.ActionChange();
   }
 
   Clear(){
-    this.PosList.map((el, i)=>{
+    this.State.PosList.map((el, i)=>{
       dom.removeClass(this.$elemItem[i], this.Config.addClassNameActive);
     });
   }
@@ -121,121 +117,132 @@ export default class SCROLL_EFFECT_MODULE {
   StoreElementStateAtPosList(method){
 
     // Array initialization
-    this.PosListFix = [];
-    this.PosListNoneFix = [];
+    this.State.PosListFix = [];
+    this.State.PosListNoneFix = [];
 
     // Scroll top cache
-    this.NumScrolltop = window.pageYOffset;
+    this.State.NumScrolltop = window.pageYOffset;
 
     // Store element state at PosList.
-    this.PosList.map((el, i)=>{
-      if( this.NumScrolltop + ( this.NumWindowHeight * this.Config.displayRatio ) > el ){
+    this.State.PosList.map((el, i)=>{
+      if( this.State.NumScrolltop + ( this.NumWindowHeight * this.Config.displayRatio ) > el ){
         // 「active」Set of lists
-        this.PosListFix.push(i);
+        this.State.PosListFix.push(i);
       } else {
         // 「none active」Set of lists
-        this.PosListNoneFix.push(i);
+        this.State.PosListNoneFix.push(i);
       }
     });
 
     if(this.Config.acceleration){
-      if(Math.abs(this.NumAcceleration) <= Math.abs(this.NumScrolltop - this.NumScrolltopPre)){
-        this.NumAcceleration = this.NumScrolltop - this.NumScrolltopPre;
+      if(Math.abs(this.State.NumAcceleration) <= Math.abs(this.State.NumScrolltop - this.State.NumScrolltopPre)){
+        this.State.NumAcceleration = this.State.NumScrolltop - this.State.NumScrolltopPre;
 
-        if(this.NumAcceleration >= 100) this.NumAcceleration = 100;
-        if(this.NumAcceleration <= -100) this.NumAcceleration = -100;
+        if(this.State.NumAcceleration >= 100) this.State.NumAcceleration = 100;
+        if(this.State.NumAcceleration <= -100) this.State.NumAcceleration = -100;
 
         clearInterval(this.Interval);
         this.CheckAcceleration();
       }
 
       // Callback function.
-      if(this.on.Acceleration && typeof(this.on.Acceleration) === 'function') this.on.Acceleration(this.NumAcceleration);
+      if(this.Config.on.Acceleration && typeof(this.Config.on.Acceleration) === 'function') this.Config.on.Acceleration(this.State.NumAcceleration);
     }
 
     if(method === 'load'){
-      this.ActionAddClassFirst();
+      this.ActionChangeFirst();
     } else if(method === 'scroll'){
-      this.ActionAddClass();
+      if(this.State.PosListFixPre.length !== this.State.PosListFix.length) this.ActionChange();
     }
 
-    this.NumScrolltopPre = this.NumScrolltop;
+    // Callback function.
+    if(this.Config.on.Scroll && typeof(this.Config.on.Scroll) === 'function') this.Config.on.Scroll(this.State.NumScrolltop);
+
+    this.State.NumScrolltopPre = this.State.NumScrolltop;
+    this.State.PosListFixPre = this.State.PosListFix;
   }
 
   // For Config.acceleration == true.
   CheckAcceleration(){
     this.Interval = setInterval(()=>{
 
-      let _racio = Math.pow(1.02, Math.abs(this.NumAcceleration)) - 0.6;
-      if(this.NumAcceleration > 0){
-        this.NumAcceleration = this.NumAcceleration - _racio;
-      } else if(this.NumAcceleration < 0){
-        this.NumAcceleration = this.NumAcceleration + _racio;
+      let _racio = Math.pow(1.02, Math.abs(this.State.NumAcceleration)) - 0.6;
+      if(this.State.NumAcceleration > 0){
+        this.State.NumAcceleration = this.State.NumAcceleration - _racio;
+      } else if(this.State.NumAcceleration < 0){
+        this.State.NumAcceleration = this.State.NumAcceleration + _racio;
       }
-      this.NumAcceleration = Math.ceil(this.NumAcceleration * 100) / 100;
+      this.State.NumAcceleration = Math.ceil(this.State.NumAcceleration * 100) / 100;
 
-      if(this.NumAcceleration > -0.8 && this.NumAcceleration < 0.8){
-        this.NumAcceleration = 0;
+      if(this.State.NumAcceleration > -0.8 && this.State.NumAcceleration < 0.8){
+        this.State.NumAcceleration = 0;
         clearInterval(this.Interval);
       }
 
       // Callback function.
-      if(this.on.Acceleration && typeof(this.on.Acceleration) === 'function') this.on.Acceleration(this.NumAcceleration);
+      if(this.Config.on.Acceleration && typeof(this.Config.on.Acceleration) === 'function') this.Config.on.Acceleration(this.State.NumAcceleration);
     },10);
   }
 
-  ActionAddClassFirst(){
+  ActionChangeFirst(){
     let loopCount = 0;
 
     let countFunc = () => {
       // for Initial display
       setTimeout(() => {
-        dom.addClass(this.$elemItemFirst[loopCount], this.Config.addClassNameActive);
+
+        if(this.Config.addClassNameActive) dom.addClass(this.$elemItemFirst[loopCount], this.Config.addClassNameActive);
+
         loopCount++;
+
         if(loopCount < this.$elemItemFirst.length){
           countFunc();
         }
-      },this.Config.firstElemDelayTime);
 
-      // After the initial display is completed
-      if(this.$elemItemFirst.length == loopCount){
-        setTimeout(() => {
-          this.StoreElementStateAtPosList('scroll');
-        },this.Config.firstElemDelayTime);
-      }
-    }
+        // After the initial display is completed
+        if(this.$elemItemFirst.length == loopCount){
+          this.ActionChange();
+        }
+
+      },this.Config.firstDelaySteps);
+    };
 
     // When there is an initial display element.
     if(this.$elemItemFirst){
       countFunc();
     } else {
       setTimeout(() => {
-        this.StoreElementStateAtPosList('scroll');
-      },this.Config.firstElemDelayTime);
+        this.ActionChange();
+      },this.Config.firstDelaySteps);
     }
 
   }
 
-  ActionAddClass(){
-    this.PosListFix.map((el, i)=>{
-      if(!dom.hasClass(this.$elemItem[el], this.Config.addClassNameActive)){
-        dom.addClass(this.$elemItem[el], this.Config.addClassNameActive);
+  ActionChange(){
 
-          // Callback function.
-        if(this.on.In && typeof(this.on.In) === 'function') this.on.In(this.$elemItem[el], el, this.NumScrolltop);
+    this.State.PosListFix.map((el)=>{
+      if(!dom.hasClass(this.$elemItem[el], this.Config.addClassNameActive)){
+        if(this.Config.addClassNameActive) dom.addClass(this.$elemItem[el], this.Config.addClassNameActive);
+
+        // Callback function.
+        if(this.Config.on.In && typeof(this.Config.on.In) === 'function') this.Config.on.In(this.$elemItem[el], el, this.State.NumScrolltop);
       }
     });
 
     if(this.Config.displayReverse){
-      this.PosListNoneFix.map((el, i)=>{
+      this.State.PosListNoneFix.map((el)=>{
         if(dom.hasClass(this.$elemItem[el], this.Config.addClassNameActive)){
           dom.removeClass(this.$elemItem[el], this.Config.addClassNameActive);
 
           // Callback function.
-          if(this.on.Out && typeof(this.on.Out) === 'function') this.on.Out(this.$elemItem[el], el, this.NumScrolltop);
+          if(this.Config.on.Out && typeof(this.Config.on.Out) === 'function') this.Config.on.Out(this.$elemItem[el], el, this.State.NumScrolltop);
         }
       });
     }
+
+    // Callback function.
+    if(this.Config.on.Change && typeof(this.Config.on.Change) === 'function') this.Config.on.Change(this.$elemItem[this.State.PosListFix.length-1], this.State.PosListFix.length, this.State.NumScrolltop);
+
   }
 
 }
