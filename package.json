@@ -1,6 +1,6 @@
 {
   "name": "js-scroll-effect-module",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Add effect at scroll.",
   "keywords": [
     "scroll",
@@ -17,9 +17,13 @@
   "main": "./dist/js-scroll-effect-module.js",
   "scripts": {
     "start": "npm install && npm run develop",
-    "develop": "npm-run-all -p build:webpack server",
-    "server": "browser-sync start --server ./ --directory ./sample --files **/*.css **/*.js **/*.html",
-    "build:webpack": "webpack --progress --colors --watch"
+    "develop": "npm-run-all -p build:develop server:develop",
+    "server:develop": "browser-sync start --server ./ --directory ./sample --files **/*.css **/*.js **/*.html",
+    "build:develop": "webpack --mode=development --progress --colors --watch",
+    "production": "npm-run-all -p build:production server:production",
+    "server:production": "browser-sync start --server ./ --directory ./sample --files **/*.css **/*.js **/*.html",
+    "build:production": "webpack --mode=production --progress --colors --watch",
+    "test": "mocha --compilers js:babel-core/register"
   },
   "repository": {
     "type": "git",
@@ -30,16 +34,57 @@
     "email": "tatsuya.yamamoto69@gmail.com"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.4",
-    "babel-preset-env": "^1.6.1",
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-transform-object-assign": "^7.2.0",
+    "@babel/preset-env": "^7.3.1",
+    "babel-loader": "^8.0.5",
     "browser-sync": "^2.23.6",
+    "eslint": "^5.12.0",
+    "eslint-loader": "^2.1.1",
+    "mocha": "^5.2.0",
     "npm-run-all": "^4.1.2",
-    "webpack": "^4.27.1",
-    "webpack-cli": "^3.1.2"
+    "webpack": "^4.28.4",
+    "webpack-cli": "^3.2.1"
   },
   "dependencies": {
     "@yama-dev/js-dom": "0.0.6"
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "commonjs": true,
+      "es6": true,
+      "jquery": true,
+      "node": true
+    },
+    "extends": "eslint:recommended",
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true
+      },
+      "ecmaVersion": 2018,
+      "sourceType": "module"
+    },
+    "plugins": [],
+    "rules": {
+      "indent": [
+        "error",
+        2,
+        {
+          "outerIIFEBody": 0
+        }
+      ],
+      "quotes": [
+        "error",
+        "single"
+      ],
+      "semi": [
+        "error",
+        "always"
+      ],
+      "no-console": "warn",
+      "no-unused-vars": "warn"
+    }
   }
 }
