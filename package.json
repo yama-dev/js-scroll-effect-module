@@ -10,20 +10,21 @@
     "animation",
     "keyframe",
     "transition",
-    "plugin"
+    "plugin",
+    "inview"
   ],
   "author": "yama-dev",
   "license": "MIT",
   "main": "./dist/js-scroll-effect-module.js",
   "scripts": {
     "start": "npm install && npm run develop",
-    "develop": "npm-run-all -p build:develop server:develop",
+    "develop": "cross-env NODE_ENV=\"development\" npm-run-all -p build:develop server:develop",
     "server:develop": "browser-sync start --server ./ --directory ./sample --files **/*.css **/*.js **/*.html",
-    "build:develop": "webpack --mode=development --progress --colors --watch",
-    "production": "npm-run-all -p build:production server:production",
+    "build:develop": "webpack --progress --colors --watch",
+    "production": "cross-env NODE_ENV=\"production\" npm-run-all -p build:production server:production",
     "server:production": "browser-sync start --server ./ --directory ./sample --files **/*.css **/*.js **/*.html",
-    "build:production": "webpack --mode=production --progress --colors --watch",
-    "test": "mocha --compilers js:babel-core/register"
+    "build:production": "webpack --progress --colors --watch",
+    "test": "mocha --require @babel/register"
   },
   "repository": {
     "type": "git",
