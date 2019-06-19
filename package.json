@@ -1,6 +1,6 @@
 {
   "name": "js-scroll-effect-module",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Add effect at scroll.",
   "keywords": [
     "scroll",
@@ -10,20 +10,21 @@
     "animation",
     "keyframe",
     "transition",
-    "plugin"
+    "plugin",
+    "inview"
   ],
   "author": "yama-dev",
   "license": "MIT",
   "main": "./dist/js-scroll-effect-module.js",
   "scripts": {
     "start": "npm install && npm run develop",
-    "develop": "npm-run-all -p build:develop server:develop",
+    "develop": "cross-env NODE_ENV=\"development\" npm-run-all -p build:develop server:develop",
     "server:develop": "browser-sync start --server ./ --directory ./sample --files **/*.css **/*.js **/*.html",
-    "build:develop": "webpack --mode=development --progress --colors --watch",
-    "production": "npm-run-all -p build:production server:production",
+    "build:develop": "webpack --progress --colors --watch",
+    "production": "cross-env NODE_ENV=\"production\" npm-run-all -p build:production server:production",
     "server:production": "browser-sync start --server ./ --directory ./sample --files **/*.css **/*.js **/*.html",
-    "build:production": "webpack --mode=production --progress --colors --watch",
-    "test": "mocha --compilers js:babel-core/register"
+    "build:production": "webpack --progress --colors --watch",
+    "test": "mocha --require @babel/register"
   },
   "repository": {
     "type": "git",
@@ -34,18 +35,20 @@
     "email": "tatsuya.yamamoto69@gmail.com"
   },
   "devDependencies": {
-    "@babel/cli": "^7.2.3",
-    "@babel/core": "^7.2.2",
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
     "@babel/plugin-transform-object-assign": "^7.2.0",
-    "@babel/preset-env": "^7.3.1",
-    "babel-loader": "^8.0.5",
-    "browser-sync": "^2.23.6",
-    "eslint": "^5.12.0",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/register": "^7.4.4",
+    "babel-loader": "^8.0.6",
+    "browser-sync": "^2.26.7",
+    "cross-env": "^5.2.0",
+    "eslint": "^5.16.0",
     "eslint-loader": "^2.1.1",
-    "mocha": "^5.2.0",
+    "mocha": "^6.1.4",
     "npm-run-all": "^4.1.2",
-    "webpack": "^4.28.4",
-    "webpack-cli": "^3.2.1"
+    "webpack": "^4.34.0",
+    "webpack-cli": "^3.3.4"
   },
   "dependencies": {
     "@yama-dev/js-dom": "0.0.6"
