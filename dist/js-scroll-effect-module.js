@@ -1,5 +1,5 @@
 /*!
- * JS COUNT MODULE (JavaScript Library)
+ * JS SCROLL EFFECT MODULE (JavaScript Library)
  *   js-scroll-effect-module
  * Version 0.6.0
  * Repository https://github.com/yama-dev/js-scroll-effect-module

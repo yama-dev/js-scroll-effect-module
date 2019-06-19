@@ -1,6 +1,6 @@
 const pkg = require('./package.json');
 
-const comment = `JS COUNT MODULE (JavaScript Library)
+const comment = `JS SCROLL EFFECT MODULE (JavaScript Library)
   ${pkg.name}
 Version ${pkg.version}
 Repository ${pkg.repository.url}
