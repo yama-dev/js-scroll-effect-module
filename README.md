@@ -26,7 +26,7 @@ Add effect according to scroll.
 
 - npm -> [https://www.npmjs.com/package/js-scroll-effect-module](https://www.npmjs.com/package/js-scroll-effect-module)
 
-- Standalone(CDN) -> [https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module@v0.6.0/dist/js-scroll-effect-module.js](https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module@v0.6.0/dist/js-scroll-effect-module.js)
+- Standalone(CDN) -> [https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module@v0.7.0/dist/js-scroll-effect-module.js](https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module@v0.7.0/dist/js-scroll-effect-module.js)
 
 - Zip -> [yama-dev/js-scroll-effect-module](https://github.com/yama-dev/js-scroll-effect-module/releases/latest)
 
@@ -138,7 +138,7 @@ import SCROLL_EFFECT_MODULE from 'js-scroll-effect-module';
 
 <br><br><br>
 
-___
+---
 
 **For Developer**
 
@@ -149,24 +149,6 @@ ___
 3. Commit your changes (git commit -am 'Add some feature')
 4. Push to the branch (git push origin my-new-feature)
 5. Create new Pull Request
-
-<br>
-
-## Develop
-
-### at Development
-
-Install node modules.
-
-``` bash
-$ npm install
-```
-
-Run npm script 'develop'
-
-``` bash
-$ npm run develop
-```
 
 <br>
 
