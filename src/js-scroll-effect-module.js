@@ -47,7 +47,7 @@ export default class SCROLL_EFFECT_MODULE {
     this.Config = Object.assign(configDefault, options);
 
     // SetPlayer
-    if(document.readyState == 'complete'){
+    if(document.readyState == 'complete' || document.readyState == 'interactive'){
       this.CacheDom();
       this.BindEvent();
     } else {
