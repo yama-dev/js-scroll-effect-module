@@ -1,7 +1,6 @@
 const pkg = require('./package.json');
 
-const comment = `JS SCROLL EFFECT MODULE (JavaScript Library)
-  ${pkg.name}
+const comment = `@yama-dev/${pkg.name}
 Version ${pkg.version}
 Repository ${pkg.repository.url}
 Copyright ${pkg.author}
@@ -27,12 +26,12 @@ const babelPlugin = [
 
 const config = {
   mode: env || 'development',
-  entry: './src/js-scroll-effect-module.js',
+  entry: {
+    'js-scroll-effect-module': './src/js-scroll-effect-module.js',
+  },
   output: {
     path: `${__dirname}/dist`,
-    filename: 'js-scroll-effect-module.js',
-    library: 'SCROLL_EFFECT_MODULE',
-    libraryExport: 'default',
+    filename: '[name].js',
     libraryTarget: 'umd'
   },
   module: {
@@ -45,7 +44,7 @@ const config = {
       },
       {
         test: /\.js$/,
-        exclude: /node_modules/,
+        exclude: /node_modules[//\/](?!(@yama\-dev)\/).*/,
         use: {
           loader: 'babel-loader',
           options: {
