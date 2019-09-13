@@ -76,8 +76,8 @@ export class SCROLL_EFFECT_MODULE {
   }
 
   CacheDom(){
-    this.$elemItem      = dom.selectDom(this.Config.elem);
-    this.$elemItemFirst = dom.selectDom(this.Config.firstElem);
+    this.$elemItem      = DOM.selectDom(this.Config.elem);
+    this.$elemItemFirst = DOM.selectDom(this.Config.firstElem);
   }
 
   CacheDomSize(){
@@ -87,7 +87,7 @@ export class SCROLL_EFFECT_MODULE {
   SetDom(){
     this.State.PosList = [];
     this.State.NumScrolltop = window.pageYOffset;
-    let _elem = dom.selectDom(this.$elemItem);
+    let _elem = DOM.selectDom(this.$elemItem);
     if(_elem){
       _elem.map((el)=>{
         this.State.PosList.push( el.getBoundingClientRect().top + this.State.NumScrolltop);
@@ -109,7 +109,7 @@ export class SCROLL_EFFECT_MODULE {
 
   Clear(){
     this.State.PosList.map((el, i)=>{
-      dom.removeClass(this.$elemItem[i], this.Config.addClassNameActive);
+      DOM.removeClass(this.$elemItem[i], this.Config.addClassNameActive);
     });
   }
 
@@ -190,7 +190,7 @@ export class SCROLL_EFFECT_MODULE {
       // for Initial display
       setTimeout(() => {
 
-        if(this.Config.addClassNameActive) dom.addClass(this.$elemItemFirst[loopCount], this.Config.addClassNameActive);
+        if(this.Config.addClassNameActive) DOM.addClass(this.$elemItemFirst[loopCount], this.Config.addClassNameActive);
 
         loopCount++;
 
@@ -220,8 +220,8 @@ export class SCROLL_EFFECT_MODULE {
   ActionChange(){
 
     this.State.PosListFix.map((el)=>{
-      if(!dom.hasClass(this.$elemItem[el], this.Config.addClassNameActive)){
-        if(this.Config.addClassNameActive) dom.addClass(this.$elemItem[el], this.Config.addClassNameActive);
+      if(!DOM.hasClass(this.$elemItem[el], this.Config.addClassNameActive)){
+        if(this.Config.addClassNameActive) DOM.addClass(this.$elemItem[el], this.Config.addClassNameActive);
 
         // Callback function.
         if(this.Config.on.In && typeof(this.Config.on.In) === 'function') this.Config.on.In(this.$elemItem[el], el, this.State.NumScrolltop);
@@ -230,8 +230,8 @@ export class SCROLL_EFFECT_MODULE {
 
     if(this.Config.displayReverse){
       this.State.PosListNoneFix.map((el)=>{
-        if(dom.hasClass(this.$elemItem[el], this.Config.addClassNameActive)){
-          dom.removeClass(this.$elemItem[el], this.Config.addClassNameActive);
+        if(DOM.hasClass(this.$elemItem[el], this.Config.addClassNameActive)){
+          DOM.removeClass(this.$elemItem[el], this.Config.addClassNameActive);
 
           // Callback function.
           if(this.Config.on.Out && typeof(this.Config.on.Out) === 'function') this.Config.on.Out(this.$elemItem[el], el, this.State.NumScrolltop);
