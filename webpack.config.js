@@ -1,7 +1,6 @@
 const pkg = require('./package.json');
 
-const comment = `JS SCROLL EFFECT MODULE (JavaScript Library)
-  ${pkg.name}
+const comment = `@yama-dev/${pkg.name}
 Version ${pkg.version}
 Repository ${pkg.repository.url}
 Copyright ${pkg.author}
@@ -45,7 +44,7 @@ const config = {
       },
       {
         test: /\.js$/,
-        exclude: /node_modules/,
+        exclude: /node_modules[//\/](?!(@yama\-dev)\/).*/,
         use: {
           loader: 'babel-loader',
           options: {
