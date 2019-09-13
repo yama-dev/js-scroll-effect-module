@@ -27,12 +27,12 @@ const babelPlugin = [
 
 const config = {
   mode: env || 'development',
-  entry: './src/js-scroll-effect-module.js',
+  entry: {
+    'js-scroll-effect-module': './src/js-scroll-effect-module.js',
+  },
   output: {
     path: `${__dirname}/dist`,
-    filename: 'js-scroll-effect-module.js',
-    library: 'SCROLL_EFFECT_MODULE',
-    libraryExport: 'default',
+    filename: '[name].js',
     libraryTarget: 'umd'
   },
   module: {

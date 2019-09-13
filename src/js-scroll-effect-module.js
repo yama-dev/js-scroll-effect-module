@@ -1,8 +1,7 @@
 
-import JS_DOM from '@yama-dev/js-dom';
-const dom = new JS_DOM();
+import * as DOM from '@yama-dev/js-dom/core/';
 
-export default class SCROLL_EFFECT_MODULE {
+export class SCROLL_EFFECT_MODULE {
 
   constructor(options={}){
 
