@@ -89,8 +89,13 @@ export class SCROLL_EFFECT_MODULE {
     this.State.NumScrolltop = window.pageYOffset;
     let _elem = DOM.selectDom(this.$elemItem);
     if(_elem){
-      _elem.map((el)=>{
-        this.State.PosList.push( el.getBoundingClientRect().top + this.State.NumScrolltop);
+      _elem.map((el,i)=>{
+        let obj = {
+          index: i,
+          pos: el.getBoundingClientRect().top + this.State.NumScrolltop,
+          count: 0
+        };
+        this.State.PosList.push( obj );
       });
     }
   }
@@ -124,12 +129,19 @@ export class SCROLL_EFFECT_MODULE {
 
     // Store element state at PosList.
     this.State.PosList.map((el, i)=>{
-      if( this.State.NumScrolltop + ( this.NumWindowHeight * this.Config.displayRatio ) > el ){
+      if( this.State.NumScrolltop + ( this.NumWindowHeight * this.Config.displayRatio ) > el.pos ){
+
+        // First count up.
+        if(method === 'load'){
+          el.count++;
+        }
+
         // 「active」Set of lists
-        this.State.PosListFix.push(i);
+        this.State.PosListFix.push(el);
       } else {
+
         // 「none active」Set of lists
-        this.State.PosListNoneFix.push(i);
+        this.State.PosListNoneFix.push(el);
       }
     });
 
@@ -222,27 +234,31 @@ export class SCROLL_EFFECT_MODULE {
   ActionChange(){
 
     this.State.PosListFix.map((el)=>{
-      if(!DOM.hasClass(this.$elemItem[el], this.Config.addClassNameActive)){
-        if(this.Config.addClassNameActive) DOM.addClass(this.$elemItem[el], this.Config.addClassNameActive);
+      if(!DOM.hasClass(this.$elemItem[el.index], this.Config.addClassNameActive)){
+        el.count++;
+        if(this.Config.addClassNameActive) DOM.addClass(this.$elemItem[el.index], this.Config.addClassNameActive);
 
         // Callback function.
-        if(this.Config.on.In && typeof(this.Config.on.In) === 'function') this.Config.on.In(this.$elemItem[el], el, this.State.NumScrolltop);
+        if(this.Config.on.In && typeof(this.Config.on.In) === 'function') this.Config.on.In(this.$elemItem[el.index], el.index, el, this.State.NumScrolltop);
       }
     });
 
     if(this.Config.displayReverse){
       this.State.PosListNoneFix.map((el)=>{
-        if(DOM.hasClass(this.$elemItem[el], this.Config.addClassNameActive)){
-          DOM.removeClass(this.$elemItem[el], this.Config.addClassNameActive);
+        if(DOM.hasClass(this.$elemItem[el.index], this.Config.addClassNameActive)){
+          DOM.removeClass(this.$elemItem[el.index], this.Config.addClassNameActive);
 
           // Callback function.
-          if(this.Config.on.Out && typeof(this.Config.on.Out) === 'function') this.Config.on.Out(this.$elemItem[el], el, this.State.NumScrolltop);
+          if(this.Config.on.Out && typeof(this.Config.on.Out) === 'function') this.Config.on.Out(this.$elemItem[el.index], el.index, el, this.State.NumScrolltop);
         }
       });
     }
 
     // Callback function.
-    if(this.Config.on.Change && typeof(this.Config.on.Change) === 'function') this.Config.on.Change(this.$elemItem[this.State.PosListFix.length-1], this.State.PosListFix.length, this.State.NumScrolltop);
+    if(this.Config.on.Change && typeof(this.Config.on.Change) === 'function'){
+      let _pf = this.State.PosListFix;
+      this.Config.on.Change(this.$elemItem[_pf.length-1], _pf.length, _pf[_pf.length-1], this.State.NumScrolltop);
+    }
 
   }
 
