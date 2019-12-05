@@ -1,6 +1,6 @@
 /*!
  * @yama-dev/js-scroll-effect-module
- * Version 0.7.0
+ * Version 0.7.2
  * Repository https://github.com/yama-dev/js-scroll-effect-module
  * Copyright yama-dev
  * Licensed MIT
