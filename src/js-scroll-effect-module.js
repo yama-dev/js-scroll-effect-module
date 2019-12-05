@@ -190,7 +190,9 @@ export class SCROLL_EFFECT_MODULE {
       // for Initial display
       setTimeout(() => {
 
-        if(this.Config.addClassNameActive) DOM.addClass(this.$elemItemFirst[loopCount], this.Config.addClassNameActive);
+        if(this.Config.addClassNameActive){
+          DOM.addClass(this.$elemItemFirst[loopCount], this.Config.addClassNameActive);
+        }
 
         loopCount++;
 
