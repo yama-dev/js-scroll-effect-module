@@ -108,15 +108,15 @@
             console.log('Scroll', top);
             document.querySelector('.dev .t1').innerHTML = top;
           },
-          Change: function(item, pos){
-            console.log('Change', item, pos);
+          Change: function(item, pos, obj, top){
+            console.log('Change', item, pos, obj,top);
             document.querySelector('.dev .t2').innerHTML = pos;
           },
-          In: function(item, pos){
-            console.log('In', item, pos);
+          In: function(item, pos, obj, top){
+            console.log('In', item, pos, obj, top);
           },
-          Out: function(item, pos){
-            console.log('Out', item, pos);
+          Out: function(item, pos, obj, top){
+            console.log('Out', item, pos, obj, top);
           }
         }
       });
