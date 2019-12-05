@@ -24,7 +24,7 @@
 <body style="overflow-x:hidden;">
 <div class="container mt-4">
 
-  <h2 class="mb-3">SCROLL EFFECT MODULE v0.6.0</h2>
+  <h2 class="mb-3">SCROLL EFFECT MODULE v0.7.2</h2>
 
   <p>Add effect at scroll.</p>
 
@@ -32,7 +32,7 @@
   <span class="p-sns"><a class="github-button" href="https://github.com/yama-dev/js-scroll-effect-module/archive/master.zip" data-icon="octicon-cloud-download" aria-label="Download yama-dev/js-scroll-effect-module on GitHub">Download</a></span>
   <span class="p-sns"><a class="github-button" href="https://github.com/yama-dev/js-scroll-effect-module" data-icon="octicon-star" data-show-count="true" aria-label="Star yama-dev/js-scroll-effect-module on GitHub">Star</a></span>
   <span class="p-sns"><a class="github-button" href="https://github.com/yama-dev/js-scroll-effect-module/fork" data-icon="octicon-repo-forked" data-show-count="true" aria-label="Fork yama-dev/js-scroll-effect-module on GitHub">Fork</a></span>
-  <span class="p-sns"><a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="SCROLL EFFECT MODULE v0.6.0 Add effect at scroll." data-show-count="false">Tweet</a></span>
+  <span class="p-sns"><a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="SCROLL EFFECT MODULE v0.7.2 Add effect at scroll." data-show-count="false">Tweet</a></span>
   <style>.p-sns > span{ display: inline-block; }</style>
 
   <hr class="mt-4 mb-4">
@@ -64,26 +64,26 @@
           elem               : &#039;.js-scroll&#039;,
           firstElem          : &#039;.js-scroll--first&#039;,
 
-          displayRatio       : 0.8, // 判定する比率を指定（ウィンドウ高さを1として指定）
-          displayReverse     : true, // スクロールを戻した時にクラスを削除するかどうか
+          displayRatio       : 0.8,
+          displayReverse     : true,
 
-          firstDelay         : 0, // 初回動作までの遅延時間（ms）
-          firstDelaySteps    : 100,  // 初回出現要素を指定した場合のステップ遅延時間（ms）
+          firstDelay         : 0,
+          firstDelaySteps    : 100,
 
-          addClassNameActive : &#039;is-active&#039;, // null を設定するとクラスが付与されなくなる。
+          addClassNameActive : &#039;is-active&#039;,
 
           on: {
             Scroll: function(top){
               console.log(&#039;Scroll&#039;, top);
             },
-            Change: function(item, pos){
-              console.log(&#039;Change&#039;, item, pos);
+            Change: function(item, pos, obj, top){
+              console.log(&#039;Change&#039;, item, pos, obj, top);
             },
-            In: function(item, pos){
-              console.log(&#039;In&#039;, item, pos);
+            In: function(item, pos, obj, top){
+              console.log(&#039;In&#039;, item, pos, obj, top);
             },
-            Out: function(item, pos){
-              console.log(&#039;Out&#039;, item, pos);
+            Out: function(item, pos, obj, top){
+              console.log(&#039;Out&#039;, item, pos, obj, top);
             }
           }
         });
@@ -108,15 +108,15 @@
             console.log('Scroll', top);
             document.querySelector('.dev .t1').innerHTML = top;
           },
-          Change: function(item, pos){
-            console.log('Change', item, pos);
+          Change: function(item, pos, obj, top){
+            console.log('Change', item, pos, obj, top);
             document.querySelector('.dev .t2').innerHTML = pos;
           },
-          In: function(item, pos){
-            console.log('In', item, pos);
+          In: function(item, pos, obj, top){
+            console.log('In', item, pos, obj, top);
           },
-          Out: function(item, pos){
-            console.log('Out', item, pos);
+          Out: function(item, pos, obj, top){
+            console.log('Out', item, pos, obj, top);
           }
         }
       });
