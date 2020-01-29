@@ -1,6 +1,6 @@
 {
   "name": "js-scroll-effect-module",
-  "version": "0.7.2",
+  "version": "0.8.0",
   "description": "Add effect at scroll.",
   "keywords": [
     "scroll",
@@ -50,6 +50,9 @@
     "webpack": "^4.34.0",
     "webpack-cli": "^3.3.4"
   },
+  "dependencies": {
+    "@yama-dev/js-dom": "^0.1.0"
+  },
   "eslintConfig": {
     "env": {
       "browser": true,
@@ -86,8 +89,5 @@
       "no-console": "warn",
       "no-unused-vars": "warn"
     }
-  },
-  "dependencies": {
-    "@yama-dev/js-dom": "^0.1.0"
   }
 }
