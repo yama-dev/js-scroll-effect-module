@@ -32,6 +32,8 @@ const config = {
   output: {
     path: `${__dirname}/dist`,
     filename: '[name].js',
+    library: 'SCROLL_EFFECT_MODULE',
+    libraryExport: 'default',
     libraryTarget: 'umd'
   },
   module: {

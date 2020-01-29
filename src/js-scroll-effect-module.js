@@ -1,7 +1,7 @@
 
 import * as DOM from '@yama-dev/js-dom/core/';
 
-export class SCROLL_EFFECT_MODULE {
+export default class SCROLL_EFFECT_MODULE {
 
   constructor(options={}){
 
