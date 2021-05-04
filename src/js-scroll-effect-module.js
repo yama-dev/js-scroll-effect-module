@@ -32,6 +32,8 @@ export default class SCROLL_EFFECT_MODULE {
 
       addClassNameActive : 'is-active',
 
+      autoStart          : true,
+
       acceleration       : false,
 
       on: {
@@ -45,7 +47,10 @@ export default class SCROLL_EFFECT_MODULE {
     // Merge Config Settings.
     this.Config = Object.assign(configDefault, options);
 
-    // SetPlayer
+    if(this.Config.autoStart) this.Init();
+  }
+
+  Init(){
     if(document.readyState == 'complete' || document.readyState == 'interactive'){
       this.CacheDom();
       this.BindEvent();
