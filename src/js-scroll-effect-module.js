@@ -105,6 +105,12 @@ export default class SCROLL_EFFECT_MODULE {
     }
   }
 
+  Start(){
+    if(this.Config.autoStart) return false;
+
+    this.Init();
+  }
+
   Update(){
     this.CacheDom();
     this.CacheDomSize();
