@@ -78,9 +78,16 @@ export default class SCROLL_EFFECT_MODULE {
     });
 
     // for Scroll-Event
+    let ticking = false;
     window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(()=>{
+          ticking = false;
       this.StoreElementStateAtPosList('scroll');
     });
+        ticking = true;
+      }
+    }, {passive: true});
   }
 
   CacheDom(){
