@@ -26,6 +26,7 @@ export default class SCROLL_EFFECT_MODULE {
 
       displayRatio       : 0.8,
       displayReverse     : false,
+      displayRatioReverse: null,
 
       firstDelay         : 10,
       firstDelaySteps    : 100,
@@ -49,6 +50,15 @@ export default class SCROLL_EFFECT_MODULE {
       ...configDefault,
       ...options
     };
+
+    // adjust ratio value.
+    if( !this.config.displayRatioReverse ) {
+      this.config.displayRatioReverse = this.config.displayRatio;
+    } else {
+      if( this.config.displayRatioReverse < this.config.displayRatio ) {
+        this.config.displayRatioReverse = this.config.displayRatio;
+      }
+    }
 
     if(this.config.autoStart) this.Init();
   }
@@ -151,19 +161,50 @@ export default class SCROLL_EFFECT_MODULE {
     // Store element state at PosList.
     this.state.PosList.map((el)=>{
 
+      if(this.config.displayRatio === this.config.displayRatioReverse){
       if( this.state.NumScrolltop + ( this.NumWindowHeight * this.config.displayRatio ) > el.pos ){
-
         // First count up.
         if(method === 'load'){
           el.count++;
         }
 
         // 「active」Set of lists
+          el.active = true;
         this.state.PosListFix.push(el);
       } else {
 
         // 「none active」Set of lists
+          el.active = false;
         this.state.PosListNoneFix.push(el);
+      }
+      }
+
+      if(this.config.displayRatio !== this.config.displayRatioReverse){
+        if( this.state.NumScrolltop + ( this.NumWindowHeight * this.config.displayRatio ) > el.pos ){
+          // First count up.
+          if(method === 'load'){
+            el.count++;
+          }
+
+          // 「active」Set of lists
+          el.active = true;
+          this.state.PosListFix.push(el);
+        } else {
+          if( this.state.NumScrolltop + ( this.NumWindowHeight * this.config.displayRatioReverse ) > el.pos ){
+            if(el.active){
+              // 「active」Set of lists
+              this.state.PosListFix.push(el);
+            } else {
+              // 「none active」Set of lists
+              this.state.PosListNoneFix.push(el);
+            }
+          } else {
+            // 「none active」Set of lists
+            el.active = false;
+            this.state.PosListNoneFix.push(el);
+          }
+        }
+
       }
     });
 
