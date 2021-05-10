@@ -76,10 +76,11 @@ export default class SCROLL_EFFECT_MODULE {
   }
 
   BindEvent(){
+    let _that = this;
 
     setTimeout(() => {
       this.Update();
-      this.StoreElementStateAtPosList('load');
+      this._storeElementStateAtPosList('load');
     }, this.config.firstDelay);
 
     // for Resize-Event
@@ -118,7 +119,8 @@ export default class SCROLL_EFFECT_MODULE {
         let obj = {
           index: i,
           pos: el.getBoundingClientRect().top + this.state.NumScrolltop,
-          count: 0
+          count: 0,
+          active: false
         };
         this.state.PosList.push( obj );
       });
@@ -140,16 +142,17 @@ export default class SCROLL_EFFECT_MODULE {
   Refresh(){
     this.Update();
     this.Clear();
-    this.ActionChange();
+    this._actionChange();
   }
 
   Clear(){
     this.state.PosList.map((el, i)=>{
+      el.active = false;
       DOM.removeClass(this.$elemItem[i], this.config.addClassNameActive);
     });
   }
 
-  StoreElementStateAtPosList(method){
+  _storeElementStateAtPosList(method){
 
     // Array initialization
     this.state.PosListFix = [];
@@ -226,7 +229,7 @@ export default class SCROLL_EFFECT_MODULE {
     if(method === 'load'){
       this.ActionChangeFirst();
     } else if(method === 'scroll'){
-      if(this.state.PosListFixPre.length !== this.state.PosListFix.length) this.ActionChange();
+      if(this.state.PosListFixPre.length !== this.state.PosListFix.length) this._actionChange();
     }
 
     // Callback function.
@@ -277,7 +280,7 @@ export default class SCROLL_EFFECT_MODULE {
 
         // After the initial display is completed
         if(this.$elemItemFirst.length == loopCount){
-          this.ActionChange();
+          this._actionChange();
         }
 
       },this.config.firstDelaySteps);
@@ -288,13 +291,13 @@ export default class SCROLL_EFFECT_MODULE {
       countFunc();
     } else {
       setTimeout(() => {
-        this.ActionChange();
+        this._actionChange();
       },this.config.firstDelaySteps);
     }
 
   }
 
-  ActionChange(){
+  _actionChange(){
 
     this.state.PosListFix.map((el)=>{
       if(!DOM.hasClass(this.$elemItem[el.index], this.config.addClassNameActive)){
