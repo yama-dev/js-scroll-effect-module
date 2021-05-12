@@ -31,6 +31,8 @@ export default class SCROLL_EFFECT_MODULE {
       firstDelay         : 10,
       firstDelaySteps    : 100,
 
+      throttleInterval   : 50,
+
       addClassNameActive : 'is-active',
 
       autoStart          : true,
@@ -88,17 +90,21 @@ export default class SCROLL_EFFECT_MODULE {
       this.Update();
     });
 
+    function throttle(fn, wait) {
+      var time = Date.now();
+      return function() {
+        if ((time + wait - Date.now()) < 0) {
+          fn();
+          time = Date.now();
+        }
+      };
+    }
+
     // for Scroll-Event
-    let ticking = false;
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        requestAnimationFrame(()=>{
-          ticking = false;
-      this.StoreElementStateAtPosList('scroll');
-    });
-        ticking = true;
-      }
-    }, {passive: true});
+    window.addEventListener('scroll', throttle(function(){
+      _that._storeElementStateAtPosList('scroll');
+    }, this.config.throttleInterval), {passive: true});
+
   }
 
   CacheDom(){
@@ -165,21 +171,21 @@ export default class SCROLL_EFFECT_MODULE {
     this.state.PosList.map((el)=>{
 
       if(this.config.displayRatio === this.config.displayRatioReverse){
-      if( this.state.NumScrolltop + ( this.NumWindowHeight * this.config.displayRatio ) > el.pos ){
-        // First count up.
-        if(method === 'load'){
-          el.count++;
-        }
+        if( this.state.NumScrolltop + ( this.NumWindowHeight * this.config.displayRatio ) > el.pos ){
+          // First count up.
+          if(method === 'load'){
+            el.count++;
+          }
 
-        // 「active」Set of lists
+          // 「active」Set of lists
           el.active = true;
-        this.state.PosListFix.push(el);
-      } else {
+          this.state.PosListFix.push(el);
+        } else {
 
-        // 「none active」Set of lists
+          // 「none active」Set of lists
           el.active = false;
-        this.state.PosListNoneFix.push(el);
-      }
+          this.state.PosListNoneFix.push(el);
+        }
       }
 
       if(this.config.displayRatio !== this.config.displayRatioReverse){
