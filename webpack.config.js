@@ -1,10 +1,6 @@
 const pkg = require('./package.json');
 
-const comment = `@yama-dev/${pkg.name}
-Version ${pkg.version}
-Repository ${pkg.repository.url}
-Copyright ${pkg.author}
-Licensed ${pkg.license}`;
+const comment = `@yama-dev/${pkg.name} Version ${pkg.version} Repository ${pkg.repository.url} Copyright ${pkg.author} Licensed ${pkg.license}`;
 
 const env = process.env.NODE_ENV;
 

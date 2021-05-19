@@ -2,15 +2,13 @@
 
 [![](https://img.shields.io/github/repo-size/yama-dev/js-scroll-effect-module.svg)](https://github.com/yama-dev/js-scroll-effect-module/releases/latest)
 [![](https://img.shields.io/github/release/yama-dev/js-scroll-effect-module.svg)](https://github.com/yama-dev/js-scroll-effect-module/releases/latest)
-[![](https://img.shields.io/david/yama-dev/js-scroll-effect-module.svg)](https://github.com/yama-dev/js-scroll-effect-module/releases/latest)
-[![](https://img.shields.io/david/dev/yama-dev/js-scroll-effect-module.svg)](https://github.com/yama-dev/js-scroll-effect-module/releases/latest)
 [![GitHub](https://img.shields.io/github/license/yama-dev/js-scroll-effect-module.svg)](https://github.com/yama-dev/js-scroll-effect-module/blob/master/LICENSE)
 
 <br>
 
 ## Feature
 
-Add effect according to scroll.  
+Add effect according to scroll.
 
 <br>
 
@@ -26,7 +24,7 @@ Add effect according to scroll.
 
 - npm -> [https://www.npmjs.com/package/js-scroll-effect-module](https://www.npmjs.com/package/js-scroll-effect-module)
 
-- Standalone(CDN) -> [https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module@v0.8.0/dist/js-scroll-effect-module.js](https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module@v0.8.0/dist/js-scroll-effect-module.js)
+- Standalone(CDN) -> [https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module@v0.8.1/dist/js-scroll-effect-module.js](https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module@v0.8.1/dist/js-scroll-effect-module.js)
 
 - Zip -> [yama-dev/js-scroll-effect-module](https://github.com/yama-dev/js-scroll-effect-module/releases/latest)
 
@@ -121,14 +119,14 @@ import SCROLL_EFFECT_MODULE from 'js-scroll-effect-module';
 
 ## Browser support
 
-| Browser           | OS、version | 
-| ---               | ---         | 
-| Internet Explorer | 11+         | 
-| Chrome            | 最新        | 
-| Firefox           | 最新        | 
-| Safari            | 最新        | 
-| Android           | 4.4+ Chrome | 
-| iOS               | 8.0+ safari | 
+| Browser           | OS、version |
+| ---               | ---         |
+| Internet Explorer | 11+         |
+| Chrome            | 最新        |
+| Firefox           | 最新        |
+| Safari            | 最新        |
+| Android           | 4.4+ Chrome |
+| iOS               | 8.0+ safari |
 
 <br>
 
