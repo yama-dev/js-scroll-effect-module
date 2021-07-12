@@ -130,6 +130,8 @@ export default class SCROLL_EFFECT_MODULE {
           el: el,
           index: i,
           pos: el.getBoundingClientRect().top + this.state.NumScrolltop,
+          height: el.clientHeight,
+          height2: el.offsetHeight,
           count: 0,
           active: false,
           intersect: false,
@@ -178,6 +180,7 @@ export default class SCROLL_EFFECT_MODULE {
     // Store element state at PosList.
     this.state.PosList.map((el)=>{
 
+      // When displayRatio and displayRatioReverse are the SAME.
       if(this.config.displayRatio === this.config.displayRatioReverse){
         if( this.state.NumScrolltop + ( this.NumWindowHeight * this.config.displayRatio ) > el.pos ){
           // First count up.
@@ -196,6 +199,7 @@ export default class SCROLL_EFFECT_MODULE {
         }
       }
 
+      // When displayRatio and displayRatioReverse are the DIFFERENT.
       if(this.config.displayRatio !== this.config.displayRatioReverse){
         if( this.state.NumScrolltop + ( this.NumWindowHeight * this.config.displayRatio ) > el.pos ){
           // First count up.
