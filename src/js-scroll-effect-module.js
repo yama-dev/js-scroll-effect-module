@@ -126,10 +126,12 @@ export default class SCROLL_EFFECT_MODULE {
     let _elem = DOM.selectDom(this.$elemItem);
     if(_elem){
       _elem.map((el,i)=>{
+        let offset = 0;
+        if(el.dataset && el.dataset.semOffset !== undefined) offset = Number(el.dataset.semOffset);
         let obj = {
           el: el,
           index: i,
-          pos: el.getBoundingClientRect().top + this.state.NumScrolltop,
+          pos: el.getBoundingClientRect().top + this.state.NumScrolltop - offset,
           height: el.clientHeight,
           height2: el.offsetHeight,
           count: 0,
@@ -247,8 +249,8 @@ export default class SCROLL_EFFECT_MODULE {
             this.state.flg.intersectChanged = true;
             el.intersect = false;
             el.intersectover = false;
-      }
-    }
+          }
+        }
       }
 
     });
