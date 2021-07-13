@@ -12,11 +12,13 @@ export default class SCROLL_EFFECT_MODULE {
     this.state = {
       NumScrolltopPre: window.pageYOffset,
       NumScrolltop   : window.pageYOffset,
-      NumAcceleration: 0,
       PosList        : [],
       PosListFixPre  : [],
       PosListFix     : [],
-      PosListNoneFix : []
+      PosListNoneFix : [],
+      flg: {
+        intersectChanged: false,
+      }
     };
 
     // config, options.
@@ -37,14 +39,16 @@ export default class SCROLL_EFFECT_MODULE {
 
       autoStart          : true,
 
-      acceleration       : false,
+      intersect          : false,
+      addClassNameIntersect : 'is-intersect',
+      addClassNameIntersectOver : 'is-intersect-over',
 
       on: {
         Scroll       : null,
         Change       : null,
         In           : null,
         Out          : null,
-        Acceleration : null
+        Intersect    : null,
       }
     };
     // Merge Config Settings.
@@ -122,11 +126,19 @@ export default class SCROLL_EFFECT_MODULE {
     let _elem = DOM.selectDom(this.$elemItem);
     if(_elem){
       _elem.map((el,i)=>{
+        let offset = 0;
+        if(el.dataset && el.dataset.semOffset !== undefined) offset = Number(el.dataset.semOffset);
         let obj = {
+          el: el,
           index: i,
-          pos: el.getBoundingClientRect().top + this.state.NumScrolltop,
+          pos: el.getBoundingClientRect().top + this.state.NumScrolltop - offset,
+          height: el.clientHeight,
+          height2: el.offsetHeight,
           count: 0,
-          active: false
+          active: false,
+          intersect: false,
+          intersectover: false,
+          dataset: el.dataset
         };
         this.state.PosList.push( obj );
       });
@@ -170,6 +182,7 @@ export default class SCROLL_EFFECT_MODULE {
     // Store element state at PosList.
     this.state.PosList.map((el)=>{
 
+      // When displayRatio and displayRatioReverse are the SAME.
       if(this.config.displayRatio === this.config.displayRatioReverse){
         if( this.state.NumScrolltop + ( this.NumWindowHeight * this.config.displayRatio ) > el.pos ){
           // First count up.
@@ -188,6 +201,7 @@ export default class SCROLL_EFFECT_MODULE {
         }
       }
 
+      // When displayRatio and displayRatioReverse are the DIFFERENT.
       if(this.config.displayRatio !== this.config.displayRatioReverse){
         if( this.state.NumScrolltop + ( this.NumWindowHeight * this.config.displayRatio ) > el.pos ){
           // First count up.
@@ -213,24 +227,33 @@ export default class SCROLL_EFFECT_MODULE {
             this.state.PosListNoneFix.push(el);
           }
         }
-
       }
+
+      if(this.config.intersect){
+        if( this.state.NumScrolltop > el.pos ){
+          if( this.state.NumScrolltop + this.NumWindowHeight > el.pos + el.height ){
+            if(el.intersect){
+              this.state.flg.intersectChanged = true;
+              el.intersect = false;
+              el.intersectover = true;
+            }
+          } else {
+            if(!el.intersect){
+              this.state.flg.intersectChanged = true;
+              el.intersect = true;
+              el.intersectover = false;
+            }
+          }
+        } else {
+          if(el.intersect){
+            this.state.flg.intersectChanged = true;
+            el.intersect = false;
+            el.intersectover = false;
+          }
+        }
+      }
+
     });
-
-    if(this.config.acceleration){
-      if(Math.abs(this.state.NumAcceleration) <= Math.abs(this.state.NumScrolltop - this.state.NumScrolltopPre)){
-        this.state.NumAcceleration = this.state.NumScrolltop - this.state.NumScrolltopPre;
-
-        if(this.state.NumAcceleration >= 100) this.state.NumAcceleration = 100;
-        if(this.state.NumAcceleration <= -100) this.state.NumAcceleration = -100;
-
-        clearInterval(this.Interval);
-        this.CheckAcceleration();
-      }
-
-      // Callback function.
-      if(this.config.on.Acceleration && typeof(this.config.on.Acceleration) === 'function') this.config.on.Acceleration(this.state.NumAcceleration);
-    }
 
     if(method === 'load'){
       this.ActionChangeFirst();
@@ -238,33 +261,16 @@ export default class SCROLL_EFFECT_MODULE {
       if(this.state.PosListFixPre.length !== this.state.PosListFix.length) this._actionChange();
     }
 
+    if(this.config.intersect && this.state.flg.intersectChanged){
+      this.state.flg.intersectChanged = false;
+      this._actionChangeIntersect();
+    }
+
     // Callback function.
     if(this.config.on.Scroll && typeof(this.config.on.Scroll) === 'function') this.config.on.Scroll(this.state.NumScrolltop);
 
     this.state.NumScrolltopPre = this.state.NumScrolltop;
     this.state.PosListFixPre = this.state.PosListFix;
-  }
-
-  // For Config.acceleration == true.
-  CheckAcceleration(){
-    this.Interval = setInterval(()=>{
-
-      let _racio = Math.pow(1.02, Math.abs(this.state.NumAcceleration)) - 0.6;
-      if(this.state.NumAcceleration > 0){
-        this.state.NumAcceleration = this.state.NumAcceleration - _racio;
-      } else if(this.state.NumAcceleration < 0){
-        this.state.NumAcceleration = this.state.NumAcceleration + _racio;
-      }
-      this.state.NumAcceleration = Math.ceil(this.state.NumAcceleration * 100) / 100;
-
-      if(this.state.NumAcceleration > -0.8 && this.state.NumAcceleration < 0.8){
-        this.state.NumAcceleration = 0;
-        clearInterval(this.Interval);
-      }
-
-      // Callback function.
-      if(this.config.on.Acceleration && typeof(this.config.on.Acceleration) === 'function') this.config.on.Acceleration(this.state.NumAcceleration);
-    },10);
   }
 
   ActionChangeFirst(){
@@ -331,6 +337,64 @@ export default class SCROLL_EFFECT_MODULE {
       let _pf = this.state.PosListFix;
       this.config.on.Change(this.$elemItem[_pf.length-1], _pf.length, _pf[_pf.length-1], this.state.NumScrolltop);
     }
+
+  }
+
+  _actionChangeIntersect(){
+
+    this.state.PosList.map((el)=>{
+
+      let callback = {
+        el: el.el,
+        intersect: el.intersect,
+        index: el.index,
+        pos: el.pos,
+        height: el.height,
+        height2: el.height2,
+        count: el.count,
+        dataset: el.dataset
+      };
+
+      if(el.intersect){
+        if(!DOM.hasClass(el.el, this.config.addClassNameIntersect)){
+          if(this.config.addClassNameIntersect) DOM.addClass(el.el, this.config.addClassNameIntersect);
+
+          // Callback function.
+          if(this.config.on.Intersect && typeof(this.config.on.Intersect) === 'function'){
+            this.config.on.Intersect(callback);
+          }
+        }
+      } else {
+        if(DOM.hasClass(el.el, this.config.addClassNameIntersect)){
+          if(this.config.addClassNameIntersect) DOM.removeClass(el.el, this.config.addClassNameIntersect);
+
+          // Callback function.
+          if(this.config.on.Intersect && typeof(this.config.on.Intersect) === 'function'){
+            this.config.on.Intersect(callback);
+          }
+        }
+      }
+
+      if(el.intersectover){
+        if(!DOM.hasClass(el.el, this.config.addClassNameIntersectOver)){
+          if(this.config.addClassNameIntersectOver) DOM.addClass(el.el, this.config.addClassNameIntersectOver);
+
+          // Callback function.
+          if(this.config.on.Intersect && typeof(this.config.on.Intersect) === 'function'){
+            this.config.on.Intersect(callback);
+          }
+        }
+      } else {
+        if(DOM.hasClass(el.el, this.config.addClassNameIntersectOver)){
+          if(this.config.addClassNameIntersectOver) DOM.removeClass(el.el, this.config.addClassNameIntersectOver);
+
+          // Callback function.
+          if(this.config.on.Intersect && typeof(this.config.on.Intersect) === 'function'){
+            this.config.on.Intersect(callback);
+          }
+        }
+      }
+    });
 
   }
 
