@@ -94,24 +94,6 @@ import SCROLL_EFFECT_MODULE from 'js-scroll-effect-module';
 </script>
 ```
 
-### Advanced Use (Acceleration)
-
-``` html
-<script src="./js-scroll-effect-module.js"></script>
-<script>
-  var ScrollEffectModule = new SCROLL_EFFECT_MODULE({
-    acceleration       : true,
-    on: {
-      Acceleration: function(num){
-        console.log('Acceleration', num);
-      }
-    }
-  });
-</script>
-```
-
-<br>
-
 ## API
 
 <br>
@@ -137,18 +119,6 @@ import SCROLL_EFFECT_MODULE from 'js-scroll-effect-module';
 <br><br><br>
 
 ---
-
-**For Developer**
-
-## Contribution
-
-1. Fork it ( https://github.com/yama-dev/js-scroll-effect-module/fork )
-2. Create your feature branch (git checkout -b my-new-feature)
-3. Commit your changes (git commit -am 'Add some feature')
-4. Push to the branch (git push origin my-new-feature)
-5. Create new Pull Request
-
-<br>
 
 ## Licence
 
