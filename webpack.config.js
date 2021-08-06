@@ -1,24 +1,18 @@
 const pkg = require('./package.json');
 
-const comment = `@yama-dev/${pkg.name} Version ${pkg.version} Repository ${pkg.repository.url} Copyright ${pkg.author} Licensed ${pkg.license}`;
+const comment = `/*! @yama-dev/${pkg.name} Version ${pkg.version} Repository ${pkg.repository.url} Copyright ${pkg.author} Licensed ${pkg.license} */`;
 
 const env = process.env.NODE_ENV;
 
+if(!env) process.exit(1);
+
 const webpack = require('webpack');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const webpackPlugEnv = new webpack.EnvironmentPlugin({
-  NODE_ENV: 'development',
   DEBUG: false,
   VERSION: pkg.version
 });
-
-const webpackPlugBnr = new webpack.BannerPlugin({
-  banner: comment,
-});
-
-const babelPlugin = [
-  '@babel/plugin-transform-object-assign'
-];
 
 const config = {
   mode: env || 'development',
@@ -42,7 +36,7 @@ const config = {
       },
       {
         test: /\.js$/,
-        exclude: /node_modules[//\/](?!(@yama\-dev)\/).*/,
+        exclude: /node_modules[///](?!(@yama-dev)\/).*/,
         use: {
           loader: 'babel-loader',
           options: {
@@ -53,17 +47,32 @@ const config = {
                   modules: false
                 }
               ]
-            ],
-            plugins: babelPlugin
+            ]
           }
         }
       }
     ]
   },
+  target: ['web', 'es5'],
   plugins: [
     webpackPlugEnv,
-    webpackPlugBnr
-  ]
+  ],
+  optimization: {
+    minimizer: [
+      new TerserPlugin({
+        extractComments: false,
+        terserOptions: {
+          output: {
+            preamble: comment,
+            comments: false,
+          },
+          compress: {
+            drop_console: true
+          }
+        },
+      }),
+    ],
+  }
 };
 
 module.exports = config;
