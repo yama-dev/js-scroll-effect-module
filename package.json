@@ -18,12 +18,11 @@
   "main": "./dist/js-scroll-effect-module.js",
   "scripts": {
     "start": "npm install && npm run dev",
-    "dev": "cross-env NODE_ENV=\"development\" npm-run-all -p build:develop server:develop",
-    "server:develop": "browser-sync start --server ./ --directory ./sample --files **/*.css **/*.js **/*.html",
-    "build:develop": "webpack --progress --colors --watch",
-    "prod": "cross-env NODE_ENV=\"production\" npm-run-all -p build:production server:production",
-    "server:production": "browser-sync start --server ./ --directory ./sample --files **/*.css **/*.js **/*.html",
-    "build:production": "webpack --progress --colors --watch",
+    "dev": "npm-run-all -p webpack:develop server",
+    "prod": "npm-run-all -p webpack:build",
+    "server": "browser-sync start --server ./ --directory ./examples --files **/*.css **/*.js **/*.html",
+    "webpack:develop": "webpack --progress --color --watch",
+    "webpack:build": "webpack --mode=production --progress --color",
     "test": "mocha --require @babel/register"
   },
   "repository": {
@@ -49,7 +48,7 @@
     "webpack-cli": "^4.7.2"
   },
   "dependencies": {
-    "@yama-dev/js-dom": "^0.1.0"
+    "@yama-dev/js-dom": "^0.2.1"
   },
   "eslintConfig": {
     "env": {
