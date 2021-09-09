@@ -311,6 +311,8 @@ export default class SCROLL_EFFECT_MODULE {
 
   _actionChange(){
 
+    if(!this.state.PosList.length) return false;
+
     this.state.PosListFix.map((el)=>{
       if(!DOM.hasClass(this.$elemItem[el.index], this.config.addClassNameActive)){
         el.count++;
