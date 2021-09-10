@@ -1,8 +1,6 @@
 # SCROLL EFFECT MODULE
 
-[![](https://img.shields.io/github/repo-size/yama-dev/js-scroll-effect-module.svg)](https://github.com/yama-dev/js-scroll-effect-module/releases/latest)
 [![](https://img.shields.io/github/release/yama-dev/js-scroll-effect-module.svg)](https://github.com/yama-dev/js-scroll-effect-module/releases/latest)
-[![GitHub](https://img.shields.io/github/license/yama-dev/js-scroll-effect-module.svg)](https://github.com/yama-dev/js-scroll-effect-module/blob/master/LICENSE)
 
 <br>
 
@@ -14,9 +12,7 @@ Add effect according to scroll.
 
 ## Demo
 
-- Document -> [https://yama-dev.github.io/js-scroll-effect-module/](https://yama-dev.github.io/js-scroll-effect-module/)
-- ExamplePage -> [https://yama-dev.github.io/js-scroll-effect-module/examples/](https://yama-dev.github.io/js-scroll-effect-module/examples/)
-- ExamplePage(Acceleration) -> [https://yama-dev.github.io/js-scroll-effect-module/examples/](https://yama-dev.github.io/js-scroll-effect-module/examples/acceleration.html)
+- Document -> [https://yama-dev.github.io/js-scroll-effect-module-docs/](https://yama-dev.github.io/js-scroll-effect-module-docs/)
 
 <br>
 
@@ -24,7 +20,7 @@ Add effect according to scroll.
 
 - npm -> [https://www.npmjs.com/package/js-scroll-effect-module](https://www.npmjs.com/package/js-scroll-effect-module)
 
-- Standalone(CDN) -> [https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module@v0.10.1/dist/js-scroll-effect-module.js](https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module@v0.10.1/dist/js-scroll-effect-module.js)
+- Standalone(CDN) -> [https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module@v0.11.1/dist/js-scroll-effect-module.js](https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module@v0.11.1/dist/js-scroll-effect-module.js)
 
 - Zip -> [yama-dev/js-scroll-effect-module](https://github.com/yama-dev/js-scroll-effect-module/releases/latest)
 
