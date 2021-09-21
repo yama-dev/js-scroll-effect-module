@@ -33,7 +33,7 @@ export default class SCROLL_EFFECT_MODULE {
       firstDelay         : 10,
       firstDelaySteps    : 100,
 
-      throttleInterval   : 50,
+      throttleInterval   : 5,
 
       addClassNameActive : 'is-active',
 
