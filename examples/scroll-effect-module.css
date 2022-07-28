@@ -1,47 +1,19 @@
-/*!
- * js-scroll-effect-module JavaScript Library v0.6.0
- * https://github.com/yama-dev/js-scroll-effect-module
- * Copyright yama-dev
- * Licensed under the MIT license.
- */
-/*!
- * Setings
- * -> Set Easing
- *   "easeOutQuart"
- *     cubic-bezier(0.165, 0.84, 0.44, 1);
- *   "easeInOutCubic"
- *     cubic-bezier(0.645, 0.045, 0.355, 1);
- *   "easeInOutBack"
- *     cubic-bezier(0.68, -0.55, 0.265, 1.55);
- * -> Set Duration
- * -> Set Delay
- */
-/*!
- * Set Effects
- * -> js-scroll__fadein-basic
- * -> js-scroll__fadein-top
- * -> js-scroll__fadein-bottom
- * -> js-scroll__fadein-left
- * -> js-scroll__fadein-right
- * -> js-scroll__fadein-zoomin
- * -> js-scroll__spinin
- */
-.js-scroll__fadein-basic {
+[data-scroll-type="fadein"] {
   opacity: 0;
   -webkit-transition: opacity 1s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
   transition: opacity 1s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
 }
 
-.js-scroll__fadein-basic.is-active {
+[data-scroll-type="fadein"].is-active {
   opacity: 1;
   -webkit-transition: opacity 1s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
   transition: opacity 1s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
 }
 
-.js-scroll__fadein-zoomin {
+[data-scroll-type="zoomin"] {
   opacity: 0;
-  -webkit-transform: scale(0.99);
-          transform: scale(0.99);
+  -webkit-transform: scale(0.9);
+          transform: scale(0.9);
   -webkit-transform-style: preserve-3d;
           transform-style: preserve-3d;
   -webkit-backface-visibility: hidden;
@@ -50,7 +22,7 @@
   transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
 }
 
-.js-scroll__fadein-zoomin.is-active {
+[data-scroll-type="zoomin"].is-active {
   opacity: 1;
   -webkit-transform: scale(1);
           transform: scale(1);
@@ -62,7 +34,7 @@
   transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
 }
 
-.js-scroll__fadein-top {
+[data-scroll-type="fadeinTop"] {
   opacity: 0;
   -webkit-transform: translate(0, -30px);
           transform: translate(0, -30px);
@@ -74,7 +46,7 @@
   transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
 }
 
-.js-scroll__fadein-top.is-active {
+[data-scroll-type="fadeinTop"].is-active {
   opacity: 1;
   -webkit-transform: translate(0, 0);
           transform: translate(0, 0);
@@ -86,7 +58,7 @@
   transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
 }
 
-.js-scroll__fadein-bottom {
+[data-scroll-type="fadeinBottom"] {
   opacity: 0;
   -webkit-transform: translate(0, 30px);
           transform: translate(0, 30px);
@@ -98,7 +70,7 @@
   transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
 }
 
-.js-scroll__fadein-bottom.is-active {
+[data-scroll-type="fadeinBottom"].is-active {
   opacity: 1;
   -webkit-transform: translate(0, 0);
           transform: translate(0, 0);
@@ -110,7 +82,7 @@
   transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
 }
 
-.js-scroll__fadein-left {
+[data-scroll-type="fadeinLeft"] {
   opacity: 0;
   -webkit-transform: translate(-80%, 0);
           transform: translate(-80%, 0);
@@ -122,7 +94,7 @@
   transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
 }
 
-.js-scroll__fadein-left.is-active {
+[data-scroll-type="fadeinLeft"].is-active {
   opacity: 1;
   -webkit-transform: translate(0, 0);
           transform: translate(0, 0);
@@ -134,7 +106,7 @@
   transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
 }
 
-.js-scroll__fadein-right {
+[data-scroll-type="fadeinRight"] {
   opacity: 0;
   -webkit-transform: translate(80%, 0);
           transform: translate(80%, 0);
@@ -146,7 +118,7 @@
   transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
 }
 
-.js-scroll__fadein-right.is-active {
+[data-scroll-type="fadeinRight"].is-active {
   opacity: 1;
   -webkit-transform: translate(0, 0);
           transform: translate(0, 0);
@@ -158,7 +130,7 @@
   transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
 }
 
-.js-scroll__spinin {
+[data-scroll-type="spinin"] {
   opacity: 0;
   -webkit-transform: translate(0, 0) rotate3d(1, 0, 1, -720deg);
           transform: translate(0, 0) rotate3d(1, 0, 1, -720deg);
@@ -170,7 +142,7 @@
   transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
 }
 
-.js-scroll__spinin.is-active {
+[data-scroll-type="spinin"].is-active {
   opacity: 1;
   -webkit-transform: translate(0, 0) rotate3d(1, 0, 1, 0);
           transform: translate(0, 0) rotate3d(1, 0, 1, 0);

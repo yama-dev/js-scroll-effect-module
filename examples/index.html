@@ -37,164 +37,156 @@
 
   <hr class="mt-4 mb-4">
 
-  <div class="p-use js-scroll js-scroll--first js-scroll__fadein-bottom">
+  <div class="p-use" data-scroll>
     <h3>Basic Use</h3>
     <pre class="prettyprint lang-html">
       <code>
+      &lt;div data-scroll&gt;&lt;/div&gt;
       &lt;script src=&quot;./js-scroll-effect-module.js&quot;&gt;&lt;/script&gt;
+      &lt;script&gt; new SCROLL_EFFECT_MODULE({ elem: &#039;[data-scroll]&#039; }); &lt;/script&gt;</code>
+    </pre>
+    <pre class="prettyprint lang-html">
+      <code>
+      // 予め容易されているアニメーションを利用する場合
       &lt;link rel=&quot;stylesheet&quot; href=&quot;./scroll-effect-module.css&quot;&gt;
-      &lt;div class=&quot;js-scroll js-scroll__fadein-basic&quot;&gt;&lt;/div&gt;
-
-      &lt;script&gt; new SCROLL_EFFECT_MODULE({ elem: &#039;.js-scroll&#039; }); &lt;/script&gt;</code>
+      &lt;div data-scroll data-scroll-type=&quot;fadein&quot;&gt;&lt;/div&gt;</code>
     </pre>
   </div>
 
-  <hr class="mt-4 mb-4 js-scroll js-scroll--first js-scroll__fadein-bottom">
+  <hr class="mt-4 mb-4" data-scroll>
 
-  <div class="p-use js-scroll js-scroll--first js-scroll__fadein-bottom">
+  <div class="p-use" data-scroll>
     <h3>Advanced Use</h3>
     <pre class="prettyprint lang-html">
       <code>
       &lt;script src=&quot;./js-scroll-effect-module.js&quot;&gt;&lt;/script&gt;
-      &lt;link rel=&quot;stylesheet&quot; href=&quot;./scroll-effect-module.css&quot;&gt;
-      &lt;div class=&quot;js-scroll&quot;&gt;&lt;/div&gt;
+      &lt;div data-scroll data-scroll-name=&quot;first&quot;&gt;&lt;/div&gt;
+      &lt;div data-scroll data-scroll-name=&quot;second&quot;&gt;&lt;/div&gt;
+      &lt;div data-scroll data-scroll-name=&quot;third&quot;&gt;&lt;/div&gt;
 
       &lt;script&gt;
-        var ScrollEffectModule = new SCROLL_EFFECT_MODULE({
-          elem               : &#039;.js-scroll&#039;,
-          firstElem          : &#039;.js-scroll--first&#039;,
+      const ScrollEffectModule = new SCROLL_EFFECT_MODULE({
+        target: &#39;[data-scroll]&#39;,
+        root: null,
 
-          displayRatio       : 0.8,
-          displayReverse     : true,
-          displayRatioReverse: 1.2,
+        displayRatio       : 0.8,
+        displayReverse     : true,
 
-          firstDelay         : 0,
-          firstDelaySteps    : 100,
+        autoStart: true,
 
-          autoStart          : true,
+        classNameActive: &#39;is-active&#39;,
 
-          addClassNameActive : &#039;is-active&#039;,
+        intersect: false, // intersectの処理をするか
 
-          on: {
-            Scroll: function(top){
-              console.log(&#039;Scroll&#039;, top);
-            },
-            Change: function(item, pos, obj, top){
-              console.log(&#039;Change&#039;, item, pos, obj, top);
-            },
-            In: function(item, pos, obj, top){
-              console.log(&#039;In&#039;, item, pos, obj, top);
-            },
-            Out: function(item, pos, obj, top){
-              console.log(&#039;Out&#039;, item, pos, obj, top);
-            }
+        scrollEvent: false, // scrollイベントを管理するか
+        throttleInterval: 3,
+
+        on: {
+          Scroll: function(top){
+            console.log(&#39;Scroll&#39;, top);
+          },
+          Change: function(elem, index, name){
+            console.log(&#39;Change&#39;, elem, index, name);
+          },
+          In: function(elem, index, name){
+            console.log(&#39;In&#39;, elem, index, name);
+          },
+          Out: function(elem, index, name){
+            console.log(&#39;Out&#39;, elem, index, name);
           }
-        });
+        }
+      });
       &lt;/script&gt;</code>
     </pre>
 
     <script>
-      var ScrollEffectModule = new SCROLL_EFFECT_MODULE({
-        elem               : '.js-scroll',
-        firstElem          : '.js-scroll--first',
+    const ScrollEffectModule = new SCROLL_EFFECT_MODULE({
+      target: '[data-scroll]',
+      root: null,
 
-        displayRatio       : 0.8,
-        displayReverse     : true,
-        displayRatioReverse: 1.2,
+      displayRatio       : 0.8,
+      displayReverse     : true,
 
-        firstDelay         : 0,
-        firstDelaySteps    : 100,
+      autoStart: true,
 
-        throttleInterval   : 50,
+      classNameActive: 'is-active',
 
-        autoStart          : true,
+      intersect: false, // intersectの処理をするか
 
-        addClassNameActive : 'is-active',
+      scrollEvent: false, // scrollイベントを管理するか
+      throttleInterval: 3,
 
-        on: {
-          Scroll: function(top){
-            console.log('Scroll', top);
-            document.querySelector('.dev .t1').innerHTML = top;
-          },
-          Change: function(item, pos, obj, top){
-            console.log('Change', item, pos, obj, top);
-            document.querySelector('.dev .t2').innerHTML = pos;
-          },
-          In: function(item, pos, obj, top){
-            console.log('In', item, pos, obj, top);
-          },
-          Out: function(item, pos, obj, top){
-            console.log('Out', item, pos, obj, top);
-          }
+      on: {
+        Scroll: function(top){
+          console.log('Scroll', top);
+        },
+        Change: function(elem, index, name){
+          console.log('Change', elem, index, name);
+          document.querySelector('.dev .t1').innerHTML = index;
+          document.querySelector('.dev .t2').innerHTML = name;
+        },
+        In: function(elem, index, name){
+          console.log('In', elem, index, name);
+        },
+        Out: function(elem, index, name){
+          console.log('Out', elem, index, name);
         }
-      });
+      }
+    });
     </script>
-
-    <p><button class="btn btn btn-secondary" onclick="ScrollEffectModule.Update()">要素の情報更新 - ScrollEffectModule.Update()</button></p>
-    <p><button class="btn btn btn-secondary" onclick="ScrollEffectModule.Refresh()">リフレッシュ - ScrollEffectModule.Refresh()</button></p>
-    <p><button class="btn btn btn-secondary" onclick="ScrollEffectModule.Clear()">非アクティブ化 - ScrollEffectModule.Clear()</button></p>
-
   </div>
 
-  <hr class="mt-4 mb-4 js-scroll js-scroll__fadein-bottom">
+  <hr class="mt-4 mb-4" data-scroll>
 
-  <div class="p-use js-scroll js-scroll__fadein-bottom">
-    <h3>Advanced Use (Acceleration)</h3>
-    <pre class="prettyprint lang-html">
-      <code>
-      &lt;script src=&quot;./js-scroll-effect-module.js&quot;&gt;&lt;/script&gt;
-      &lt;script&gt;
-        var ScrollEffectModule = new SCROLL_EFFECT_MODULE({
-          acceleration       : true,
-          on: {
-            Acceleration: function(num){
-              console.log(&#039;Acceleration&#039;, num);
-            }
-          }
-        });
-      &lt;/script&gt;</code>
-    </pre>
+  <p><button class="btn btn btn-secondary" onclick="ScrollEffectModule.Update()">情報更新 - ScrollEffectModule.Update()</button></p>
+  <p><button class="btn btn btn-secondary" onclick="ScrollEffectModule.Start()">監視を開始 - ScrollEffectModule.Start()</button></p>
+  <p><button class="btn btn btn-secondary" onclick="ScrollEffectModule.Stop()">監視を停止 - ScrollEffectModule.Stop()</button></p>
 
-  </div>
-
-  <hr class="mt-4 mb-4 js-scroll js-scroll__fadein-bottom">
+  <hr class="mt-4 mb-4" data-scroll>
 
   <div class="p-demo">
-    <h3 class="js-scroll js-scroll__fadein-bottom">DEMO</h3>
+    <h3 >DEMO</h3>
     <br><br><br><br><br><br><br><br><br><br><br><br>
-    <div class="js-scroll js-scroll__fadein-basic text-center" data-sem-offset="600">
+    <div class="text-center" data-scroll data-scroll-type="fadein">
       <h2>EffectType : fadein basic</h2>
-      <p>EffectClassname : .js-scroll__fadein-basic</p>
+      <p>[data-scroll-type="fadein"]</p>
+      <br><br><br><br><br><br><br><br><br><br><br><br>
     </div>
     <br><br><br><br><br><br><br><br><br><br><br><br>
-    <div class="js-scroll js-scroll__fadein-top text-center">
+    <div class="text-center" data-scroll data-scroll-type="fadeinTop">
       <h2>EffectType : fadein top</h2>
-      <p>EffectClassname : .js-scroll__fadein-top</p>
+      <p>[data-scroll-type="fadeinTop"]</p>
+      <br><br><br><br><br><br><br><br><br><br><br><br>
     </div>
     <br><br><br><br><br><br><br><br><br><br><br><br>
-    <div class="js-scroll js-scroll__fadein-bottom text-center">
+    <div class="text-center" data-scroll data-scroll-type="fadeinBottom">
       <h2>EffectType : fadein bottom</h2>
-      <p>EffectClassname : .js-scroll__fadein-bottom</p>
+      <p>[data-scroll-type="fadeinBottom"]</p>
+      <br><br><br><br><br><br><br><br><br><br><br><br>
     </div>
     <br><br><br><br><br><br><br><br><br><br><br><br>
-    <div class="js-scroll js-scroll__fadein-left text-center">
+    <div class="text-center" data-scroll data-scroll-type="fadeinLeft">
       <h2>EffectType : fadein left</h2>
-      <p>EffectClassname : .js-scroll__fadein-left</p>
+      <p>[data-scroll-type="fadeinLeft"]</p>
+      <br><br><br><br><br><br><br><br><br><br><br><br>
     </div>
     <br><br><br><br><br><br><br><br><br><br><br><br>
-    <div class="js-scroll js-scroll__fadein-right text-center">
+    <div class="text-center" data-scroll data-scroll-type="fadeinRight">
       <h2>EffectType : fadein right</h2>
-      <p>EffectClassname : .js-scroll__fadein-right</p>
+      <p>[data-scroll-type="fadeinRight"]</p>
+      <br><br><br><br><br><br><br><br><br><br><br><br>
     </div>
     <br><br><br><br><br><br><br><br><br><br><br><br>
-    <div class="js-scroll js-scroll__fadein-zoomin text-center">
+    <div class="text-center" data-scroll data-scroll-type="zoomin">
       <h2>EffectType : fadein zoomin</h2>
-      <p>EffectClassname : .js-scroll__fadein-zoomin</p>
+      <p>[data-scroll-type="zoomin"]</p>
+      <br><br><br><br><br><br><br><br><br><br><br><br>
     </div>
     <br><br><br><br><br><br><br><br><br><br><br><br>
-    <div class="js-scroll js-scroll__spinin text-center">
+    <div class="text-center" data-scroll data-scroll-type="spinin">
       <h2>EffectType : spinin</h2>
-      <p>EffectClassname : .js-scroll__spinin</p>
+      <p>[data-scroll-type="spinin"]</p>
+      <br><br><br><br><br><br><br><br><br><br><br><br>
     </div>
     <br><br><br><br><br><br><br><br><br><br><br><br>
   </div>
@@ -202,8 +194,8 @@
 </div>
 
 <div class="dev" style="position: fixed; bottom: 0; left: 0; padding: 10px; background: rgba(0,0,0,0.5); color: #fff;">
-  <div>スクロール　：　<span class="t1" style="display: inline-block; width: 3em;"></span>[px]</div>
-  <div>ポジション　：　<span class="t2" style="display: inline-block; width: 3em;"></span></div>
+  <div>INDEX　：　<span class="t1" style="display: inline-block; width: 3em;"></span></div>
+  <div>NAME　：　<span class="t2" style="display: inline-block; width: 3em;"></span></div>
 </div>
 
 <a href="https://github.com/yama-dev/js-scroll-effect-module" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
