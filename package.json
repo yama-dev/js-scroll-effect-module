@@ -86,5 +86,8 @@
       "no-console": "warn",
       "no-unused-vars": "warn"
     }
+  },
+  "volta": {
+    "node": "14.20.0"
   }
 }
