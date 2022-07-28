@@ -1,7 +1,5 @@
 include .env
 
-VIM := mvim
-
 PROGRAM := npm
 RM := rm -rf
 MK := mkdir
@@ -13,15 +11,12 @@ ZIP_FOLDER := _v$(VERSION)
 ENV_DEV := NODE_ENV=development
 ENV_PROD := NODE_ENV=production
 
-all: editor serve
+all: serve
 
 build: clean prod
 
 install:
 	$(PROGRAM) install
-
-editor:
-	$(VIM) './'
 
 clean:
 	$(RM) dist
@@ -39,4 +34,4 @@ zip:
 	sed -i "" "s/..\/dist\//.\//g" "$(ZIP_FOLDER)/index.html"
 	$(ZIP) $(ZIP_FOLDER)/$(VERSION).zip -r $(ZIP_FOLDER)/*
 
-.PHONY: all build editor serve clean prod zip install
+.PHONY: all build serve clean prod zip install
