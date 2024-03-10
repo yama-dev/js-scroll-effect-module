@@ -31,6 +31,7 @@ zip:
 	$(RM) $(ZIP_FOLDER)
 	$(MK) $(ZIP_FOLDER)
 	$(CP) dist/js-scroll-effect-module.js examples/index.html $(ZIP_FOLDER)/
+	$(CP) examples/scroll-effect-module.css examples/scroll-effect-module.css $(ZIP_FOLDER)/
 	sed -i "" "s/..\/dist\//.\//g" "$(ZIP_FOLDER)/index.html"
 	$(ZIP) $(ZIP_FOLDER)/$(VERSION).zip -r $(ZIP_FOLDER)/*
 
