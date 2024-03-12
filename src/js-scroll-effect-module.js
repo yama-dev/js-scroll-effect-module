@@ -223,37 +223,37 @@ export default class SCROLL_EFFECT_MODULE {
   _ActionChange(){
     if(!this.state.PosList.length) return false;
 
-    this.state.PosList.map((el)=>{
-      if(el.active){
-        if(!DOM.hasClass(el.el, this.config.classNameInview)){
+    this.state.PosList.forEach(el => {
+      if (el.active) {
+        // activeな場合の処理
+        if (!DOM.hasClass(el.el, this.config.classNameInview)) {
           el.count++;
-          if(this.config.classNameInview) DOM.addClass(el.el, this.config.classNameInview);
-
-          // Callback function.
-          if(this.config.on.In && typeof(this.config.on.In) === 'function'){
-            this.config.on.In(el);
-          }
+          if (this.config.classNameInview) DOM.addClass(el.el, this.config.classNameInview);
+          // Inコールバック関数の呼び出し
+          this.callCallback(this.config.on.In, el);
         }
       } else {
-        if(this.config.displayReverse){
-          if(DOM.hasClass(el.el, this.config.classNameInview)){
-            DOM.removeClass(el.el, this.config.classNameInview);
-
-            // Callback function.
-            if(this.config.on.Out && typeof(this.config.on.Out) === 'function'){
-              this.config.on.Out(el);
-            }
-          }
+        // activeでない場合の処理
+        if (this.config.displayReverse && DOM.hasClass(el.el, this.config.classNameInview)) {
+          DOM.removeClass(el.el, this.config.classNameInview);
+          // Outコールバック関数の呼び出し
+          this.callCallback(this.config.on.Out, el);
         }
       }
-      if(el.changing){
+      // changingフラグのチェック
+      if (el.changing) {
         el.changing = false;
-        // Callback function.
-        if(this.config.on.Change && typeof(this.config.on.Change) === 'function'){
-          this.config.on.Change(el, el.index, el.dataset.scrollName);
-        }
+        // Changeコールバック関数の呼び出し
+        this.callCallback(this.config.on.Change, el, el.index, el.dataset.scrollName);
       }
     });
+  }
+
+  // コールバック関数の呼び出しを行うためのユーティリティ関数
+  callCallback(callback, ...args) {
+    if (callback && typeof callback === 'function') {
+      callback(...args);
+    }
   }
 
 }
