@@ -77,8 +77,7 @@ export default class SCROLL_EFFECT_MODULE {
   }
 
   Stop(){
-    this.state.PosList.map((el, i)=>{
-      el.active = false;
+    this.state.PosList.map((el)=>{
       DOM.removeClass(el.el, this.config.classNameInview);
     });
     this.state.PosList = [];
