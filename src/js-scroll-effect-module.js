@@ -73,8 +73,6 @@ export default class SCROLL_EFFECT_MODULE {
   }
 
   Update(){
-    this._CacheDom();
-    this._CacheDomSize();
     this._SetDom();
   }
 
@@ -116,14 +114,6 @@ export default class SCROLL_EFFECT_MODULE {
     window.addEventListener('scroll', throttle(function(){
       _that._StoreElementStateAtPosList();
     }, this.config.throttleInterval), {passive: true});
-  }
-
-  _CacheDom(){
-    this.$targetElements = DOM.selectDom(this.config.target);
-  }
-
-  _CacheDomSize(){
-    this.NumWindowHeight = window.innerHeight;
   }
 
   _SetDom(){
