@@ -128,8 +128,12 @@ export default class SCROLL_EFFECT_MODULE {
 
   _SetDom(){
     this.state.PosList = [];
+
     this.state.NumScrolltop = window.pageYOffset;
-    let _elem = DOM.selectDom(this.$targetElements);
+    this.NumWindowHeight = window.innerHeight;
+
+    let _elem = DOM.selectDom(this.config.target);
+
     if(_elem){
       _elem.map((el,i)=>{
         let offset = 0;
