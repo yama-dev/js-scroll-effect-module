@@ -229,14 +229,14 @@ export default class SCROLL_EFFECT_MODULE {
           el.count++;
           if (this.config.classNameInview) DOM.addClass(el.el, this.config.classNameInview);
           // Inコールバック関数の呼び出し
-          this.callCallback(this.config.on.In, el);
+          this.callCallback(this.config.on.In, el, el.index, el.dataset.scrollName);
         }
       } else {
         // activeでない場合の処理
         if (this.config.displayReverse && DOM.hasClass(el.el, this.config.classNameInview)) {
           DOM.removeClass(el.el, this.config.classNameInview);
           // Outコールバック関数の呼び出し
-          this.callCallback(this.config.on.Out, el);
+          this.callCallback(this.config.on.Out, el, el.index, el.dataset.scrollName);
         }
       }
       // changingフラグのチェック
