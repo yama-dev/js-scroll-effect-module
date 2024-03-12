@@ -94,9 +94,15 @@ export default class SCROLL_EFFECT_MODULE {
     // for Load-Event
     window.addEventListener('load', () => {
       this.Update();
+      if(this.timer){
+        clearTimeout(this.timer);
+        this.timer = setTimeout(()=>{
+          this._StoreElementStateAtPosList();
+        }, this.config.firstDelay);
+      }
     });
 
-    setTimeout(()=>{
+    this.timer = setTimeout(()=>{
       this._StoreElementStateAtPosList();
     }, this.config.firstDelay);
 
