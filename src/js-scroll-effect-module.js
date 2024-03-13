@@ -27,6 +27,7 @@ export default class SCROLL_EFFECT_MODULE {
       throttleInterval   : 3,
 
       autoStart          : true,
+      autoStartType      : 'ready', // ready, load, scroll
 
       on: {
         Scroll       : null,
@@ -41,6 +42,9 @@ export default class SCROLL_EFFECT_MODULE {
       ...configDefault,
       ...options
     };
+
+    this.timer = null;
+    this.timerScroll = null;
 
     // adjust ratio value.
     if( !this.config.displayRatioReverse ) {
@@ -84,27 +88,34 @@ export default class SCROLL_EFFECT_MODULE {
   }
 
   _BindEvent(){
-    let _that = this;
+    if(this.timer) clearTimeout(this.timer);
 
     // for Resize-Event
     window.addEventListener('resize', () => {
-      this.Update();
+      this.Start();
     });
 
-    // for Load-Event
-    window.addEventListener('load', () => {
-      this.Update();
-      if(this.timer){
-        clearTimeout(this.timer);
+    if(this.config.autoStartType === 'ready'){
+      this.timer = setTimeout(()=>{
+        this.Start();
+        this._BindEventScroll();
+      }, this.config.firstDelay);
+    } else if(this.config.autoStartType === 'load'){
+      // for Load-Event
+      window.addEventListener('load', () => {
         this.timer = setTimeout(()=>{
-          this._StoreElementStateAtPosList();
+          this.Start();
+          this._BindEventScroll();
         }, this.config.firstDelay);
-      }
-    });
+      });
+    } else if(this.config.autoStartType === 'scroll'){
+      this._BindEventScroll();
+    }
+  }
+  _BindEventScroll(){
+    let _that = this;
 
-    this.timer = setTimeout(()=>{
-      this._StoreElementStateAtPosList();
-    }, this.config.firstDelay);
+    if(this.timerScroll) clearTimeout(this.timerScroll);
 
     // for Scroll-Event
     function throttle(fn, wait) {
@@ -116,9 +127,27 @@ export default class SCROLL_EFFECT_MODULE {
         }
       };
     }
+
+    // スクロールの間引き処理
     window.addEventListener('scroll', throttle(function(){
       _that._StoreElementStateAtPosList();
-    }, this.config.throttleInterval), {passive: true});
+    }, _that.config.throttleInterval), {passive: true});
+
+    let _flg = false;
+    window.addEventListener('scroll', ()=>{
+      // スクロール開始時に一度だけ実行
+      if(!_flg)_that._StoreElementStateAtPosList();
+
+      _flg = true;
+
+      if(this.timerScroll) clearTimeout(this.timerScroll);
+
+      // スクロール終了時に実行
+      _that.timerScroll = setTimeout(()=>{
+        _flg = false;
+        _that._StoreElementStateAtPosList();
+      }, _that.config.throttleInterval);
+    }, {passive: true});
   }
 
   _SetDom(){
