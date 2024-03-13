@@ -212,8 +212,8 @@ export default class SCROLL_EFFECT_MODULE {
     let changingCount = this.state.PosList.filter(item => item.changing === true);
     if(changingCount.length) this._ActionChange();
 
-    // Callback function.
-    if(this.config.on.Scroll && typeof(this.config.on.Scroll) === 'function') this.config.on.Scroll(this.state.NumScrolltop);
+    // Scrollコールバック関数の呼び出し
+    this.callCallback(this.config.on.Scroll, this.state.NumScrolltop);
 
     this.state.NumScrolltopPre = this.state.NumScrolltop;
     this.state.PosListFixPre = this.state.PosListFix;
