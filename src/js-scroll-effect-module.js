@@ -155,55 +155,36 @@ export default class SCROLL_EFFECT_MODULE {
     // Scroll top cache
     this.state.NumScrolltop = window.pageYOffset;
 
-    // Store element state at PosList.
-    this.state.PosList.map((el)=>{
-
-      // When displayRatio and displayRatioReverse are the SAME.
-      if(this.config.displayRatio === this.config.displayRatioReverse){
-        if( this.state.NumScrolltop + ( this.NumWindowHeight * this.config.displayRatio ) > el.pos ){
-          if(!el.active){
-            el.changing = true;
-            el.active = true;
-          }
-        } else {
-          // 「none active」Set of lists
-          if(el.active){
-            el.changing = true;
-            el.active = false;
-          }
-        }
+    // 要素のactive状態を設定するユーティリティ関数
+    let setActiveState = (el, active) => {
+      if (el.active !== active) {
+        el.changing = true;
+        el.active = active;
       }
+    };
 
-      // When displayRatio and displayRatioReverse are the DIFFERENT.
-      if(this.config.displayRatio !== this.config.displayRatioReverse){
-        if( this.state.NumScrolltop + ( this.NumWindowHeight * this.config.displayRatio ) > el.pos ){
-          // 「active」Set of lists
-          if(!el.active){
-            el.changing = true;
-            el.active = true;
-          }
+    // Store element state at PosList.
+    this.state.PosList.forEach(el => {
+      if (this.config.displayRatio === this.config.displayRatioReverse) {
+        // displayRatioとdisplayRatioReverseが同じ場合の処理
+        if (this.state.NumScrolltop + (this.NumWindowHeight * this.config.displayRatio) > el.pos) {
+          // 画面内に要素が表示された場合
+          setActiveState(el, true);
         } else {
-          if( this.state.NumScrolltop + ( this.NumWindowHeight * this.config.displayRatioReverse ) > el.pos ){
-            if(el.active){
-              // 「active」Set of lists
-              if(!el.active){
-                el.changing = true;
-                el.active = true;
-              }
-            } else {
-              // 「none active」Set of lists
-              if(el.active){
-                el.changing = true;
-                el.active = false;
-              }
-            }
-          } else {
-            // 「none active」Set of lists
-            if(el.active){
-              el.changing = true;
-              el.active = false;
-            }
-          }
+          // 画面外に要素が移動した場合
+          setActiveState(el, false);
+        }
+      } else {
+        // displayRatioとdisplayRatioReverseが異なる場合の処理
+        if (this.state.NumScrolltop + (this.NumWindowHeight * this.config.displayRatio) > el.pos) {
+          // displayRatioで設定された閾値を満たした場合
+          setActiveState(el, true);
+        } else if (this.state.NumScrolltop + (this.NumWindowHeight * this.config.displayRatioReverse) > el.pos) {
+          // displayRatioReverseで設定された閾値を満たした場合
+          setActiveState(el, true);
+        } else {
+          // どの閾値も満たさない場合
+          setActiveState(el, false);
         }
       }
     });
