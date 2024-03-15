@@ -253,33 +253,41 @@ export default class SCROLL_EFFECT_MODULE {
     this.state.NumScrolltopPre = this.state.NumScrolltop;
   }
 
-  _ActionChange(){
+  _ActionChange(_type){
     if(!this.state.PosList.length) return false;
 
-    this.state.PosList.forEach(el => {
-      if (el.active) {
+    for (let _i = 0; _i < this.state.PosList.length; _i++) {
+      const _item_pre = this.state.PosList[_i - 1];
+      const _item = this.state.PosList[_i];
+
+      if (_item.active) {
         // activeな場合の処理
-        if (!DOM.hasClass(el.el, this.config.classNameInview)) {
-          el.count++;
-          if (this.config.classNameInview) DOM.addClass(el.el, this.config.classNameInview);
+        if (!DOM.hasClass(_item.el, this.config.classNameInview)) {
+          _item.count++;
+          if (this.config.classNameInview) DOM.addClass(_item.el, this.config.classNameInview);
           // Inコールバック関数の呼び出し
-          this.callCallback(this.config.on.In, el, el.index, el.dataset.scrollName);
+          this.callCallback(this.config.on.In, _item, _item.index, _item.dataset.scrollName);
         }
       } else {
         // activeでない場合の処理
-        if (this.config.displayReverse && DOM.hasClass(el.el, this.config.classNameInview)) {
-          DOM.removeClass(el.el, this.config.classNameInview);
+        if (this.config.displayReverse && DOM.hasClass(_item.el, this.config.classNameInview)) {
+          DOM.removeClass(_item.el, this.config.classNameInview);
           // Outコールバック関数の呼び出し
-          this.callCallback(this.config.on.Out, el, el.index, el.dataset.scrollName);
+          this.callCallback(this.config.on.Out, _item, _item.index, _item.dataset.scrollName);
         }
       }
+
       // changingフラグのチェック
-      if (el.changing) {
-        el.changing = false;
+      if (_item.changing) {
+        _item.changing = false;
+
+        // アクティブの増減によってcallbackに渡すitemを変更
+        let _item_fix = _type === 'down' ? _item : _item_pre;
+
         // Changeコールバック関数の呼び出し
-        this.callCallback(this.config.on.Change, el, el.index, el.dataset.scrollName);
+        this.callCallback(this.config.on.Change, _item_fix, _item_fix.index, _item_fix.dataset.scrollName);
       }
-    });
+    }
   }
 
   // コールバック関数の呼び出しを行うためのユーティリティ関数
