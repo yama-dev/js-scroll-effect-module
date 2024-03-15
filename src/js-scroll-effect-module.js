@@ -23,7 +23,7 @@ export default class SCROLL_EFFECT_MODULE {
 
       firstDelay         : 100,
 
-      throttleInterval   : 3,
+      throttleInterval   : 5,
 
       autoStart          : true,
       autoStartType      : 'ready', // ready, load, scroll
