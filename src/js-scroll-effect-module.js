@@ -157,7 +157,7 @@ export default class SCROLL_EFFECT_MODULE {
         if(el.dataset && el.dataset.semOffset !== undefined) offset = Number(el.dataset.semOffset);
         let obj = {
           el: el,
-          index: i,
+          index: i + 1,
           pos: el.getBoundingClientRect().top + this.state.NumScrolltop - offset,
           height: el.clientHeight,
           height2: el.offsetHeight,
@@ -169,6 +169,25 @@ export default class SCROLL_EFFECT_MODULE {
         this.state.PosList.push( obj );
       });
     }
+
+    // Add Top body position.
+    let obj = {
+      el: document.body,
+      index: 0,
+      pos: 0,
+      height: 0,
+      height2: 0,
+      count: 0,
+      active: false,
+      changing: false,
+      dataset: document.body.dataset
+    };
+    this.state.PosList.unshift( obj );
+
+    // sort by position
+    this.state.PosList.sort((a, b) =>
+      a.pos > b.pos ? 1 : -1  
+    );
   }
 
   _StoreElementStateAtPosList(){
