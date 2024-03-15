@@ -10,7 +10,6 @@ export default class SCROLL_EFFECT_MODULE {
       NumScrolltopPre: window.pageYOffset,
       NumScrolltop   : window.pageYOffset,
       PosList        : [],
-      PosListFixPre  : [],
     };
 
     // config, options.
@@ -112,6 +111,7 @@ export default class SCROLL_EFFECT_MODULE {
       this._BindEventScroll();
     }
   }
+
   _BindEventScroll(){
     let _that = this;
 
