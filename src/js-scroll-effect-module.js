@@ -204,9 +204,17 @@ export default class SCROLL_EFFECT_MODULE {
       }
     };
 
+    let activeCountBefore = this.state.PosList.filter(item => item.active === true).length;
+
+    let flgPageBottom = this.state.NumScrolltop >= document.body.clientHeight - window.innerHeight;
+
     // Store element state at PosList.
-    this.state.PosList.forEach(el => {
-      if (this.config.displayRatio === this.config.displayRatioReverse) {
+    for (let _i = 0; _i < this.state.PosList.length; _i++) {
+      const el = this.state.PosList[_i];
+
+      if (flgPageBottom) {
+        setActiveState(el, true);
+      } else if (this.config.displayRatio === this.config.displayRatioReverse) {
         // displayRatioとdisplayRatioReverseが同じ場合の処理
         if (this.state.NumScrolltop + (this.NumWindowHeight * this.config.displayRatio) > el.pos) {
           // 画面内に要素が表示された場合
@@ -228,11 +236,16 @@ export default class SCROLL_EFFECT_MODULE {
           setActiveState(el, false);
         }
       }
-    });
+    }
+
+    let activeCountAfter = this.state.PosList.filter(item => item.active === true).length;
+
+    // アクティブな要素の数が変化した場合の処理
+    let _type = activeCountBefore < activeCountAfter ? 'down' : 'up';
 
     // For Changed
     let changingCount = this.state.PosList.filter(item => item.changing === true);
-    if(changingCount.length) this._ActionChange();
+    if(changingCount.length) this._ActionChange(_type);
 
     // Scrollコールバック関数の呼び出し
     this.callCallback(this.config.on.Scroll, this.state.NumScrolltop);
