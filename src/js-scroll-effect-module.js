@@ -133,20 +133,13 @@ export default class SCROLL_EFFECT_MODULE {
       _that._StoreElementStateAtPosList();
     }, _that.config.throttleInterval), {passive: true});
 
-    let _flg = false;
     window.addEventListener('scroll', ()=>{
-      // スクロール開始時に一度だけ実行
-      if(!_flg)_that._StoreElementStateAtPosList();
-
-      _flg = true;
-
       if(this.timerScroll) clearTimeout(this.timerScroll);
 
       // スクロール終了時に実行
       _that.timerScroll = setTimeout(()=>{
-        _flg = false;
         _that._StoreElementStateAtPosList();
-      }, _that.config.throttleInterval);
+      }, _that.config.throttleInterval * 2);
     }, {passive: true});
   }
 
