@@ -238,7 +238,6 @@ export default class SCROLL_EFFECT_MODULE {
     this.callCallback(this.config.on.Scroll, this.state.NumScrolltop);
 
     this.state.NumScrolltopPre = this.state.NumScrolltop;
-    this.state.PosListFixPre = this.state.PosListFix;
   }
 
   _ActionChange(){
