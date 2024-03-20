@@ -1,6 +1,6 @@
 {
   "name": "js-scroll-effect-module",
-  "version": "0.11.2",
+  "version": "0.13.2",
   "description": "Add effect at scroll.",
   "keywords": [
     "scroll",
@@ -86,5 +86,8 @@
       "no-console": "warn",
       "no-unused-vars": "warn"
     }
+  },
+  "volta": {
+    "node": "16.20.2"
   }
 }

@@ -5,57 +5,45 @@ export default class SCROLL_EFFECT_MODULE {
 
   constructor(options={}){
 
-    // Set Version.
-    this.Version = process.env.VERSION;
-
     // Set State.
     this.state = {
       NumScrolltopPre: window.pageYOffset,
       NumScrolltop   : window.pageYOffset,
       PosList        : [],
-      PosListFixPre  : [],
-      PosListFix     : [],
-      PosListNoneFix : [],
-      flg: {
-        intersectChanged: false,
-      }
     };
 
     // config, options.
     let configDefault = {
-      elem               : null,
-      firstElem          : null,
+      target             : null,
+      classNameInview    : 'is-active',
 
       displayRatio       : 0.8,
       displayReverse     : false,
       displayRatioReverse: null,
 
-      firstDelay         : 10,
-      firstDelaySteps    : 100,
+      firstDelay         : 100,
 
       throttleInterval   : 5,
 
-      addClassNameActive : 'is-active',
-
       autoStart          : true,
-
-      intersect          : false,
-      addClassNameIntersect : 'is-intersect',
-      addClassNameIntersectOver : 'is-intersect-over',
+      autoStartType      : 'ready', // ready, load, scroll
 
       on: {
         Scroll       : null,
         Change       : null,
         In           : null,
         Out          : null,
-        Intersect    : null,
       }
     };
+
     // Merge Config Settings.
     this.config = {
       ...configDefault,
       ...options
     };
+
+    this.timer = null;
+    this.timerScroll = null;
 
     // adjust ratio value.
     if( !this.config.displayRatioReverse ) {
@@ -71,29 +59,65 @@ export default class SCROLL_EFFECT_MODULE {
 
   Init(){
     if(document.readyState == 'complete' || document.readyState == 'interactive'){
-      this.CacheDom();
-      this.BindEvent();
+      this.Update();
+      this._BindEvent();
     } else {
       document.addEventListener('DOMContentLoaded', () => {
-        this.CacheDom();
-        this.BindEvent();
+        this.Update();
+        this._BindEvent();
       });
     }
   }
 
-  BindEvent(){
-    let _that = this;
+  Start(){
+    this.Stop();
+    this.Update();
+    this._StoreElementStateAtPosList();
+  }
 
-    setTimeout(() => {
-      this.Update();
-      this._storeElementStateAtPosList('load');
-    }, this.config.firstDelay);
+  Update(){
+    this._SetDom();
+  }
+
+  Stop(){
+    this.state.PosList.map((el)=>{
+      DOM.removeClass(el.el, this.config.classNameInview);
+    });
+    this.state.PosList = [];
+  }
+
+  _BindEvent(){
+    if(this.timer) clearTimeout(this.timer);
 
     // for Resize-Event
     window.addEventListener('resize', () => {
-      this.Update();
+      this.Start();
     });
 
+    if(this.config.autoStartType === 'ready'){
+      this.timer = setTimeout(()=>{
+        this.Start();
+        this._BindEventScroll();
+      }, this.config.firstDelay);
+    } else if(this.config.autoStartType === 'load'){
+      // for Load-Event
+      window.addEventListener('load', () => {
+        this.timer = setTimeout(()=>{
+          this.Start();
+          this._BindEventScroll();
+        }, this.config.firstDelay);
+      });
+    } else if(this.config.autoStartType === 'scroll'){
+      this._BindEventScroll();
+    }
+  }
+
+  _BindEventScroll(){
+    let _that = this;
+
+    if(this.timerScroll) clearTimeout(this.timerScroll);
+
+    // for Scroll-Event
     function throttle(fn, wait) {
       var time = Date.now();
       return function() {
@@ -104,300 +128,173 @@ export default class SCROLL_EFFECT_MODULE {
       };
     }
 
-    // for Scroll-Event
+    // スクロールの間引き処理
     window.addEventListener('scroll', throttle(function(){
-      _that._storeElementStateAtPosList('scroll');
-    }, this.config.throttleInterval), {passive: true});
+      _that._StoreElementStateAtPosList();
+    }, _that.config.throttleInterval), {passive: true});
 
+    window.addEventListener('scroll', ()=>{
+      if(this.timerScroll) clearTimeout(this.timerScroll);
+
+      // スクロール終了時に実行
+      _that.timerScroll = setTimeout(()=>{
+        _that._StoreElementStateAtPosList();
+      }, _that.config.throttleInterval * 2);
+    }, {passive: true});
   }
 
-  CacheDom(){
-    this.$elemItem      = DOM.selectDom(this.config.elem);
-    this.$elemItemFirst = DOM.selectDom(this.config.firstElem);
-  }
-
-  CacheDomSize(){
-    this.NumWindowHeight = window.innerHeight;
-  }
-
-  SetDom(){
+  _SetDom(){
     this.state.PosList = [];
+
     this.state.NumScrolltop = window.pageYOffset;
-    let _elem = DOM.selectDom(this.$elemItem);
+    this.NumWindowHeight = window.innerHeight;
+
+    let _elem = DOM.selectDom(this.config.target);
+
     if(_elem){
       _elem.map((el,i)=>{
         let offset = 0;
         if(el.dataset && el.dataset.semOffset !== undefined) offset = Number(el.dataset.semOffset);
         let obj = {
           el: el,
-          index: i,
+          index: i + 1,
           pos: el.getBoundingClientRect().top + this.state.NumScrolltop - offset,
           height: el.clientHeight,
           height2: el.offsetHeight,
           count: 0,
           active: false,
-          intersect: false,
-          intersectover: false,
+          changing: false,
           dataset: el.dataset
         };
         this.state.PosList.push( obj );
       });
     }
+
+    // Add Top body position.
+    let obj = {
+      el: document.body,
+      index: 0,
+      pos: 0,
+      height: 0,
+      height2: 0,
+      count: 0,
+      active: false,
+      changing: false,
+      dataset: document.body.dataset
+    };
+    this.state.PosList.unshift( obj );
+
+    // sort by position
+    this.state.PosList.sort((a, b) =>
+      a.pos > b.pos ? 1 : -1  
+    );
   }
 
-  Start(){
-    if(this.config.autoStart) return false;
-
-    this.Init();
-  }
-
-  Update(){
-    this.CacheDom();
-    this.CacheDomSize();
-    this.SetDom();
-  }
-
-  Refresh(){
-    this.Update();
-    this.Clear();
-    this._actionChange();
-  }
-
-  Clear(){
-    this.state.PosList.map((el, i)=>{
-      el.active = false;
-      DOM.removeClass(this.$elemItem[i], this.config.addClassNameActive);
-    });
-  }
-
-  _storeElementStateAtPosList(method){
-
-    // Array initialization
-    this.state.PosListFix = [];
-    this.state.PosListNoneFix = [];
+  _StoreElementStateAtPosList(){
+    if(!this.state.PosList.length) return false;
 
     // Scroll top cache
     this.state.NumScrolltop = window.pageYOffset;
 
-    // Store element state at PosList.
-    this.state.PosList.map((el)=>{
-
-      // When displayRatio and displayRatioReverse are the SAME.
-      if(this.config.displayRatio === this.config.displayRatioReverse){
-        if( this.state.NumScrolltop + ( this.NumWindowHeight * this.config.displayRatio ) > el.pos ){
-          // First count up.
-          if(method === 'load'){
-            el.count++;
-          }
-
-          // 「active」Set of lists
-          el.active = true;
-          this.state.PosListFix.push(el);
-        } else {
-
-          // 「none active」Set of lists
-          el.active = false;
-          this.state.PosListNoneFix.push(el);
-        }
+    // 要素のactive状態を設定するユーティリティ関数
+    let setActiveState = (el, active) => {
+      if (el.active !== active) {
+        el.changing = true;
+        el.active = active;
       }
-
-      // When displayRatio and displayRatioReverse are the DIFFERENT.
-      if(this.config.displayRatio !== this.config.displayRatioReverse){
-        if( this.state.NumScrolltop + ( this.NumWindowHeight * this.config.displayRatio ) > el.pos ){
-          // First count up.
-          if(method === 'load'){
-            el.count++;
-          }
-
-          // 「active」Set of lists
-          el.active = true;
-          this.state.PosListFix.push(el);
-        } else {
-          if( this.state.NumScrolltop + ( this.NumWindowHeight * this.config.displayRatioReverse ) > el.pos ){
-            if(el.active){
-              // 「active」Set of lists
-              this.state.PosListFix.push(el);
-            } else {
-              // 「none active」Set of lists
-              this.state.PosListNoneFix.push(el);
-            }
-          } else {
-            // 「none active」Set of lists
-            el.active = false;
-            this.state.PosListNoneFix.push(el);
-          }
-        }
-      }
-
-      if(this.config.intersect){
-        if( this.state.NumScrolltop > el.pos ){
-          if( this.state.NumScrolltop + this.NumWindowHeight > el.pos + el.height ){
-            if(el.intersect){
-              this.state.flg.intersectChanged = true;
-              el.intersect = false;
-              el.intersectover = true;
-            }
-          } else {
-            if(!el.intersect){
-              this.state.flg.intersectChanged = true;
-              el.intersect = true;
-              el.intersectover = false;
-            }
-          }
-        } else {
-          if(el.intersect){
-            this.state.flg.intersectChanged = true;
-            el.intersect = false;
-            el.intersectover = false;
-          }
-        }
-      }
-
-    });
-
-    if(method === 'load'){
-      this.ActionChangeFirst();
-    } else if(method === 'scroll'){
-      if(this.state.PosListFixPre.length !== this.state.PosListFix.length) this._actionChange();
-    }
-
-    if(this.config.intersect && this.state.flg.intersectChanged){
-      this.state.flg.intersectChanged = false;
-      this._actionChangeIntersect();
-    }
-
-    // Callback function.
-    if(this.config.on.Scroll && typeof(this.config.on.Scroll) === 'function') this.config.on.Scroll(this.state.NumScrolltop);
-
-    this.state.NumScrolltopPre = this.state.NumScrolltop;
-    this.state.PosListFixPre = this.state.PosListFix;
-  }
-
-  ActionChangeFirst(){
-    let loopCount = 0;
-
-    let countFunc = () => {
-      // for Initial display
-      setTimeout(() => {
-
-        if(this.config.addClassNameActive){
-          DOM.addClass(this.$elemItemFirst[loopCount], this.config.addClassNameActive);
-        }
-
-        loopCount++;
-
-        if(loopCount < this.$elemItemFirst.length){
-          countFunc();
-        }
-
-        // After the initial display is completed
-        if(this.$elemItemFirst.length == loopCount){
-          this._actionChange();
-        }
-
-      },this.config.firstDelaySteps);
     };
 
-    // When there is an initial display element.
-    if(this.$elemItemFirst){
-      countFunc();
-    } else {
-      setTimeout(() => {
-        this._actionChange();
-      },this.config.firstDelaySteps);
+    let activeCountBefore = this.state.PosList.filter(item => item.active === true).length;
+
+    let flgPageBottom = this.state.NumScrolltop >= document.body.clientHeight - window.innerHeight;
+
+    // Store element state at PosList.
+    for (let _i = 0; _i < this.state.PosList.length; _i++) {
+      const el = this.state.PosList[_i];
+
+      if (flgPageBottom) {
+        setActiveState(el, true);
+      } else if (this.config.displayRatio === this.config.displayRatioReverse) {
+        // displayRatioとdisplayRatioReverseが同じ場合の処理
+        if (this.state.NumScrolltop + (this.NumWindowHeight * this.config.displayRatio) > el.pos) {
+          // 画面内に要素が表示された場合
+          setActiveState(el, true);
+        } else {
+          // 画面外に要素が移動した場合
+          setActiveState(el, false);
+        }
+      } else {
+        // displayRatioとdisplayRatioReverseが異なる場合の処理
+        if (this.state.NumScrolltop + (this.NumWindowHeight * this.config.displayRatio) > el.pos) {
+          // displayRatioで設定された閾値を満たした場合
+          setActiveState(el, true);
+        } else if (this.state.NumScrolltop + (this.NumWindowHeight * this.config.displayRatioReverse) > el.pos) {
+          // displayRatioReverseで設定された閾値を満たした場合
+          setActiveState(el, true);
+        } else {
+          // どの閾値も満たさない場合
+          setActiveState(el, false);
+        }
+      }
     }
 
+    let activeCountAfter = this.state.PosList.filter(item => item.active === true).length;
+
+    // アクティブな要素の数が変化した場合の処理
+    let _type = activeCountBefore < activeCountAfter ? 'down' : 'up';
+
+    // For Changed
+    let changingCount = this.state.PosList.filter(item => item.changing === true);
+    if(changingCount.length) this._ActionChange(_type);
+
+    // Scrollコールバック関数の呼び出し
+    this.callCallback(this.config.on.Scroll, this.state.NumScrolltop);
+
+    this.state.NumScrolltopPre = this.state.NumScrolltop;
   }
 
-  _actionChange(){
-
+  _ActionChange(_type){
     if(!this.state.PosList.length) return false;
 
-    this.state.PosListFix.map((el)=>{
-      if(!DOM.hasClass(this.$elemItem[el.index], this.config.addClassNameActive)){
-        el.count++;
-        if(this.config.addClassNameActive) DOM.addClass(this.$elemItem[el.index], this.config.addClassNameActive);
+    for (let _i = 0; _i < this.state.PosList.length; _i++) {
+      const _item_pre = this.state.PosList[_i - 1];
+      const _item = this.state.PosList[_i];
 
-        // Callback function.
-        if(this.config.on.In && typeof(this.config.on.In) === 'function') this.config.on.In(this.$elemItem[el.index], el.index, el, this.state.NumScrolltop);
-      }
-    });
-
-    if(this.config.displayReverse){
-      this.state.PosListNoneFix.map((el)=>{
-        if(DOM.hasClass(this.$elemItem[el.index], this.config.addClassNameActive)){
-          DOM.removeClass(this.$elemItem[el.index], this.config.addClassNameActive);
-
-          // Callback function.
-          if(this.config.on.Out && typeof(this.config.on.Out) === 'function') this.config.on.Out(this.$elemItem[el.index], el.index, el, this.state.NumScrolltop);
+      if (_item.active) {
+        // activeな場合の処理
+        if (!DOM.hasClass(_item.el, this.config.classNameInview)) {
+          _item.count++;
+          if (this.config.classNameInview) DOM.addClass(_item.el, this.config.classNameInview);
+          // Inコールバック関数の呼び出し
+          this.callCallback(this.config.on.In, _item, _item.index, _item.dataset.scrollName);
         }
-      });
-    }
+      } else {
+        // activeでない場合の処理
+        if (this.config.displayReverse && DOM.hasClass(_item.el, this.config.classNameInview)) {
+          DOM.removeClass(_item.el, this.config.classNameInview);
+          // Outコールバック関数の呼び出し
+          this.callCallback(this.config.on.Out, _item, _item.index, _item.dataset.scrollName);
+        }
+      }
 
-    // Callback function.
-    if(this.config.on.Change && typeof(this.config.on.Change) === 'function'){
-      let _pf = this.state.PosListFix;
-      this.config.on.Change(this.$elemItem[_pf.length-1], _pf.length, _pf[_pf.length-1], this.state.NumScrolltop);
-    }
+      // changingフラグのチェック
+      if (_item.changing) {
+        _item.changing = false;
 
+        // アクティブの増減によってcallbackに渡すitemを変更
+        let _item_fix = _type === 'down' ? _item : _item_pre;
+
+        // Changeコールバック関数の呼び出し
+        this.callCallback(this.config.on.Change, _item_fix, _item_fix.index, _item_fix.dataset.scrollName);
+      }
+    }
   }
 
-  _actionChangeIntersect(){
-
-    this.state.PosList.map((el)=>{
-
-      let callback = {
-        el: el.el,
-        intersect: el.intersect,
-        index: el.index,
-        pos: el.pos,
-        height: el.height,
-        height2: el.height2,
-        count: el.count,
-        dataset: el.dataset
-      };
-
-      if(el.intersect){
-        if(!DOM.hasClass(el.el, this.config.addClassNameIntersect)){
-          if(this.config.addClassNameIntersect) DOM.addClass(el.el, this.config.addClassNameIntersect);
-
-          // Callback function.
-          if(this.config.on.Intersect && typeof(this.config.on.Intersect) === 'function'){
-            this.config.on.Intersect(callback);
-          }
-        }
-      } else {
-        if(DOM.hasClass(el.el, this.config.addClassNameIntersect)){
-          if(this.config.addClassNameIntersect) DOM.removeClass(el.el, this.config.addClassNameIntersect);
-
-          // Callback function.
-          if(this.config.on.Intersect && typeof(this.config.on.Intersect) === 'function'){
-            this.config.on.Intersect(callback);
-          }
-        }
-      }
-
-      if(el.intersectover){
-        if(!DOM.hasClass(el.el, this.config.addClassNameIntersectOver)){
-          if(this.config.addClassNameIntersectOver) DOM.addClass(el.el, this.config.addClassNameIntersectOver);
-
-          // Callback function.
-          if(this.config.on.Intersect && typeof(this.config.on.Intersect) === 'function'){
-            this.config.on.Intersect(callback);
-          }
-        }
-      } else {
-        if(DOM.hasClass(el.el, this.config.addClassNameIntersectOver)){
-          if(this.config.addClassNameIntersectOver) DOM.removeClass(el.el, this.config.addClassNameIntersectOver);
-
-          // Callback function.
-          if(this.config.on.Intersect && typeof(this.config.on.Intersect) === 'function'){
-            this.config.on.Intersect(callback);
-          }
-        }
-      }
-    });
-
+  // コールバック関数の呼び出しを行うためのユーティリティ関数
+  callCallback(callback, ...args) {
+    if (callback && typeof callback === 'function') {
+      callback(...args);
+    }
   }
 
 }

@@ -66,6 +66,13 @@ const config = {
             preamble: comment,
             comments: false,
           },
+          // mangle: {
+          //   properties: {
+          //     builtins: true,
+          //   },
+          //   keep_fnames: true,
+          //   reserved: ['SCROLL_EFFECT_MODULE'],
+          // },
           compress: {
             drop_console: true
           }
