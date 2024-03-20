@@ -20,7 +20,7 @@ Add effect according to scroll.
 
 - npm -> [https://www.npmjs.com/package/js-scroll-effect-module](https://www.npmjs.com/package/js-scroll-effect-module)
 
-- Standalone(CDN) -> [https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module@v0.11.2/dist/js-scroll-effect-module.js](https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module@v0.11.2/dist/js-scroll-effect-module.js)
+- Standalone(CDN) -> [https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module@v0.13.2/dist/js-scroll-effect-module.js](https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module@v0.13.2/dist/js-scroll-effect-module.js)
 
 - Zip -> [yama-dev/js-scroll-effect-module](https://github.com/yama-dev/js-scroll-effect-module/releases/latest)
 
@@ -57,54 +57,45 @@ import SCROLL_EFFECT_MODULE from 'js-scroll-effect-module';
 <link rel="stylesheet" href="./scroll-effect-module.css">
 <script src="./js-scroll-effect-module.js"></script>
 
-<div class="js-scroll"></div>
+<div data-scroll data-scroll-name="name-1"></div>
+
+<div data-scroll data-scroll-name="name-2"></div>
 
 <script>
-  var ScrollEffectModule = new SCROLL_EFFECT_MODULE({
-    elem               : '.js-scroll',
-    firstElem          : '.js-scroll--first',
+const ScrollEffectModule = new SCROLL_EFFECT_MODULE({
+  target             : '[data-scroll]',
+  classNameInview    : 'is-active',
 
-    displayRatio       : 0.8, // 判定する比率を指定（ウィンドウ高さを1として指定）
-    displayReverse     : true, // スクロールを戻した時にクラスを削除するかどうか
+  displayRatio       : 0.8,   // 判定する比率を指定（ウィンドウ高さを1として指定）
+  displayReverse     : false, // スクロールを戻した時にクラスを削除するかどうか
+  displayRatioReverse: null,
 
-    firstDelay         : 0, // 初回動作までの遅延時間（ms）
-    firstDelaySteps    : 100,  // 初回出現要素を指定した場合のステップ遅延時間（ms）
+  firstDelay         : 100, // 初回動作までの遅延時間（ms）
 
-    addClassNameActive : 'is-active', // null を設定するとクラスが付与されなくなる。
+  throttleInterval   : 5,
 
-    on: {
-      Scroll: function(top){
-        console.log('Scroll', top);
-      },
-      Change: function(item, pos){
-        console.log('Change', item, pos);
-      },
-      In: function(item, pos){
-        console.log('In', item, pos);
-      },
-      Out: function(item, pos){
-        console.log('Out', item, pos);
-      }
-    }
-  });
+  autoStart          : true,
+  autoStartType      : 'ready', // ready, load, scroll
+
+  on: {
+    Change: function(obj, index, name){
+      console.log('Change', obj, index, name);
+    },
+    In: function(obj, index, name){
+      console.log('In', obj, index, name);
+    },
+    Out: function(obj, index, name){
+      console.log('Out', obj, index, name);
+    },
+    Scroll: function(_y){
+      console.log('Scroll', _y);
+    },
+  }
+});
 </script>
 ```
 
 ## API
-
-<br>
-
-
-## Browser support
-
-| Browser           | OS、version |
-| ---               | ---         |
-| Internet Explorer | 11+         |
-| Chrome            | 最新        |
-| Firefox           | 最新        |
-| Safari            | 最新        |
-| Android           | 4.4+ Chrome |
-| iOS               | 8.0+ safari |
 
 <br>
 
