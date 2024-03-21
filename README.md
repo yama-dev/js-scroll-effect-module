@@ -43,19 +43,18 @@ import SCROLL_EFFECT_MODULE from 'js-scroll-effect-module';
 ### Basic Use
 
 ``` html
-<link rel="stylesheet" href="./scroll-effect-module.css">
-<script src="./js-scroll-effect-module.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module/examples/scroll-effect-module.css">
+<script src="https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module/dist/js-scroll-effect-module.js"></script>
 
-<div class="js-scroll js-scroll__fadein-basic"></div>
+<div data-scroll data-scroll-name="name-1"></div>
 
-<script> new SCROLL_EFFECT_MODULE({ elem : '.js-scroll' }); </script>
+<div data-scroll data-scroll-name="name-2"></div>
 ```
 
 ### Advanced Use
 
 ``` html
-<link rel="stylesheet" href="./scroll-effect-module.css">
-<script src="./js-scroll-effect-module.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module/dist/js-scroll-effect-module.js"></script>
 
 <div data-scroll data-scroll-name="name-1"></div>
 
