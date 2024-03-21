@@ -17,3 +17,5 @@ package-lock.json
 
 # Development environment.
 _*/
+_*.html
+
