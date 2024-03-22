@@ -46,9 +46,15 @@ import SCROLL_EFFECT_MODULE from 'js-scroll-effect-module';
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module/examples/scroll-effect-module.css">
 <script src="https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module/dist/js-scroll-effect-module.js"></script>
 
-<div data-scroll data-scroll-name="name-1"></div>
+<div data-scroll></div>
 
-<div data-scroll data-scroll-name="name-2"></div>
+<div data-scroll></div>
+
+<script>
+new SCROLL_EFFECT_MODULE({
+  target: '[data-scroll]',
+});
+</script>
 ```
 
 ### Advanced Use
