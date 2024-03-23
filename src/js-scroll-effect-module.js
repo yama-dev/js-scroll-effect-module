@@ -288,14 +288,14 @@ export default class SCROLL_EFFECT_MODULE {
           _item.count++;
           if (this.config.classNameInview) DOM.addClass(_item.el, this.config.classNameInview);
           // Inコールバック関数の呼び出し
-          this.callCallback(this.config.on.In, _item, _item.index, _item.dataset.scrollName);
+          this.callCallback(this.config.on.In, _item, _item.index, _item.dataset[this.getDatasetKey(this.config.targetDataName)]);
         }
       } else {
         // activeでない場合の処理
-        if (this.config.displayReverse && DOM.hasClass(_item.el, this.config.classNameInview)) {
+        if (this.config.reverse && DOM.hasClass(_item.el, this.config.classNameInview)) {
           DOM.removeClass(_item.el, this.config.classNameInview);
           // Outコールバック関数の呼び出し
-          this.callCallback(this.config.on.Out, _item, _item.index, _item.dataset.scrollName);
+          this.callCallback(this.config.on.Out, _item, _item.index, _item.dataset[this.getDatasetKey(this.config.targetDataName)]);
         }
       }
 
@@ -307,7 +307,7 @@ export default class SCROLL_EFFECT_MODULE {
         let _item_fix = _type === 'down' ? _item : _item_pre;
 
         // Changeコールバック関数の呼び出し
-        this.callCallback(this.config.on.Change, _item_fix, _item_fix.index, _item_fix.dataset.scrollName);
+        this.callCallback(this.config.on.Change, _item_fix, _item_fix.index, _item_fix.dataset[this.getDatasetKey(this.config.targetDataName)]);
       }
     }
   }
@@ -319,4 +319,15 @@ export default class SCROLL_EFFECT_MODULE {
     }
   }
 
+  getDatasetKey(_str){
+    function replacer(_match, _result) {
+      return _result.toUpperCase();
+    }
+
+    const datasetKey = _str
+      .replace(/\[data-|\]/g, '')
+      .replace(/-(.?)/g, replacer);
+
+    return datasetKey;
+  }
 }
