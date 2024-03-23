@@ -245,16 +245,17 @@ export default class SCROLL_EFFECT_MODULE {
           setActiveState(el, false);
         }
       } else {
-        // displayRatioとdisplayRatioReverseが異なる場合の処理
-        if (this.state.NumScrolltop + (this.NumWindowHeight * this.config.displayRatio) > el.pos) {
-          // displayRatioで設定された閾値を満たした場合
-          setActiveState(el, true);
-        } else if (this.state.NumScrolltop + (this.NumWindowHeight * this.config.displayRatioReverse) > el.pos) {
-          // displayRatioReverseで設定された閾値を満たした場合
-          setActiveState(el, true);
+        // ratioとratioReverseが異なる場合の処理
+        if(!el.active){
+          if (this.state.NumScrolltop + (this.state.NumWindowHeight * this.config.ratio) > el.pos) {
+            // ratioで設定された閾値を満たした場合
+            setActiveState(el, true);
+          }
         } else {
-          // どの閾値も満たさない場合
-          setActiveState(el, false);
+          if (this.state.NumScrolltop + (this.state.NumWindowHeight * this.config.ratioReverse) < el.pos) {
+            // ratioReverseで設定された閾値を下回った場合
+            setActiveState(el, false);
+          }
         }
       }
     }
