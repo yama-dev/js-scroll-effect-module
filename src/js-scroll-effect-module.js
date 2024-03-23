@@ -7,26 +7,37 @@ export default class SCROLL_EFFECT_MODULE {
 
     // Set State.
     this.state = {
-      NumScrolltopPre: window.pageYOffset,
-      NumScrolltop   : window.pageYOffset,
+      NumScrolltopPre: 0,
+      NumScrolltop   : 0,
+      NumWindowHeight: 0,
       PosList        : [],
+      $targets       : null,
+      $parent        : null,
+      $body          : null,
     };
 
     // config, options.
     let configDefault = {
-      target             : null,
+      target             : '[data-scroll]',
+      targetDataName     : '[data-scroll-name]',
+      parent             : 'window',
+      body               : 'body',
+
       classNameInview    : 'is-active',
 
-      displayRatio       : 0.8,
-      displayReverse     : false,
-      displayRatioReverse: null,
+      ratio              : 0.8,
+      ratioReverse       : null,
+
+      reverse            : false,
 
       firstDelay         : 100,
 
-      throttleInterval   : 5,
-
       autoStart          : true,
       autoStartType      : 'ready', // ready, load, scroll
+
+      throttleInterval   : 5,
+
+      customVarNameRatio : null, // '--sem-scroll-ratio'
 
       on: {
         Scroll       : null,
@@ -46,11 +57,11 @@ export default class SCROLL_EFFECT_MODULE {
     this.timerScroll = null;
 
     // adjust ratio value.
-    if( !this.config.displayRatioReverse ) {
-      this.config.displayRatioReverse = this.config.displayRatio;
+    if( !this.config.ratioReverse ) {
+      this.config.ratioReverse = this.config.ratio;
     } else {
-      if( this.config.displayRatioReverse < this.config.displayRatio ) {
-        this.config.displayRatioReverse = this.config.displayRatio;
+      if( this.config.ratioReverse < this.config.ratio ) {
+        this.config.ratioReverse = this.config.ratio;
       }
     }
 
@@ -90,7 +101,7 @@ export default class SCROLL_EFFECT_MODULE {
     if(this.timer) clearTimeout(this.timer);
 
     // for Resize-Event
-    window.addEventListener('resize', () => {
+    this.state.$parent.addEventListener('resize', () => {
       this.Start();
     });
 
@@ -101,7 +112,7 @@ export default class SCROLL_EFFECT_MODULE {
       }, this.config.firstDelay);
     } else if(this.config.autoStartType === 'load'){
       // for Load-Event
-      window.addEventListener('load', () => {
+      this.state.$parent.addEventListener('load', () => {
         this.timer = setTimeout(()=>{
           this.Start();
           this._BindEventScroll();
@@ -129,11 +140,11 @@ export default class SCROLL_EFFECT_MODULE {
     }
 
     // スクロールの間引き処理
-    window.addEventListener('scroll', throttle(function(){
+    this.state.$parent.addEventListener('scroll', throttle(function(){
       _that._StoreElementStateAtPosList();
     }, _that.config.throttleInterval), {passive: true});
 
-    window.addEventListener('scroll', ()=>{
+    this.state.$parent.addEventListener('scroll', ()=>{
       if(this.timerScroll) clearTimeout(this.timerScroll);
 
       // スクロール終了時に実行
@@ -146,19 +157,23 @@ export default class SCROLL_EFFECT_MODULE {
   _SetDom(){
     this.state.PosList = [];
 
-    this.state.NumScrolltop = window.pageYOffset;
-    this.NumWindowHeight = window.innerHeight;
+    this.state.$targets = DOM.selectDom(this.config.target);
+    this.state.$parent = this.config.parent == 'window' ? window : document.querySelector(this.config.parent);
+    this.state.$body = this.config.body == 'body' ? document.body : document.querySelector(this.config.body);
 
-    let _elem = DOM.selectDom(this.config.target);
+    this.state.NumScrolltop = (this.config.parent === 'window' ? this.state.$parent.pageYOffset : this.state.$parent.scrollTop);
+    this.state.NumWindowHeight = (this.config.parent === 'window' ? this.state.$parent.innerHeight : this.state.$parent.clientHeight);
 
-    if(_elem){
-      _elem.map((el,i)=>{
+    if(this.state.$targets){
+      this.state.$targets.map((el,i)=>{
         let offset = 0;
         if(el.dataset && el.dataset.semOffset !== undefined) offset = Number(el.dataset.semOffset);
+        let _y = el.getBoundingClientRect().top - (this.config.parent === 'window' ? 0 : this.state.$parent.getBoundingClientRect().top);
+
         let obj = {
           el: el,
           index: i + 1,
-          pos: el.getBoundingClientRect().top + this.state.NumScrolltop - offset,
+          pos: _y + this.state.NumScrolltop - offset,
           height: el.clientHeight,
           height2: el.offsetHeight,
           count: 0,
@@ -194,7 +209,7 @@ export default class SCROLL_EFFECT_MODULE {
     if(!this.state.PosList.length) return false;
 
     // Scroll top cache
-    this.state.NumScrolltop = window.pageYOffset;
+    this.state.NumScrolltop = (this.config.parent === 'window' ? this.state.$parent.pageYOffset : this.state.$parent.scrollTop);
 
     // 要素のactive状態を設定するユーティリティ関数
     let setActiveState = (el, active) => {
@@ -206,17 +221,23 @@ export default class SCROLL_EFFECT_MODULE {
 
     let activeCountBefore = this.state.PosList.filter(item => item.active === true).length;
 
-    let flgPageBottom = this.state.NumScrolltop >= document.body.clientHeight - window.innerHeight;
+    let flgPageBottom = this.state.NumScrolltop >= this.state.$body.clientHeight - (this.config.parent === 'window' ? this.state.$parent.innerHeight : this.state.$parent.clientHeight);
 
     // Store element state at PosList.
     for (let _i = 0; _i < this.state.PosList.length; _i++) {
       const el = this.state.PosList[_i];
 
+      if(this.config.customVarNameRatio){
+        let _ratio = (this.state.NumScrolltop + this.state.NumWindowHeight - el.pos) / this.state.NumWindowHeight;
+        let _ratio2 = Math.floor(_ratio * 100) / 100;
+        el.el.style.setProperty('--scroll-ratio', _ratio2);
+      }
+
       if (flgPageBottom) {
         setActiveState(el, true);
-      } else if (this.config.displayRatio === this.config.displayRatioReverse) {
-        // displayRatioとdisplayRatioReverseが同じ場合の処理
-        if (this.state.NumScrolltop + (this.NumWindowHeight * this.config.displayRatio) > el.pos) {
+      } else if (this.config.ratio === this.config.ratioReverse) {
+        // ratioとratioReverseが同じ場合の処理
+        if (this.state.NumScrolltop + (this.state.NumWindowHeight * this.config.ratio) > el.pos) {
           // 画面内に要素が表示された場合
           setActiveState(el, true);
         } else {
@@ -224,16 +245,17 @@ export default class SCROLL_EFFECT_MODULE {
           setActiveState(el, false);
         }
       } else {
-        // displayRatioとdisplayRatioReverseが異なる場合の処理
-        if (this.state.NumScrolltop + (this.NumWindowHeight * this.config.displayRatio) > el.pos) {
-          // displayRatioで設定された閾値を満たした場合
-          setActiveState(el, true);
-        } else if (this.state.NumScrolltop + (this.NumWindowHeight * this.config.displayRatioReverse) > el.pos) {
-          // displayRatioReverseで設定された閾値を満たした場合
-          setActiveState(el, true);
+        // ratioとratioReverseが異なる場合の処理
+        if(!el.active){
+          if (this.state.NumScrolltop + (this.state.NumWindowHeight * this.config.ratio) > el.pos) {
+            // ratioで設定された閾値を満たした場合
+            setActiveState(el, true);
+          }
         } else {
-          // どの閾値も満たさない場合
-          setActiveState(el, false);
+          if (this.state.NumScrolltop + (this.state.NumWindowHeight * this.config.ratioReverse) < el.pos) {
+            // ratioReverseで設定された閾値を下回った場合
+            setActiveState(el, false);
+          }
         }
       }
     }
@@ -266,14 +288,14 @@ export default class SCROLL_EFFECT_MODULE {
           _item.count++;
           if (this.config.classNameInview) DOM.addClass(_item.el, this.config.classNameInview);
           // Inコールバック関数の呼び出し
-          this.callCallback(this.config.on.In, _item, _item.index, _item.dataset.scrollName);
+          this.callCallback(this.config.on.In, _item, _item.index, _item.dataset[this.getDatasetKey(this.config.targetDataName)]);
         }
       } else {
         // activeでない場合の処理
-        if (this.config.displayReverse && DOM.hasClass(_item.el, this.config.classNameInview)) {
+        if (this.config.reverse && DOM.hasClass(_item.el, this.config.classNameInview)) {
           DOM.removeClass(_item.el, this.config.classNameInview);
           // Outコールバック関数の呼び出し
-          this.callCallback(this.config.on.Out, _item, _item.index, _item.dataset.scrollName);
+          this.callCallback(this.config.on.Out, _item, _item.index, _item.dataset[this.getDatasetKey(this.config.targetDataName)]);
         }
       }
 
@@ -285,7 +307,7 @@ export default class SCROLL_EFFECT_MODULE {
         let _item_fix = _type === 'down' ? _item : _item_pre;
 
         // Changeコールバック関数の呼び出し
-        this.callCallback(this.config.on.Change, _item_fix, _item_fix.index, _item_fix.dataset.scrollName);
+        this.callCallback(this.config.on.Change, _item_fix, _item_fix.index, _item_fix.dataset[this.getDatasetKey(this.config.targetDataName)]);
       }
     }
   }
@@ -297,4 +319,15 @@ export default class SCROLL_EFFECT_MODULE {
     }
   }
 
+  getDatasetKey(_str){
+    function replacer(_match, _result) {
+      return _result.toUpperCase();
+    }
+
+    const datasetKey = _str
+      .replace(/\[data-|\]/g, '')
+      .replace(/-(.?)/g, replacer);
+
+    return datasetKey;
+  }
 }

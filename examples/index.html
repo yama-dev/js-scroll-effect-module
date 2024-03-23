@@ -39,68 +39,94 @@
 
   <div class="p-use" data-scroll>
     <h3>Basic Use</h3>
-    <pre class="prettyprint lang-html">
-      <code>
-      &lt;div data-scroll&gt;&lt;/div&gt;
-      &lt;script src=&quot;./js-scroll-effect-module.js&quot;&gt;&lt;/script&gt;
-      &lt;script&gt; new SCROLL_EFFECT_MODULE({ target: &#039;[data-scroll]&#039; }); &lt;/script&gt;</code>
-    </pre>
-    <pre class="prettyprint lang-html">
-      <code>
-      // 予め容易されているアニメーションを利用する場合
-      &lt;link rel=&quot;stylesheet&quot; href=&quot;./scroll-effect-module.css&quot;&gt;
-      &lt;div data-scroll data-scroll-type=&quot;fadein&quot;&gt;&lt;/div&gt;</code>
-    </pre>
+    <details>
+      <summary>HTML</summary>
+      <pre class="prettyprint lang-html"><code>
+  &lt;div data-scroll&gt;&lt;/div&gt;
+  &lt;script src=&quot;./js-scroll-effect-module.js&quot;&gt;&lt;/script&gt;
+  &lt;script&gt; new SCROLL_EFFECT_MODULE({ target: &#039;[data-scroll]&#039; }); &lt;/script&gt;
+      </code></pre>
+      <pre class="prettyprint lang-html"><code>
+  // with default css
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;./scroll-effect-module.css&quot;&gt;
+  &lt;div data-scroll data-scroll-type=&quot;fadein&quot;&gt;&lt;/div&gt;
+  &lt;script src=&quot;./js-scroll-effect-module.js&quot;&gt;&lt;/script&gt;
+  &lt;script&gt; new SCROLL_EFFECT_MODULE({ target: &#039;[data-scroll]&#039; }); &lt;/script&gt;
+      </code></pre>
+    </details>
   </div>
 
   <hr class="mt-4 mb-4" data-scroll>
 
   <div class="p-use" data-scroll>
     <h3>Advanced Use</h3>
-    <pre class="prettyprint lang-html">
-      <code>
-      &lt;script src=&quot;./js-scroll-effect-module.js&quot;&gt;&lt;/script&gt;
-      &lt;div data-scroll data-scroll-name=&quot;first&quot;&gt;&lt;/div&gt;
-      &lt;div data-scroll data-scroll-name=&quot;second&quot;&gt;&lt;/div&gt;
-      &lt;div data-scroll data-scroll-name=&quot;third&quot;&gt;&lt;/div&gt;
+    <details>
+      <summary>HTML</summary>
+      <pre class="prettyprint lang-html"><code>
+  &lt;script src=&quot;./js-scroll-effect-module.js&quot;&gt;&lt;/script&gt;
+  &lt;div data-scroll data-scroll-name=&quot;first&quot;&gt;&lt;/div&gt;
+  &lt;div data-scroll data-scroll-name=&quot;second&quot;&gt;&lt;/div&gt;
+  &lt;div data-scroll data-scroll-name=&quot;third&quot;&gt;&lt;/div&gt;
 
-      &lt;script&gt;
-      const ScrollEffectModule = new SCROLL_EFFECT_MODULE({
-        target: &#39;[data-scroll]&#39;,
-        classNameInview    : &#39;is-active&#39;,
-        displayRatio       : 0.8,
-        displayReverse     : true,
-        displayRatioReverse: null,
-        throttleInterval   : 3,
-        autoStart          : true,
-        on: {
-          Change: function(obj, index, name){
-            console.log(&#39;Change&#39;, obj, index, name);
-          },
-          In: function(obj, index, name){
-            console.log(&#39;In&#39;, obj, index, name);
-          },
-          Out: function(obj, index, name){
-            console.log(&#39;Out&#39;, obj, index, name);
-          },
-          Scroll: function(top){
-            console.log(&#39;Scroll&#39;, top);
-          }
-        }
-      });
-      &lt;/script&gt;</code>
-    </pre>
+  &lt;script&gt;
+  const ScrollEffectModule = new SCROLL_EFFECT_MODULE({
+    target         : &#39;[data-scroll]&#39;,
+    classNameInview: &#39;is-active&#39;,
+    ratio          : 0.8,
+    ratioReverse   : null,
+    reverse        : true,
+    autoStart      : true,
+  });
+  &lt;/script&gt;
+      </code></pre>
+    </details>
+  </div>
+
+  <hr class="mt-4 mb-4" data-scroll>
+
+  <div class="p-use" data-scroll>
+    <h3>Advanced Use (callback)</h3>
+    <details>
+      <summary>HTML</summary>
+      <pre class="prettyprint lang-html"><code>
+  &lt;script src=&quot;./js-scroll-effect-module.js&quot;&gt;&lt;/script&gt;
+  &lt;div data-scroll data-scroll-name=&quot;first&quot;&gt;&lt;/div&gt;
+  &lt;div data-scroll data-scroll-name=&quot;second&quot;&gt;&lt;/div&gt;
+  &lt;div data-scroll data-scroll-name=&quot;third&quot;&gt;&lt;/div&gt;
+
+  &lt;script&gt;
+  const ScrollEffectModule = new SCROLL_EFFECT_MODULE({
+    target         : &#39;[data-scroll]&#39;,
+    ratio          : 0.8,
+    reverse        : true,
+    on: {
+      Change: function(obj, index, name){
+        console.log(&#39;Change&#39;, obj, index, name);
+      },
+      In: function(obj, index, name){
+        console.log(&#39;In&#39;, obj, index, name);
+      },
+      Out: function(obj, index, name){
+        console.log(&#39;Out&#39;, obj, index, name);
+      },
+      Scroll: function(top){
+        console.log(&#39;Scroll&#39;, top);
+      }
+    }
+  });
+  &lt;/script&gt;
+      </code></pre>
+    </details>
 
     <script>
     const ScrollEffectModule = new SCROLL_EFFECT_MODULE({
       target: '[data-scroll]',
-      classNameInview    : 'is-active',
-      displayRatio       : 0.8,
-      displayReverse     : true,
-      displayRatioReverse: null,
-      firstDelay         : 100,
-      throttleInterval   : 3,
-      autoStart          : true,
+      classNameInview : 'is-active',
+      ratio           : 0.5,
+      ratioReverse    : 0.9,
+      reverse         : true,
+      firstDelay      : 100,
+      autoStart       : true,
       on: {
         Change: function(obj, index, name){
           console.log('Change', obj, index, name);
@@ -147,22 +173,22 @@
       <p>[data-scroll-type="fadeinBottom"]</p>
     </div>
     <br><br><br><br><br><br><br><br><br><br><br><br>
-    <div class="text-center" data-scroll data-scroll-type="fadeinLeft">
+    <div class="text-center" data-scroll data-scroll-name="demo4" data-scroll-type="fadeinLeft">
       <h2>EffectType : fadein left</h2>
       <p>[data-scroll-type="fadeinLeft"]</p>
     </div>
     <br><br><br><br><br><br><br><br><br><br><br><br>
-    <div class="text-center" data-scroll data-scroll-type="fadeinRight">
+    <div class="text-center" data-scroll data-scroll-name="demo5" data-scroll-type="fadeinRight">
       <h2>EffectType : fadein right</h2>
       <p>[data-scroll-type="fadeinRight"]</p>
     </div>
     <br><br><br><br><br><br><br><br><br><br><br><br>
-    <div class="text-center" data-scroll data-scroll-type="zoomin">
+    <div class="text-center" data-scroll data-scroll-name="demo6" data-scroll-type="zoomin">
       <h2>EffectType : fadein zoomin</h2>
       <p>[data-scroll-type="zoomin"]</p>
     </div>
     <br><br><br><br><br><br><br><br><br><br><br><br>
-    <div class="text-center" data-scroll data-scroll-type="spinin">
+    <div class="text-center" data-scroll data-scroll-name="demo7" data-scroll-type="spinin">
       <h2>EffectType : spinin</h2>
       <p>[data-scroll-type="spinin"]</p>
     </div>

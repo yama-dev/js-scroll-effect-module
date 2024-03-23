@@ -46,9 +46,17 @@ import SCROLL_EFFECT_MODULE from 'js-scroll-effect-module';
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module/examples/scroll-effect-module.css">
 <script src="https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module/dist/js-scroll-effect-module.js"></script>
 
-<div data-scroll data-scroll-name="name-1"></div>
+<div data-scroll></div>
 
-<div data-scroll data-scroll-name="name-2"></div>
+<div data-scroll></div>
+
+<script>
+new SCROLL_EFFECT_MODULE({
+  target: '[data-scroll]',
+  ratio : 0.8,   // 判定する比率を指定（ウィンドウ高さを1として指定）
+  reverse: true, // スクロールを戻した時にクラスを削除するかどうか
+});
+</script>
 ```
 
 ### Advanced Use
@@ -65,16 +73,17 @@ const ScrollEffectModule = new SCROLL_EFFECT_MODULE({
   target             : '[data-scroll]',
   classNameInview    : 'is-active',
 
-  displayRatio       : 0.8,   // 判定する比率を指定（ウィンドウ高さを1として指定）
-  displayReverse     : false, // スクロールを戻した時にクラスを削除するかどうか
-  displayRatioReverse: null,
+  ratio              : 0.8,   // 判定する比率を指定（ウィンドウ高さを1として指定）
+  reverse            : false, // スクロールを戻した時にクラスを削除するかどうか
+
+  ratioReverse       : null, // 戻る際の判定比率を指定（ウィンドウ高さを1として指定）
 
   firstDelay         : 100, // 初回動作までの遅延時間（ms）
 
-  throttleInterval   : 5,
-
-  autoStart          : true,
+  autoStart          : true, // 自動でスタートするかどうか
   autoStartType      : 'ready', // ready, load, scroll
+
+  throttleInterval   : 5,
 
   on: {
     Change: function(obj, index, name){
