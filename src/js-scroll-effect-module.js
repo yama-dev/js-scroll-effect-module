@@ -224,6 +224,12 @@ export default class SCROLL_EFFECT_MODULE {
     for (let _i = 0; _i < this.state.PosList.length; _i++) {
       const el = this.state.PosList[_i];
 
+      if(this.config.customVarNameRatio){
+        let _ratio = (this.state.NumScrolltop + this.state.NumWindowHeight - el.pos) / this.state.NumWindowHeight;
+        let _ratio2 = Math.floor(_ratio * 100) / 100;
+        el.el.style.setProperty('--scroll-ratio', _ratio2);
+      }
+
       if (flgPageBottom) {
         setActiveState(el, true);
       } else if (this.config.displayRatio === this.config.displayRatioReverse) {
