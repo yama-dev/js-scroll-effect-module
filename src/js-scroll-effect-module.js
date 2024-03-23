@@ -25,16 +25,19 @@ export default class SCROLL_EFFECT_MODULE {
 
       classNameInview    : 'is-active',
 
-      displayRatio       : 0.8,
-      displayReverse     : false,
-      displayRatioReverse: null,
+      ratio              : 0.8,
+      ratioReverse       : null,
+
+      reverse            : false,
 
       firstDelay         : 100,
 
-      throttleInterval   : 5,
-
       autoStart          : true,
       autoStartType      : 'ready', // ready, load, scroll
+
+      throttleInterval   : 5,
+
+      customVarNameRatio : null, // '--sem-scroll-ratio'
 
       on: {
         Scroll       : null,
@@ -54,11 +57,11 @@ export default class SCROLL_EFFECT_MODULE {
     this.timerScroll = null;
 
     // adjust ratio value.
-    if( !this.config.displayRatioReverse ) {
-      this.config.displayRatioReverse = this.config.displayRatio;
+    if( !this.config.ratioReverse ) {
+      this.config.ratioReverse = this.config.ratio;
     } else {
-      if( this.config.displayRatioReverse < this.config.displayRatio ) {
-        this.config.displayRatioReverse = this.config.displayRatio;
+      if( this.config.ratioReverse < this.config.ratio ) {
+        this.config.ratioReverse = this.config.ratio;
       }
     }
 
@@ -232,9 +235,9 @@ export default class SCROLL_EFFECT_MODULE {
 
       if (flgPageBottom) {
         setActiveState(el, true);
-      } else if (this.config.displayRatio === this.config.displayRatioReverse) {
-        // displayRatioとdisplayRatioReverseが同じ場合の処理
-        if (this.state.NumScrolltop + (this.NumWindowHeight * this.config.displayRatio) > el.pos) {
+      } else if (this.config.ratio === this.config.ratioReverse) {
+        // ratioとratioReverseが同じ場合の処理
+        if (this.state.NumScrolltop + (this.state.NumWindowHeight * this.config.ratio) > el.pos) {
           // 画面内に要素が表示された場合
           setActiveState(el, true);
         } else {
