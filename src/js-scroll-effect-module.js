@@ -7,14 +7,22 @@ export default class SCROLL_EFFECT_MODULE {
 
     // Set State.
     this.state = {
-      NumScrolltopPre: window.pageYOffset,
-      NumScrolltop   : window.pageYOffset,
+      NumScrolltopPre: 0,
+      NumScrolltop   : 0,
+      NumWindowHeight: 0,
       PosList        : [],
+      $targets       : null,
+      $parent        : null,
+      $body          : null,
     };
 
     // config, options.
     let configDefault = {
-      target             : null,
+      target             : '[data-scroll]',
+      targetDataName     : '[data-scroll-name]',
+      parent             : 'window',
+      body               : 'body',
+
       classNameInview    : 'is-active',
 
       displayRatio       : 0.8,
@@ -90,7 +98,7 @@ export default class SCROLL_EFFECT_MODULE {
     if(this.timer) clearTimeout(this.timer);
 
     // for Resize-Event
-    window.addEventListener('resize', () => {
+    this.state.$parent.addEventListener('resize', () => {
       this.Start();
     });
 
@@ -101,7 +109,7 @@ export default class SCROLL_EFFECT_MODULE {
       }, this.config.firstDelay);
     } else if(this.config.autoStartType === 'load'){
       // for Load-Event
-      window.addEventListener('load', () => {
+      this.state.$parent.addEventListener('load', () => {
         this.timer = setTimeout(()=>{
           this.Start();
           this._BindEventScroll();
@@ -129,11 +137,11 @@ export default class SCROLL_EFFECT_MODULE {
     }
 
     // スクロールの間引き処理
-    window.addEventListener('scroll', throttle(function(){
+    this.state.$parent.addEventListener('scroll', throttle(function(){
       _that._StoreElementStateAtPosList();
     }, _that.config.throttleInterval), {passive: true});
 
-    window.addEventListener('scroll', ()=>{
+    this.state.$parent.addEventListener('scroll', ()=>{
       if(this.timerScroll) clearTimeout(this.timerScroll);
 
       // スクロール終了時に実行
@@ -146,19 +154,23 @@ export default class SCROLL_EFFECT_MODULE {
   _SetDom(){
     this.state.PosList = [];
 
-    this.state.NumScrolltop = window.pageYOffset;
-    this.NumWindowHeight = window.innerHeight;
+    this.state.$targets = DOM.selectDom(this.config.target);
+    this.state.$parent = this.config.parent == 'window' ? window : document.querySelector(this.config.parent);
+    this.state.$body = this.config.body == 'body' ? document.body : document.querySelector(this.config.body);
 
-    let _elem = DOM.selectDom(this.config.target);
+    this.state.NumScrolltop = (this.config.parent === 'window' ? this.state.$parent.pageYOffset : this.state.$parent.scrollTop);
+    this.state.NumWindowHeight = (this.config.parent === 'window' ? this.state.$parent.innerHeight : this.state.$parent.clientHeight);
 
-    if(_elem){
-      _elem.map((el,i)=>{
+    if(this.state.$targets){
+      this.state.$targets.map((el,i)=>{
         let offset = 0;
         if(el.dataset && el.dataset.semOffset !== undefined) offset = Number(el.dataset.semOffset);
+        let _y = el.getBoundingClientRect().top - (this.config.parent === 'window' ? 0 : this.state.$parent.getBoundingClientRect().top);
+
         let obj = {
           el: el,
           index: i + 1,
-          pos: el.getBoundingClientRect().top + this.state.NumScrolltop - offset,
+          pos: _y + this.state.NumScrolltop - offset,
           height: el.clientHeight,
           height2: el.offsetHeight,
           count: 0,
@@ -194,7 +206,7 @@ export default class SCROLL_EFFECT_MODULE {
     if(!this.state.PosList.length) return false;
 
     // Scroll top cache
-    this.state.NumScrolltop = window.pageYOffset;
+    this.state.NumScrolltop = (this.config.parent === 'window' ? this.state.$parent.pageYOffset : this.state.$parent.scrollTop);
 
     // 要素のactive状態を設定するユーティリティ関数
     let setActiveState = (el, active) => {
@@ -206,7 +218,7 @@ export default class SCROLL_EFFECT_MODULE {
 
     let activeCountBefore = this.state.PosList.filter(item => item.active === true).length;
 
-    let flgPageBottom = this.state.NumScrolltop >= document.body.clientHeight - window.innerHeight;
+    let flgPageBottom = this.state.NumScrolltop >= this.state.$body.clientHeight - (this.config.parent === 'window' ? this.state.$parent.innerHeight : this.state.$parent.clientHeight);
 
     // Store element state at PosList.
     for (let _i = 0; _i < this.state.PosList.length; _i++) {
