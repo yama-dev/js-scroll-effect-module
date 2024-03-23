@@ -13,7 +13,7 @@ ENV_PROD := NODE_ENV=production
 
 all: serve
 
-build: clean prod
+build: clean transform prod
 
 install:
 	$(PROGRAM) install
@@ -26,6 +26,10 @@ serve:
 
 prod:
 	$(ENV_PROD) $(PROGRAM) run prod
+
+transform:
+	sed -i "" -r "s/version\":[ ]?\"[.0-9]*/version\"\: \"${VERSION}/g" "package.json"
+	sed -i "" -r "s/@[0-9]*\.[0-9]*\.[0-9]*\//@${VERSION}\//g" "README.md"
 
 zip:
 	$(RM) $(ZIP_FOLDER)

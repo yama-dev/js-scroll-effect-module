@@ -21,7 +21,7 @@ By using pre-prepared CSS, it is surprisingly easy to add effects that match the
 
 - npm -> [https://www.npmjs.com/package/js-scroll-effect-module](https://www.npmjs.com/package/js-scroll-effect-module)
 
-- Standalone(CDN) -> [https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module/dist/js-scroll-effect-module.js](https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module/dist/js-scroll-effect-module.js)
+- Standalone(CDN) -> [https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module@0.13.3/dist/js-scroll-effect-module.js](https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module@0.13.3/dist/js-scroll-effect-module.js)
 
 - Zip -> [yama-dev/js-scroll-effect-module](https://github.com/yama-dev/js-scroll-effect-module/releases/latest)
 
@@ -44,8 +44,8 @@ import SCROLL_EFFECT_MODULE from 'js-scroll-effect-module';
 ### Basic Use
 
 ``` html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module/examples/scroll-effect-module.css">
-<script src="https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module/dist/js-scroll-effect-module.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module@0.13.3/examples/scroll-effect-module.css">
+<script src="https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module@0.13.3/dist/js-scroll-effect-module.js"></script>
 
 <div data-scroll></div>
 
@@ -63,7 +63,7 @@ new SCROLL_EFFECT_MODULE({
 ### Advanced Use
 
 ``` html
-<script src="https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module/dist/js-scroll-effect-module.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/yama-dev/js-scroll-effect-module@0.13.3/dist/js-scroll-effect-module.js"></script>
 
 <div data-scroll data-scroll-name="name-1"></div>
 
