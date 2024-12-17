@@ -84,6 +84,8 @@ const ScrollEffectModule = new SCROLL_EFFECT_MODULE({
   autoStart          : true, // 自動でスタートするかどうか
   autoStartType      : 'ready', // ready, load, scroll
 
+  updateResizeAuto   : true,
+
   throttleInterval   : 5,
 
   on: {
