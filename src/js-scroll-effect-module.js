@@ -23,7 +23,7 @@ export default class SCROLL_EFFECT_MODULE {
       parent             : 'window',
       body               : 'body',
 
-      classNameInview    : 'is-active',
+      classNameInview    : 'is-scroll-active',
 
       ratio              : 0.8,
       ratioReverse       : null,
