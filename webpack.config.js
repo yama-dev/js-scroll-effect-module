@@ -8,6 +8,7 @@ if(!env) process.exit(1);
 
 const webpack = require('webpack');
 const TerserPlugin = require('terser-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 const webpackPlugEnv = new webpack.EnvironmentPlugin({
   DEBUG: false,
@@ -28,12 +29,6 @@ const config = {
   },
   module: {
     rules: [
-      {
-        enforce: 'pre',
-        test: /\.(js)$/,
-        exclude: /node_modules/,
-        loader: 'eslint-loader',
-      },
       {
         test: /\.js$/,
         exclude: /node_modules[///](?!(@yama-dev)\/).*/,
@@ -56,6 +51,11 @@ const config = {
   target: ['web', 'es5'],
   plugins: [
     webpackPlugEnv,
+    new ESLintPlugin({
+      cache: true,
+      extensions: ['js'],
+      fix: false,
+    }),
   ],
   optimization: {
     minimizer: [
