@@ -7,42 +7,42 @@
   opacity: 0;
   transition: opacity var(--sem-duration) var(--sem-ease) 0s;
 }
-[data-scroll-type="fadein"].is-active { opacity: 1; }
+[data-scroll-type="fadein"].is-scroll-active { opacity: 1; }
 
 [data-scroll-type="zoomin"] {
   opacity: 0;
   transform: scale(0.9);
   transition: all var(--sem-duration) var(--sem-ease) 0s;
 }
-[data-scroll-type="zoomin"].is-active { opacity: 1; transform: scale(1); }
+[data-scroll-type="zoomin"].is-scroll-active { opacity: 1; transform: scale(1); }
 
 [data-scroll-type="fadeinTop"] {
   opacity: 0;
   transform: translate(0, -30px);
   transition: all var(--sem-duration) var(--sem-ease) 0s;
 }
-[data-scroll-type="fadeinTop"].is-active { opacity: 1; transform: translate(0, 0); }
+[data-scroll-type="fadeinTop"].is-scroll-active { opacity: 1; transform: translate(0, 0); }
 
 [data-scroll-type="fadeinBottom"] {
   opacity: 0;
   transform: translate(0, 30px);
   transition: all var(--sem-duration) var(--sem-ease) 0s;
 }
-[data-scroll-type="fadeinBottom"].is-active { opacity: 1; transform: translate(0, 0); }
+[data-scroll-type="fadeinBottom"].is-scroll-active { opacity: 1; transform: translate(0, 0); }
 
 [data-scroll-type="fadeinLeft"] {
   opacity: 0;
   transform: translate(-80%, 0);
   transition: all var(--sem-duration) var(--sem-ease) 0s;
 }
-[data-scroll-type="fadeinLeft"].is-active { opacity: 1; transform: translate(0, 0); }
+[data-scroll-type="fadeinLeft"].is-scroll-active { opacity: 1; transform: translate(0, 0); }
 
 [data-scroll-type="fadeinRight"] {
   opacity: 0;
   transform: translate(80%, 0);
   transition: all var(--sem-duration) var(--sem-ease) 0s;
 }
-[data-scroll-type="fadeinRight"].is-active { opacity: 1; transform: translate(0, 0); }
+[data-scroll-type="fadeinRight"].is-scroll-active { opacity: 1; transform: translate(0, 0); }
 
 [data-scroll-type="spinin"] {
   opacity: 0;
@@ -51,5 +51,5 @@
   backface-visibility: hidden;
   transition: all var(--sem-duration) var(--sem-ease) 0s;
 }
-[data-scroll-type="spinin"].is-active { opacity: 1; transform: translate(0, 0) rotate3d(1, 0, 1, 0); }
+[data-scroll-type="spinin"].is-scroll-active { opacity: 1; transform: translate(0, 0) rotate3d(1, 0, 1, 0); }
 

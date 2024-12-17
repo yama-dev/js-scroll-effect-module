@@ -23,7 +23,7 @@ export default class SCROLL_EFFECT_MODULE {
       parent             : 'window',
       body               : 'body',
 
-      classNameInview    : 'is-active',
+      classNameInview    : 'is-scroll-active',
 
       ratio              : 0.8,
       ratioReverse       : null,
@@ -36,6 +36,8 @@ export default class SCROLL_EFFECT_MODULE {
       autoStartType      : 'ready', // ready, load, scroll
 
       throttleInterval   : 5,
+
+      updateResizeAuto   : true,
 
       customVarNameRatio : null, // '--sem-scroll-ratio'
 
@@ -101,8 +103,19 @@ export default class SCROLL_EFFECT_MODULE {
     if(this.timer) clearTimeout(this.timer);
 
     // for Resize-Event
+    let currentWidth = window.innerWidth;
     this.state.$parent.addEventListener('resize', () => {
-      this.Start();
+      // not resize
+      if (currentWidth == window.innerWidth) {
+        return;
+      }
+
+      // update window width
+      currentWidth = window.innerWidth;
+
+      if(this.config.updateResizeAuto){
+        this.Start();
+      }
     });
 
     if(this.config.autoStartType === 'ready'){
@@ -304,10 +317,24 @@ export default class SCROLL_EFFECT_MODULE {
         _item.changing = false;
 
         // アクティブの増減によってcallbackに渡すitemを変更
-        let _item_fix = _type === 'down' ? _item : _item_pre;
+        let _item_fix = null;
+        if(_type === 'down'){
+          _item_fix = _item;
+        } else {
+          if(_item_pre){
+            _item_fix = _item_pre;
+          } else {
+            _item_fix = _item;
+          }
+        }
 
         // Changeコールバック関数の呼び出し
-        this.callCallback(this.config.on.Change, _item_fix, _item_fix.index, _item_fix.dataset[this.getDatasetKey(this.config.targetDataName)]);
+        this.callCallback(
+          this.config.on.Change,
+          _item_fix,
+          _item_fix ? _item_fix.index : 0,
+          _item_fix ? _item_fix.dataset[this.getDatasetKey(this.config.targetDataName)] : {},
+        );
       }
     }
   }
