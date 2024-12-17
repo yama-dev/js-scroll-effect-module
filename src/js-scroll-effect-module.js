@@ -37,6 +37,8 @@ export default class SCROLL_EFFECT_MODULE {
 
       throttleInterval   : 5,
 
+      updateResizeAuto   : true,
+
       customVarNameRatio : null, // '--sem-scroll-ratio'
 
       on: {
@@ -101,8 +103,19 @@ export default class SCROLL_EFFECT_MODULE {
     if(this.timer) clearTimeout(this.timer);
 
     // for Resize-Event
+    let currentWidth = window.innerWidth;
     this.state.$parent.addEventListener('resize', () => {
-      this.Start();
+      // not resize
+      if (currentWidth == window.innerWidth) {
+        return;
+      }
+
+      // update window width
+      currentWidth = window.innerWidth;
+
+      if(this.config.updateResizeAuto){
+        this.Start();
+      }
     });
 
     if(this.config.autoStartType === 'ready'){
