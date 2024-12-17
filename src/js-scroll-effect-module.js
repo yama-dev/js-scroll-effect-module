@@ -317,10 +317,24 @@ export default class SCROLL_EFFECT_MODULE {
         _item.changing = false;
 
         // アクティブの増減によってcallbackに渡すitemを変更
-        let _item_fix = _type === 'down' ? _item : _item_pre;
+        let _item_fix = null;
+        if(_type === 'down'){
+          _item_fix = _item;
+        } else {
+          if(_item_pre){
+            _item_fix = _item_pre;
+          } else {
+            _item_fix = _item;
+          }
+        }
 
         // Changeコールバック関数の呼び出し
-        this.callCallback(this.config.on.Change, _item_fix, _item_fix.index, _item_fix.dataset[this.getDatasetKey(this.config.targetDataName)]);
+        this.callCallback(
+          this.config.on.Change,
+          _item_fix,
+          _item_fix ? _item_fix.index : 0,
+          _item_fix ? _item_fix.dataset[this.getDatasetKey(this.config.targetDataName)] : {},
+        );
       }
     }
   }
