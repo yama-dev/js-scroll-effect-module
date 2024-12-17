@@ -72,7 +72,7 @@ new SCROLL_EFFECT_MODULE({
 <script>
 const ScrollEffectModule = new SCROLL_EFFECT_MODULE({
   target             : '[data-scroll]',
-  classNameInview    : 'is-active',
+  classNameInview    : 'is-scroll-active',
 
   ratio              : 0.8,   // 判定する比率を指定（ウィンドウ高さを1として指定）
   reverse            : false, // スクロールを戻した時にクラスを削除するかどうか

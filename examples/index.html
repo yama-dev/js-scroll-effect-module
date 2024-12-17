@@ -71,7 +71,7 @@
   &lt;script&gt;
   const ScrollEffectModule = new SCROLL_EFFECT_MODULE({
     target         : &#39;[data-scroll]&#39;,
-    classNameInview: &#39;is-active&#39;,
+    classNameInview: &#39;is-scroll-active&#39;,
     ratio          : 0.8,
     ratioReverse   : null,
     reverse        : true,
@@ -121,12 +121,13 @@
     <script>
     const ScrollEffectModule = new SCROLL_EFFECT_MODULE({
       target: '[data-scroll]',
-      classNameInview : 'is-active',
+      classNameInview : 'is-scroll-active',
       ratio           : 0.5,
       ratioReverse    : 0.9,
       reverse         : true,
       firstDelay      : 100,
       autoStart       : true,
+      updateResizeAuto: true,
       on: {
         Change: function(obj, index, name){
           console.log('Change', obj, index, name);
