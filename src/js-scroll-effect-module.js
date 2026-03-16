@@ -57,6 +57,10 @@ export default class SCROLL_EFFECT_MODULE {
 
     this.timer = null;
     this.timerScroll = null;
+    this.handleResize = null;
+    this.handleLoad = null;
+    this.handleScroll = null;
+    this.handleScrollEnd = null;
 
     // adjust ratio value.
     if( this.config.ratioReverse === null || this.config.ratioReverse === undefined ) {
@@ -101,10 +105,12 @@ export default class SCROLL_EFFECT_MODULE {
 
   _BindEvent(){
     if(this.timer) clearTimeout(this.timer);
+    this._UnbindResizeEvent();
+    this._UnbindLoadEvent();
 
     // for Resize-Event
     let currentWidth = window.innerWidth;
-    this.state.$parent.addEventListener('resize', () => {
+    this.handleResize = () => {
       // not resize
       if (currentWidth == window.innerWidth) {
         return;
@@ -116,7 +122,11 @@ export default class SCROLL_EFFECT_MODULE {
       if(this.config.updateResizeAuto){
         this.Start();
       }
-    });
+    };
+
+    if(this.config.updateResizeAuto){
+      window.addEventListener('resize', this.handleResize);
+    }
 
     if(this.config.autoStartType === 'ready'){
       this.timer = setTimeout(()=>{
@@ -124,7 +134,7 @@ export default class SCROLL_EFFECT_MODULE {
         this._BindEventScroll();
       }, this.config.firstDelay);
     } else if(this.config.autoStartType === 'load'){
-      const runOnLoad = () => {
+      this.handleLoad = () => {
         this.timer = setTimeout(()=>{
           this.Start();
           this._BindEventScroll();
@@ -132,10 +142,10 @@ export default class SCROLL_EFFECT_MODULE {
       };
 
       if(document.readyState === 'complete'){
-        runOnLoad();
+        this.handleLoad();
       } else {
         // for Load-Event
-        this.state.$parent.addEventListener('load', runOnLoad);
+        window.addEventListener('load', this.handleLoad);
       }
     } else if(this.config.autoStartType === 'scroll'){
       this._BindEventScroll();
@@ -143,9 +153,8 @@ export default class SCROLL_EFFECT_MODULE {
   }
 
   _BindEventScroll(){
-    let _that = this;
-
     if(this.timerScroll) clearTimeout(this.timerScroll);
+    this._UnbindScrollEvent();
 
     // for Scroll-Event
     function throttle(fn, wait) {
@@ -159,18 +168,47 @@ export default class SCROLL_EFFECT_MODULE {
     }
 
     // スクロールの間引き処理
-    this.state.$parent.addEventListener('scroll', throttle(function(){
-      _that._StoreElementStateAtPosList();
-    }, _that.config.throttleInterval), {passive: true});
+    this.handleScroll = throttle(()=>{
+      this._StoreElementStateAtPosList();
+    }, this.config.throttleInterval);
 
-    this.state.$parent.addEventListener('scroll', ()=>{
+    this.handleScrollEnd = ()=>{
       if(this.timerScroll) clearTimeout(this.timerScroll);
 
       // スクロール終了時に実行
-      _that.timerScroll = setTimeout(()=>{
-        _that._StoreElementStateAtPosList();
-      }, _that.config.throttleInterval * 2);
-    }, {passive: true});
+      this.timerScroll = setTimeout(()=>{
+        this._StoreElementStateAtPosList();
+      }, this.config.throttleInterval * 2);
+    };
+
+    this.state.$parent.addEventListener('scroll', this.handleScroll, {passive: true});
+    this.state.$parent.addEventListener('scroll', this.handleScrollEnd, {passive: true});
+  }
+
+  _UnbindResizeEvent(){
+    if(this.handleResize){
+      window.removeEventListener('resize', this.handleResize);
+      this.handleResize = null;
+    }
+  }
+
+  _UnbindLoadEvent(){
+    if(this.handleLoad){
+      window.removeEventListener('load', this.handleLoad);
+      this.handleLoad = null;
+    }
+  }
+
+  _UnbindScrollEvent(){
+    if(this.state.$parent && this.handleScroll){
+      this.state.$parent.removeEventListener('scroll', this.handleScroll);
+      this.handleScroll = null;
+    }
+
+    if(this.state.$parent && this.handleScrollEnd){
+      this.state.$parent.removeEventListener('scroll', this.handleScrollEnd);
+      this.handleScrollEnd = null;
+    }
   }
 
   _SetDom(){
@@ -249,7 +287,7 @@ export default class SCROLL_EFFECT_MODULE {
       if(this.config.customVarNameRatio){
         let _ratio = (this.state.NumScrolltop + this.state.NumWindowHeight - el.pos) / this.state.NumWindowHeight;
         let _ratio2 = Math.floor(_ratio * 100) / 100;
-        el.el.style.setProperty('--scroll-ratio', _ratio2);
+        el.el.style.setProperty(this.config.customVarNameRatio, _ratio2);
       }
 
       if (flgPageBottom) {

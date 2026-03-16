@@ -84,9 +84,11 @@ const ScrollEffectModule = new SCROLL_EFFECT_MODULE({
   autoStart          : true, // 自動でスタートするかどうか
   autoStartType      : 'ready', // ready, load, scroll
 
-  updateResizeAuto   : true,
+  updateResizeAuto   : true, // window resize 時に自動で情報更新するかどうか
 
   throttleInterval   : 5,
+
+  customVarNameRatio : '--scroll-ratio', // 指定時のみ CSS 変数へ比率を設定
 
   on: {
     Change: function(obj, index, name){
