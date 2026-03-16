@@ -16,6 +16,11 @@
   "author": "yama-dev",
   "license": "MIT",
   "main": "./dist/js-scroll-effect-module.js",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "start": "npm install && npm run dev",
     "dev": "npm-run-all -p webpack:develop server",

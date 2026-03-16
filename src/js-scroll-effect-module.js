@@ -59,7 +59,7 @@ export default class SCROLL_EFFECT_MODULE {
     this.timerScroll = null;
 
     // adjust ratio value.
-    if( !this.config.ratioReverse ) {
+    if( this.config.ratioReverse === null || this.config.ratioReverse === undefined ) {
       this.config.ratioReverse = this.config.ratio;
     } else {
       if( this.config.ratioReverse < this.config.ratio ) {
@@ -124,13 +124,19 @@ export default class SCROLL_EFFECT_MODULE {
         this._BindEventScroll();
       }, this.config.firstDelay);
     } else if(this.config.autoStartType === 'load'){
-      // for Load-Event
-      this.state.$parent.addEventListener('load', () => {
+      const runOnLoad = () => {
         this.timer = setTimeout(()=>{
           this.Start();
           this._BindEventScroll();
         }, this.config.firstDelay);
-      });
+      };
+
+      if(document.readyState === 'complete'){
+        runOnLoad();
+      } else {
+        // for Load-Event
+        this.state.$parent.addEventListener('load', runOnLoad);
+      }
     } else if(this.config.autoStartType === 'scroll'){
       this._BindEventScroll();
     }
