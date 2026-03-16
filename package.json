@@ -23,7 +23,10 @@
     "server": "browser-sync start --server ./ --directory ./examples --files **/*.css **/*.js **/*.html",
     "webpack:develop": "webpack --progress --color --watch",
     "webpack:build": "webpack --mode=production --progress --color",
-    "test": "mocha --require @babel/register"
+    "test": "mocha --require @babel/register",
+    "changeset": "changeset",
+    "version-packages": "changeset version && npm install --package-lock-only",
+    "release": "npm run prod && changeset publish"
   },
   "repository": {
     "type": "git",
@@ -38,6 +41,7 @@
     "@babel/core": "^7.14.8",
     "@babel/preset-env": "^7.14.9",
     "@babel/register": "^7.14.5",
+    "@changesets/cli": "^2.30.0",
     "babel-loader": "^8.2.2",
     "browser-sync": "^2.27.5",
     "eslint": "^8.57.0",

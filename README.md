@@ -134,6 +134,18 @@ ex. `ScrollEffectModule.Update();`
 
 <br><br><br>
 
+## Release Flow
+
+```bash
+npm run changeset
+npm run version-packages
+npm run release
+```
+
+`npm run changeset` で変更内容を記録し、`npm run version-packages` で `package.json` / `CHANGELOG.md` を更新、`npm run release` でビルド後に npm 公開します。
+
+<br><br><br>
+
 ---
 
 ## Licence
@@ -145,4 +157,3 @@ ex. `ScrollEffectModule.Update();`
 ## Author
 
 [yama-dev](https://github.com/yama-dev)
-
