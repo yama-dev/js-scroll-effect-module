@@ -24,14 +24,15 @@
   "scripts": {
     "start": "npm install && npm run dev",
     "dev": "npm-run-all -p webpack:develop server",
-    "prod": "npm-run-all -p webpack:build",
+    "prod": "npm run sync-version && npm-run-all -p webpack:build",
     "server": "browser-sync start --server ./ --directory ./examples --files **/*.css **/*.js **/*.html",
-    "webpack:develop": "webpack --progress --color --watch",
-    "webpack:build": "webpack --mode=production --progress --color",
+    "webpack:develop": "NODE_ENV=development webpack --progress --color --watch",
+    "webpack:build": "NODE_ENV=production webpack --mode=production --progress --color",
     "test": "mocha --require ./test/setup.js \"test/**/*.test.js\"",
+    "sync-version": "node ./scripts/sync-version.js",
     "changeset": "changeset",
     "version-packages": "changeset version && npm install --package-lock-only",
-    "release": "npm run prod && changeset publish"
+    "release": "npm run sync-version && npm run prod && changeset publish"
   },
   "repository": {
     "type": "git",

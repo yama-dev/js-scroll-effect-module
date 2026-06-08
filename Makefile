@@ -5,7 +5,9 @@ RM := rm -rf
 MK := mkdir
 CP := cp
 ZIP := zip
+NODE := node
 
+VERSION := $(shell $(NODE) -p "require('./package.json').version")
 ZIP_FOLDER := _v$(VERSION)
 
 ENV_DEV := NODE_ENV=development
@@ -13,7 +15,7 @@ ENV_PROD := NODE_ENV=production
 
 all: serve
 
-build: clean transform prod
+build: clean sync-version prod
 
 install:
 	$(PROGRAM) install
@@ -25,11 +27,10 @@ serve:
 	$(ENV_DEV) $(PROGRAM) run dev
 
 prod:
-	$(ENV_PROD) $(PROGRAM) run prod
+	$(PROGRAM) run prod
 
-transform:
-	sed -i "" -r "s/version\":[ ]?\"[.0-9]*/version\"\: \"${VERSION}/g" "package.json"
-	sed -i "" -r "s/@[0-9]*\.[0-9]*\.[0-9]*\//@${VERSION}\//g" "README.md"
+sync-version:
+	$(PROGRAM) run sync-version
 
 zip:
 	$(RM) $(ZIP_FOLDER)
@@ -39,4 +40,4 @@ zip:
 	sed -i "" "s/..\/dist\//.\//g" "$(ZIP_FOLDER)/index.html"
 	$(ZIP) $(ZIP_FOLDER)/$(SLUG)_v$(VERSION).zip -r $(ZIP_FOLDER)/*
 
-.PHONY: all build serve clean prod zip install
+.PHONY: all build serve clean prod zip install sync-version
